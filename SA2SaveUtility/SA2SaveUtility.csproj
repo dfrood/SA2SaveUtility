@@ -66,6 +66,18 @@
     <Compile Include="uc_Chao.designer.cs">
       <DependentUpon>uc_Chao.cs</DependentUpon>
     </Compile>
+    <Compile Include="uc_Main.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="uc_Main.designer.cs">
+      <DependentUpon>uc_Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="uc_Mission.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="uc_Mission.designer.cs">
+      <DependentUpon>uc_Mission.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,6 +92,12 @@
     </Compile>
     <EmbeddedResource Include="uc_Chao.resx">
       <DependentUpon>uc_Chao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="uc_Main.resx">
+      <DependentUpon>uc_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="uc_Mission.resx">
+      <DependentUpon>uc_Mission.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

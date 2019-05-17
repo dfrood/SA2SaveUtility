@@ -11,11 +11,6 @@ namespace SA2SaveUtility
 
         Offsets offsets = new Offsets();
 
-        public bool isSaveEditor = false;
-
-        public bool dontRegisterChange = false;
-
-
         public uc_Chao()
         {
             InitializeComponent();
@@ -104,7 +99,7 @@ namespace SA2SaveUtility
         private void Nud_SwimStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_SwimStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SwimPoints + i)] = stat[i];
@@ -114,7 +109,7 @@ namespace SA2SaveUtility
         private void Nud_FlyStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_FlyStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.FlyPoints + i)] = stat[i];
@@ -124,7 +119,7 @@ namespace SA2SaveUtility
         private void Nud_RunStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_RunStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.RunPoints + i)] = stat[i];
@@ -134,7 +129,7 @@ namespace SA2SaveUtility
         private void Nud_PowerStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_PowerStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.PowerPoints + i)] = stat[i];
@@ -144,7 +139,7 @@ namespace SA2SaveUtility
         private void Nud_StaminaStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_StaminaStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.StaminaPoints + i)] = stat[i];
@@ -154,7 +149,7 @@ namespace SA2SaveUtility
         private void Nud_LuckStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_LuckStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.LuckPoints + i)] = stat[i];
@@ -164,7 +159,7 @@ namespace SA2SaveUtility
         private void Nud_IntelligenceStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_IntelligenceStat.Value);
-            Array.Reverse(stat);
+            if (!Main.saveIsPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.IntelligencePoints + i)] = stat[i];
@@ -243,7 +238,7 @@ namespace SA2SaveUtility
         {
             float alignment = (float)(trackb_Alignment.Value * 0.01);
             byte[] alignmentBytes = BitConverter.GetBytes(alignment);
-            Array.Reverse(alignmentBytes);
+            if (!Main.saveIsPC) { Array.Reverse(alignmentBytes); }
             for (int i = 0; i < alignmentBytes.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Alignment + i)] = alignmentBytes[i];
@@ -254,7 +249,7 @@ namespace SA2SaveUtility
         {
             float run2Power = (float)(trackb_Run2Power.Value * 0.01);
             byte[] run2PowerBytes = BitConverter.GetBytes(run2Power);
-            Array.Reverse(run2PowerBytes);
+            if (!Main.saveIsPC) { Array.Reverse(run2PowerBytes); }
             for (int i = 0; i < run2PowerBytes.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Run2PowerTranformation + i)] = run2PowerBytes[i];
@@ -265,7 +260,7 @@ namespace SA2SaveUtility
         {
             float swim2Fly = (float)(trackb_Swim2Fly.Value * 0.01);
             byte[] swim2FlyBytes = BitConverter.GetBytes(swim2Fly);
-            Array.Reverse(swim2FlyBytes);
+            if (!Main.saveIsPC) { Array.Reverse(swim2FlyBytes); }
             for (int i = 0; i < swim2FlyBytes.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Swim2FlyTransformation + i)] = swim2FlyBytes[i];
@@ -276,7 +271,7 @@ namespace SA2SaveUtility
         {
             float transformationMagnitude = (float)(trackb_TransformationMagnitude.Value * 0.01);
             byte[] transformationMagnitudeBytes = BitConverter.GetBytes(transformationMagnitude);
-            Array.Reverse(transformationMagnitudeBytes);
+            if (!Main.saveIsPC) { Array.Reverse(transformationMagnitudeBytes); }
             for (int i = 0; i < transformationMagnitudeBytes.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.TransformationMagnitude + i)] = transformationMagnitudeBytes[i];
@@ -385,7 +380,7 @@ namespace SA2SaveUtility
         private void Nud_Happiness_ValueChanged(object sender, EventArgs e)
         {
             byte[] happiness = BitConverter.GetBytes((Int16)nud_Happiness.Value);
-            Array.Reverse(happiness);
+            if (!Main.saveIsPC) { Array.Reverse(happiness); }
             for (int i = 0; i < happiness.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Happiness + i)] = happiness[i];
@@ -422,7 +417,7 @@ namespace SA2SaveUtility
         private void Trackb_DesireToMate_Scroll(object sender, EventArgs e)
         {
             byte[] desire = BitConverter.GetBytes((UInt16)trackb_DesireToMate.Value);
-            Array.Reverse(desire);
+            if (!Main.saveIsPC) { Array.Reverse(desire); }
             for (int i = 0; i < desire.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.DesireToMate + i)] = desire[i];
@@ -432,7 +427,7 @@ namespace SA2SaveUtility
         private void Trackb_Hunger_Scroll(object sender, EventArgs e)
         {
             byte[] hunger = BitConverter.GetBytes((UInt16)trackb_Hunger.Value);
-            Array.Reverse(hunger);
+            if (!Main.saveIsPC) { Array.Reverse(hunger); }
             for (int i = 0; i < hunger.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Hunger + i)] = hunger[i];
@@ -442,7 +437,7 @@ namespace SA2SaveUtility
         private void Trackb_Sleepiness_Scroll(object sender, EventArgs e)
         {
             byte[] sleepiness = BitConverter.GetBytes((UInt16)trackb_Sleepiness.Value);
-            Array.Reverse(sleepiness);
+            if (!Main.saveIsPC) { Array.Reverse(sleepiness); }
             for (int i = 0; i < sleepiness.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Sleepiness + i)] = sleepiness[i];
@@ -452,7 +447,7 @@ namespace SA2SaveUtility
         private void Trackb_Tiredness_Scroll(object sender, EventArgs e)
         {
             byte[] tiredness = BitConverter.GetBytes((UInt16)trackb_Tiredness.Value);
-            Array.Reverse(tiredness);
+            if (!Main.saveIsPC) { Array.Reverse(tiredness); }
             for (int i = 0; i < tiredness.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Tiredness + i)] = tiredness[i];
@@ -462,7 +457,7 @@ namespace SA2SaveUtility
         private void Trackb_Boredom_Scroll(object sender, EventArgs e)
         {
             byte[] boredom = BitConverter.GetBytes((UInt16)trackb_Boredom.Value);
-            Array.Reverse(boredom);
+            if (!Main.saveIsPC) { Array.Reverse(boredom); }
             for (int i = 0; i < boredom.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Boredom + i)] = boredom[i];
@@ -472,7 +467,7 @@ namespace SA2SaveUtility
         private void Trackb_Energy_Scroll(object sender, EventArgs e)
         {
             byte[] energy = BitConverter.GetBytes((UInt16)trackb_Energy.Value);
-            Array.Reverse(energy);
+            if (!Main.saveIsPC) { Array.Reverse(energy); }
             for (int i = 0; i < energy.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Energy + i)] = energy[i];
@@ -540,7 +535,7 @@ namespace SA2SaveUtility
         private void Trackb_Lifespan1_Scroll(object sender, EventArgs e)
         {
             byte[] lifespan = BitConverter.GetBytes((Int16)trackb_Lifespan1.Value);
-            Array.Reverse(lifespan);
+            if (!Main.saveIsPC) { Array.Reverse(lifespan); }
             for (int i = 0; i < lifespan.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Lifespan1 + i)] = lifespan[i];
@@ -558,7 +553,7 @@ namespace SA2SaveUtility
         private void Trackb_Lifespan2_Scroll(object sender, EventArgs e)
         {
             byte[] lifespan = BitConverter.GetBytes((Int16)trackb_Lifespan2.Value);
-            Array.Reverse(lifespan);
+            if (!Main.saveIsPC) { Array.Reverse(lifespan); }
             for (int i = 0; i < lifespan.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Lifespan2 + i)] = lifespan[i];
@@ -568,7 +563,7 @@ namespace SA2SaveUtility
         private void Nud_Reincarnations_ValueChanged(object sender, EventArgs e)
         {
             byte[] reincarnations = BitConverter.GetBytes((UInt16)nud_Reincarnations.Value);
-            Array.Reverse(reincarnations);
+            if (!Main.saveIsPC) { Array.Reverse(reincarnations); }
             for (int i = 0; i < reincarnations.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Reincarnations + i)] = reincarnations[i];
@@ -602,7 +597,7 @@ namespace SA2SaveUtility
             if (checkb_Phoenix.Checked) { animalBehaviours += (1 << 20); }
 
             byte[] animalBehavioursBytes = BitConverter.GetBytes((UInt32)animalBehaviours);
-            Array.Reverse(animalBehavioursBytes);
+            if (!Main.saveIsPC) { Array.Reverse(animalBehavioursBytes); }
             for (int i = 0; i < animalBehavioursBytes.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2AnimalBehaviours + i)] = animalBehavioursBytes[i];
@@ -626,7 +621,7 @@ namespace SA2SaveUtility
             if (checkb_WateringCan.Checked) { toys += (1 << 11); }
 
             byte[] toysBytes = BitConverter.GetBytes((UInt32)toys);
-            Array.Reverse(toysBytes);
+            if (!Main.saveIsPC) { Array.Reverse(toysBytes); }
             for (int i = 0; i < toysBytes.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2Toys + i)] = toysBytes[i];

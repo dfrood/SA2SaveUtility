@@ -310,7 +310,7 @@ namespace SA2SaveUtility
 
         private void Tsmi_About_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("SA2 Save Utility is created by Froody." + Environment.NewLine + "For updates, check https://github.com/dfrood/SA2SaveUtility/releases" + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "For updates, check https://github.com/dfrood/SA2SaveUtility/releases" + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

@@ -569,9 +569,7 @@ namespace SA2SaveUtility
                     {
                         uc_Chao uc = new uc_Chao();
                         TabPage tp = new TabPage();
-                        uc.isSaveEditor = true;
                         uc.chaoNumber = chaoIndex;
-                        uc.dontRegisterChange = false;
                         tp.Controls.Add(uc);
                         tp.Text = name;
                         Main.tc_Main.TabPages.Add(tp);
