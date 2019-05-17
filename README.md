@@ -6,7 +6,7 @@ Editing PC and Xbox 360/PS3 chao save files, also allows saving of files to eith
 Saving/loading/duplicating individual chao.
 
 ## How to use
-1. Load your choice of save file. For console saves you will need to extract the savedata.bin from the save file retreived from your console. The application should determine what type of save you're using and populate the UI accordingly.
+1. Load your choice of save file (this file will be saved in the /backups folder, the name will be prefixed with the date and time of loading the file). For console saves you will need to extract the savedata.bin from the save file retreived from your console. The application should determine what type of save you're using and populate the UI accordingly.
 2. Make any changes you'd like.
 3. If using a chao save, you can click "Chao". this offers saving and duplicating the currently selected chao or allows you to load a .chao file into the selected chao slot.
 4. Save your edited file, you have the choice of PC save or Console save. For console saves you'll have to rehash and resign the save for your selected console.
