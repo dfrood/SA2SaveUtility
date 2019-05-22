@@ -341,7 +341,7 @@ namespace SA2SaveUtility
         private void Tsmi_About_Click(object sender, EventArgs e)
         {
             if (isLatest) { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
-            else { if (isLatest) { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); } }
+            else { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
         }
 
         private void Tsmi_saveAsConsoleNew_Click(object sender, EventArgs e)
