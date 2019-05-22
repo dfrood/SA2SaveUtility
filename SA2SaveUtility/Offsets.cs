@@ -7,17 +7,39 @@ namespace SA2SaveUtility
         public Save main = new Save();
         public Chao chao = new Chao();
         public Mission mission = new Mission();
+        public Kart kart = new Kart();
+        public Boss boss = new Boss();
     }
 
     class Save
     {
+        public uint EmblemCount = 0x284E;
+        public uint Lives = 0x285C;
+        //Time is an integer, 0x01 = 1 60th of a second
+        public uint EmblemResultsTime = 0x2868;
+        public uint PlayTime = 0x286C;
         public uint Rings = 0x2870;
+
+        public uint GreenHill = 0x4034;
+
         public uint ChaoWorldSonic = 0x5A69;
         public uint ChaoWorldTails = 0x5A6F;
         public uint ChaoWorldKnuckles = 0x5A6D;
         public uint ChaoWorldShadow = 0x5A6A;
         public uint ChaoWorldEggman = 0x5A70;
         public uint ChaoWorldRouge = 0x5A6E;
+
+        public uint ChaoRaceBeginner = 0x5A64;
+        public uint ChaoRaceJewel = 0x5A65;
+        public uint ChaoRaceChallenge = 0x5A66;
+        public uint ChaoRaceHero = 0x5A67;
+        public uint ChaoRaceDark = 0x5A68;
+
+        public uint ChaoKarateBeginner = 0x5A71;
+        public uint ChaoKarateStandard = 0x5A72;
+        public uint ChaoKarateExpert = 0x5A73;
+        public uint ChaoKarateSuper = 0x5A74;
+        public uint ChaoKarateSuperUnlocked = 0x5A75;
 
         public uint SonicLightShoes = 0x5A77;
         public uint SonicAncientLight = 0x5A78;
@@ -33,11 +55,75 @@ namespace SA2SaveUtility
 
         public uint KnucklesShovel = 0x5A81;
         public uint KnucklesSun = 0x5A82;
-        public uint KnucklesHammer = 0x5A82;
+        public uint KnucklesHammer = 0x5A83;
         public uint KnucklesAir = 0x5A84;
         public uint KnucklesMM = 0x5A85;
 
+        public uint ShadowAir = 0x5A87;
+        public uint ShadowAncientLight = 0x5A88;
+        public uint ShadowFlame = 0x5A89;
+        public uint ShadowMM = 0x5A8A;
+
+        public uint EggmanJet = 0x5A8B;
+        public uint EggmanCannon = 0x5A8C;
+        public uint EggmanLaser = 0x5A8D;
+        public uint EggmanArmor = 0x5A8E;
+        public uint EggmanMM = 0x5A8F;
+
+        public uint RougePick = 0x5A90;
+        public uint RougeTreasure = 0x5A91;
+        public uint RougeBoots = 0x5A92;
+        public uint RougeMM = 0x5A93;
+
+        public uint ThemeAmy = 0x5ADB;
+        public uint ThemeMaria = 0x5ADC;
+        public uint ThemeSecretary = 0x5ADD;
+        public uint ThemeOmochao = 0x5ADE;
+
+        public uint AllASonic = 0x5CCD;
+        public uint AllAShadow = 0x5CCE;
+        public uint AllATails = 0x5CCF;
+        public uint AllAEggman = 0x5CD0;
+        public uint AllAKnuckles = 0x5CD1;
+        public uint AllARouge = 0x5CD2;
+        public uint HeroStoryComplete = 0x5CD3;
+        public uint DarkStoryComplete = 0x5CD4;
+        public uint LastStoryComplete = 0x5CD5;
+        public uint BossAttackHero = 0x5CD6;
+        public uint BossAttackDark = 0x5CD7;
+        public uint BossAttackAll = 0x5CD8;
+        public uint AllACannonsCore = 0x5CD9;
+
+        public uint KartSonic = 0x5AD3;
+        public uint KartTails = 0x5AD4;
+        public uint KartKnuckles = 0x5AD5;
+        public uint KartShadow = 0x5AD6;
+        public uint KartEggman = 0x5AD7;
+        public uint KartRouge = 0x5AD8;
+
+
         public Dictionary<string, uint> MissionOffsets = new Dictionary<string, uint>();
+        public Dictionary<string, uint> KartOffsets = new Dictionary<string, uint>();
+        public Dictionary<string, KeyValuePair<uint, uint>> BossOffsets = new Dictionary<string, KeyValuePair<uint, uint>>();
+    }
+
+    class Kart
+    {
+        public uint FirstT = 0x00;
+        public uint FirstC = 0x03;
+        public uint SecondT = 0x04;
+        public uint SecondC = 0x07;
+        public uint ThirdT = 0x08;
+        public uint ThirdC = 0x0B;
+        public uint Emblem = 0x0C;
+    }
+
+    class Boss
+    {
+        public uint Emblem = 0x00;
+        public uint FirstT = 0x18;
+        public uint SecondT = 0x24;
+        public uint ThirdT = 0x30;
     }
 
     class Mission

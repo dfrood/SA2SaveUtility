@@ -400,8 +400,7 @@ namespace SA2SaveUtility
                     byteArray.AddRange(Main.loadedSave.Take((int)(0x3AA4 + (0x800 * chaoIndex))).ToArray());
                     byteArray.AddRange(chaoToDupe);
                     byteArray.AddRange(Main.loadedSave.Skip((int)(0x3AA4 + (0x800 * (chaoIndex + 1)))).ToArray());
-                    Main.loadedSave = new List<byte>();
-                    Main.loadedSave.AddRange(byteArray.ToArray());
+                    Main.loadedSave = byteArray.ToArray();
                     MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
                     ChaoSave.GetChao();
                     break;

@@ -35,12 +35,15 @@
             this.tsmi_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAsPC = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAsConsole = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAsConsoleNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAsConsoleAppend = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Chao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_LoadChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_SaveCurrentChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_DupeChao = new System.Windows.Forms.ToolStripMenuItem();
-            tc_Main = new System.Windows.Forms.TabControl();
             this.tsmi_About = new System.Windows.Forms.ToolStripMenuItem();
+            tc_Main = new System.Windows.Forms.TabControl();
+            this.lb_UpdateAvailable = new System.Windows.Forms.Label();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,10 +95,29 @@
             // 
             // tsmi_saveAsConsole
             // 
+            this.tsmi_saveAsConsole.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_saveAsConsoleNew,
+            this.tsmi_saveAsConsoleAppend});
             this.tsmi_saveAsConsole.Name = "tsmi_saveAsConsole";
             this.tsmi_saveAsConsole.Size = new System.Drawing.Size(158, 22);
             this.tsmi_saveAsConsole.Text = "as Console Save";
             this.tsmi_saveAsConsole.Click += new System.EventHandler(this.Tsmi_saveAsConsole_Click);
+            // 
+            // tsmi_saveAsConsoleNew
+            // 
+            this.tsmi_saveAsConsoleNew.Name = "tsmi_saveAsConsoleNew";
+            this.tsmi_saveAsConsoleNew.Size = new System.Drawing.Size(266, 22);
+            this.tsmi_saveAsConsoleNew.Text = "Save to New Save";
+            this.tsmi_saveAsConsoleNew.Visible = false;
+            this.tsmi_saveAsConsoleNew.Click += new System.EventHandler(this.Tsmi_saveAsConsoleNew_Click);
+            // 
+            // tsmi_saveAsConsoleAppend
+            // 
+            this.tsmi_saveAsConsoleAppend.Name = "tsmi_saveAsConsoleAppend";
+            this.tsmi_saveAsConsoleAppend.Size = new System.Drawing.Size(266, 22);
+            this.tsmi_saveAsConsoleAppend.Text = "Append Current Slot to Existing Save";
+            this.tsmi_saveAsConsoleAppend.Visible = false;
+            this.tsmi_saveAsConsoleAppend.Click += new System.EventHandler(this.Tsmi_saveAsConsoleAppend_Click);
             // 
             // tsmi_Chao
             // 
@@ -129,6 +151,13 @@
             this.tsmi_DupeChao.Text = "Dupe Current Chao";
             this.tsmi_DupeChao.Click += new System.EventHandler(this.Tsmi_DupeCurrentChao_Click);
             // 
+            // tsmi_About
+            // 
+            this.tsmi_About.Name = "tsmi_About";
+            this.tsmi_About.Size = new System.Drawing.Size(52, 20);
+            this.tsmi_About.Text = "About";
+            this.tsmi_About.Click += new System.EventHandler(this.Tsmi_About_Click);
+            // 
             // tc_Main
             // 
             tc_Main.Location = new System.Drawing.Point(0, 24);
@@ -137,18 +166,24 @@
             tc_Main.Size = new System.Drawing.Size(572, 235);
             tc_Main.TabIndex = 1;
             // 
-            // tsmi_About
+            // lb_UpdateAvailable
             // 
-            this.tsmi_About.Name = "tsmi_About";
-            this.tsmi_About.Size = new System.Drawing.Size(52, 20);
-            this.tsmi_About.Text = "About";
-            this.tsmi_About.Click += new System.EventHandler(this.Tsmi_About_Click);
+            this.lb_UpdateAvailable.AutoSize = true;
+            this.lb_UpdateAvailable.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lb_UpdateAvailable.Location = new System.Drawing.Point(443, 7);
+            this.lb_UpdateAvailable.Name = "lb_UpdateAvailable";
+            this.lb_UpdateAvailable.Size = new System.Drawing.Size(114, 13);
+            this.lb_UpdateAvailable.TabIndex = 2;
+            this.lb_UpdateAvailable.Text = "An update is available!";
+            this.lb_UpdateAvailable.Visible = false;
+            this.lb_UpdateAvailable.Click += new System.EventHandler(this.Lb_UpdateAvailable_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(569, 258);
+            this.Controls.Add(this.lb_UpdateAvailable);
             this.Controls.Add(tc_Main);
             this.Controls.Add(this.ms_Main);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -157,6 +192,7 @@
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "Sonic Adventure 2 - Save Utility";
+            this.Load += new System.EventHandler(this.Main_Load);
             this.ms_Main.ResumeLayout(false);
             this.ms_Main.PerformLayout();
             this.ResumeLayout(false);
@@ -177,6 +213,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPC;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsConsole;
         private System.Windows.Forms.ToolStripMenuItem tsmi_About;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsConsoleNew;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsConsoleAppend;
+        private System.Windows.Forms.Label lb_UpdateAvailable;
         public static System.Windows.Forms.TabControl tc_Main;
     }
 }

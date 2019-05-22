@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SA2SaveUtility
 {
@@ -11,6 +14,8 @@ namespace SA2SaveUtility
     {
         public static bool saveIsPC;
         public static bool saveIsMain;
+        public bool isLatest;
+        public string latestVersionString;
 
         public string loadedFile { get; set; }
         public string currentDir = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
@@ -18,7 +23,7 @@ namespace SA2SaveUtility
         string chaoDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location) + @"\chao";
 
 
-        public static List<byte> loadedSave = new List<byte>();
+        public static byte[] loadedSave;
         Offsets offsets = new Offsets();
 
         public Main()
@@ -26,6 +31,38 @@ namespace SA2SaveUtility
             InitializeComponent();
             if (!Directory.Exists(backupsDir)) { Directory.CreateDirectory(backupsDir); }
             if (!Directory.Exists(chaoDirectory)) { Directory.CreateDirectory(chaoDirectory); }
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            UpdateCheck();
+        }
+
+        public void UpdateCheck()
+        {
+            string xml = new WebClient().DownloadString("https://dev.froody.tech/version.xml");
+            XDocument doc = XDocument.Parse(xml);
+            latestVersionString = doc.XPathSelectElement("Applications/SA2SaveUtility").Value;
+            Version latestVersion = Version.Parse(latestVersionString);
+            Version currentVersion = Version.Parse(ProductVersion);
+            if (currentVersion.CompareTo(latestVersion) < 0) { isLatest = false; lb_UpdateAvailable.Visible = true; }
+            else { isLatest = true; lb_UpdateAvailable.Visible = false;  }
+        }
+
+        public static void WriteByte(int offset, int value, uint mainIndex)
+        {
+            if (saveIsPC) { loadedSave[offset] = (byte)value; }
+            else { loadedSave[offset + 4 + (int)(0x6004 * mainIndex)] = (byte)value; }
+        }
+        public static void WriteBytes(int offset, byte[] bytes, uint mainIndex, int length)
+        {
+            Array.Resize<byte>(ref bytes, length);
+            if (!saveIsPC) { Array.Reverse(bytes); }
+            for (int i = 0; i < length; i++)
+            {
+                if (saveIsPC) { loadedSave[offset + i] = bytes[i]; }
+                else { loadedSave[offset + i + (int)(0x6004 * mainIndex) + 4] = bytes[i]; }
+            }
         }
 
         public static List<byte[]> SplitByteArray(byte[] bytes, int BlockLength)
@@ -63,11 +100,11 @@ namespace SA2SaveUtility
             if (loadSave.ShowDialog() == DialogResult.OK)
             {
                 bool validSave = false;
-                loadedSave = new List<byte>();
-                loadedSave.AddRange(File.ReadAllBytes(loadSave.FileName));
+                loadedSave = File.ReadAllBytes(loadSave.FileName);
 
                 tc_Main.TabPages.Clear();
                 ChaoSave.activeChao = new Dictionary<uint, TabPage>();
+                MainSave.activeMain = new Dictionary<int, TabPage>();
 
                 switch (loadSave.FilterIndex)
                 {
@@ -75,7 +112,7 @@ namespace SA2SaveUtility
                         {
                             saveIsPC = true;
                             saveIsMain = true;
-                            if (loadedSave.Count == 0x6000)
+                            if (loadedSave.Length == 0x6000)
                             {
                                 validSave = true;
                                 SaveIsMain();
@@ -87,7 +124,7 @@ namespace SA2SaveUtility
                         {
                             saveIsPC = true;
                             saveIsMain = false;
-                            if (loadedSave.Count == 0x10000)
+                            if (loadedSave.Length == 0x10000)
                             {
                                 validSave = true;
                                 SaveIsChao();
@@ -98,13 +135,13 @@ namespace SA2SaveUtility
                     case 3:
                         {
                             saveIsPC = false;
-                            if (loadedSave.Count == 0x3C028)
+                            if (loadedSave.Length == 0x3C028)
                             {
                                 validSave = true;
                                 SaveIsMain();
                                 ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Console Main Save]";
                             }
-                            if (loadedSave.Count == 0x10000)
+                            if (loadedSave.Length == 0x10000)
                             {
                                 validSave = true;
                                 SaveIsChao();
@@ -124,7 +161,7 @@ namespace SA2SaveUtility
                 {
                     tsmi_SaveCurrentChao.Enabled = false;
                     MessageBox.Show("That doesn't appear to be a Sonic Adventure 2 save file.", "Error loading save file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    loadedSave = new List<byte>();
+                    loadedSave = null;
                 }
             }
         }
@@ -135,12 +172,17 @@ namespace SA2SaveUtility
             ChaoSave.GetChao();
             tsmi_SaveCurrentChao.Enabled = true;
             tsmi_Chao.Enabled = true;
+            tsmi_saveAsConsoleNew.Visible = false;
+            tsmi_saveAsConsoleAppend.Visible = false;
         }
         private void SaveIsMain()
         {
             saveIsMain = true;
+            MainSave.GetMain();
             tsmi_SaveCurrentChao.Enabled = false;
             tsmi_Chao.Enabled = false;
+            tsmi_saveAsConsoleNew.Visible = true;
+            tsmi_saveAsConsoleAppend.Visible = true;
         }
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
@@ -161,7 +203,7 @@ namespace SA2SaveUtility
                     if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                     else { byteList.AddRange(chao); }
                     byteList.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (uc.chaoNumber + 1)))).ToArray());
-                    loadedSave = byteList;
+                    loadedSave = byteList.ToArray();
                     ChaoSave.GetChao();
                 }
                 else
@@ -200,8 +242,7 @@ namespace SA2SaveUtility
                     byteArray.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * chaoIndex))).ToArray());
                     byteArray.AddRange(chaoToDupe);
                     byteArray.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (chaoIndex + 1)))).ToArray());
-                    loadedSave = new List<byte>();
-                    loadedSave.AddRange(byteArray.ToArray());
+                    loadedSave = byteArray.ToArray();
                     MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
                     ChaoSave.GetChao();
                     break;
@@ -259,9 +300,56 @@ namespace SA2SaveUtility
                     MessageBox.Show("There was a problem saving the chao save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            else
+            {
+                try
+                {
+                    uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                    List<byte> toSave = new List<byte>();
+                    if (saveIsPC) { toSave = new List<byte>(loadedSave); }
+                    else { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList(); }
+                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true));
+                    string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S01";
+                    int index = 1;
+                    while (true)
+                    {
+                        if (!File.Exists(pcFileName))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S" + index.ToString("00");
+                            index++;
+                        }
+                    }
+                    File.WriteAllBytes(pcFileName, toSave.ToArray());
+                    MessageBox.Show("Save file has been saved to " + pcFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+                catch
+                {
+                    MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void Tsmi_saveAsConsole_Click(object sender, EventArgs e)
+        {
+            if (!saveIsMain) { SaveAsConsole(); }
+        }
+
+        private void Tsmi_About_Click(object sender, EventArgs e)
+        {
+            if (isLatest) { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+            else { if (isLatest) { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); } }
+        }
+
+        private void Tsmi_saveAsConsoleNew_Click(object sender, EventArgs e)
+        {
+            SaveAsConsole();
+        }
+
+        private void SaveAsConsole()
         {
             if (!saveIsMain)
             {
@@ -306,11 +394,142 @@ namespace SA2SaveUtility
                     MessageBox.Show("There was a problem saving the chao save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            else
+            {
+                try
+                {
+                    uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                    List<byte> toSave = new List<byte>();
+                    if (!saveIsPC)
+                    {
+                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, true));
+                    }
+                    else
+                    {
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.Add(0x01);
+                        toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
+                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false).ToList();
+                    }
+                    for (int i = toSave.Count; i < 0x3C028; i++)
+                    {
+                        toSave.Add(0x00);
+                    }
+                    string consoleFileName = Path.GetDirectoryName(loadedFile) + @"\savedata.bin";
+                    int index = 1;
+                    while (true)
+                    {
+                        if (!File.Exists(consoleFileName))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            consoleFileName = Path.GetDirectoryName(loadedFile) + @"\savedata" + index + ".bin";
+                            index++;
+                        }
+                    }
+                    File.WriteAllBytes(consoleFileName, toSave.ToArray());
+                    MessageBox.Show("Save file has been saved to " + consoleFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+                catch
+                {
+                    MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
-        private void Tsmi_About_Click(object sender, EventArgs e)
+        private void Tsmi_saveAsConsoleAppend_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "For updates, check https://github.com/dfrood/SA2SaveUtility/releases" + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            try
+            {
+                OpenFileDialog loadToAppend = new OpenFileDialog();
+                loadToAppend.InitialDirectory = chaoDirectory;
+                loadToAppend.Filter = "Console Main Save|*.bin";
+                loadToAppend.Title = "Chose a file to add this save to";
+                loadToAppend.ShowDialog();
+                if (loadToAppend.FileName != "")
+                {
+                    byte[] save = File.ReadAllBytes(loadToAppend.FileName);
+                    if (save.Length == 0x3C028)
+                    {
+                        int slotIndex = 0;
+                        int slotNotTaken = 0;
+                        List<int> takenSlots = new List<int>();
+                        foreach (byte[] saveSlot in SplitByteArray(save, 0x6004)) { takenSlots.Add(saveSlot[3]); }
+                        for (int i = 1; i < 10; i++)
+                        {
+                            if (!takenSlots.Contains(i)) { slotNotTaken = i; break; }
+                        }
+                        if (slotNotTaken != 0)
+                        {
+                            List<byte> combinedSave = new List<byte>();
+                            foreach (byte[] saveSlot in SplitByteArray(save, 0x6004))
+                            {
+                                if (saveSlot[3] == 0x00)
+                                {
+                                    uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                                    List<byte> toSave = new List<byte>();
+                                    if (!saveIsPC)
+                                    {
+                                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6004 * uc.mainIndex)).Take(0x6004).ToArray(), false));
+                                        toSave[3] = (byte)slotNotTaken;
+                                    }
+                                    else
+                                    {
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.Add((byte)slotNotTaken);
+                                        toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
+                                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false).ToList();
+                                    }
+                                    combinedSave.AddRange(save.Take(0x6004 * slotIndex));
+                                    combinedSave.AddRange(toSave);
+                                    combinedSave.AddRange(save.Skip(0x6004 * (slotIndex + 1)));
+                                    break;
+                                }
+                                slotIndex++;
+                            }
+                            string consoleFileName = Path.GetDirectoryName(loadedFile) + @"\savedata.bin";
+                            int index = 1;
+                            while (true)
+                            {
+                                if (!File.Exists(consoleFileName))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    consoleFileName = Path.GetDirectoryName(loadedFile) + @"\savedata" + index + ".bin";
+                                    index++;
+                                }
+                            }
+                            File.WriteAllBytes(consoleFileName, combinedSave.ToArray());
+                            MessageBox.Show("Save file has been saved to " + consoleFileName + ", in slot " + slotNotTaken + ".", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Couldn't find a slot to save to!", "Error writing save", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("That doesn't appear to be a console main save.", "Error writing save", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Lb_UpdateAvailable_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString);
         }
     }
 }
