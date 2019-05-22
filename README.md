@@ -13,7 +13,10 @@ Editing PC, Gamecube Xbox 360 & PS3 main save files, also allows saving of files
 4. Save your edited file, you have the choice of PC, Gamecube or 360/PS3 save. For 360/PS3 saves you'll have to rehash and resign the save. If you're saving a Main save as a 360/PS3 save, you can choose to append the current save tab to an existing file(360/PS3 saves are an array of multiple saves on a single file).
 
 ## To Do
-More things to edit on Main Saves
+More things to edit on Main Saves.
+Chao garden items.
+Black market items.
+Current Drives/Animals.
 Toggle between realistic and unrealistic chao values, currently mainly supports realistic values.
 SADX Support(Unsure on this, once SA2 support is fully complete I may explore adding SADX althought this may have to be a seperate application).
 
