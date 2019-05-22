@@ -29,6 +29,7 @@ SADX Support(Unsure on this, once SA2 support is fully complete I may explore ad
 ![Chao Stats Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Stats.png)
 ![Chao Appearance Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Appearance.png)
 ![Chao Evolution Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Evolution.png)
+![Chao Emotions Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Emotions.png)
 ![Chao Character Bonds Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_CharacterBonds.png)
 ![Chao Personality Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Personality.png)
 ![Chao Health Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Health.png)
