@@ -12,8 +12,10 @@ Saving/loading/duplicating individual chao.
 4. Save your edited file, you have the choice of PC save or Console save. For console saves you'll have to rehash and resign the save for your selected console. If you're saving a Main save as a Console save, you can choose to append the current save tab to an existing file(console saves are an array of multiple saves on a single file).
 
 ## To Do
-Add support for Main save files (emblems, rings, etc. etc.)
+More things to edit on Main Saves
+Gamecube support
 Toggle between realistic and unrealistic chao values, currently mainly supports realistic values.
+SADX Support(Unsure on this, once SA2 support is fully complete I may explore adding SADX althought this may have to be a seperate application).
 
 ## Images
 #### Main
