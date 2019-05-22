@@ -11,19 +11,20 @@ namespace SA2SaveUtility
         public static Offsets offsets = new Offsets();
         public static Dictionary<int, TabPage> activeMain = new Dictionary<int, TabPage>();
 
-        public static byte[] WriteChecksum(byte[] save, bool PC)
+        public static byte[] WriteChecksum(byte[] save, bool PC, bool GC)
         {
             byte[] checksum = new byte[4];
             List<byte> newSave = new List<byte>();
 
-            if (PC)
+            if (PC || GC)
             {
-                checksum = BitConverter.GetBytes(save.Skip(0x2844).ToArray().Select(x => (int)x).Sum());
+                if (PC) { checksum = BitConverter.GetBytes(save.Skip(0x2844).ToArray().Select(x => (int)x).Sum()); }
+                if (GC) { checksum = BitConverter.GetBytes(save.Skip(0x2844).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray(); }
                 newSave.AddRange(save.Take(0x2840).ToArray());
                 newSave.AddRange(checksum);
                 newSave.AddRange(save.Skip(0x2844).ToArray());
             }
-            if (!PC)
+            if (!PC && !GC)
             {
                 foreach (byte[] splitSave in Main.SplitByteArray(save, 0x6004))
                 {
@@ -83,14 +84,18 @@ namespace SA2SaveUtility
             offsets.main.BossOffsets.Add("Boss Attack - Dark", new KeyValuePair<uint, uint>(0x58DC, 0x5CD6));
             offsets.main.BossOffsets.Add("Boss Attack - All", new KeyValuePair<uint, uint>(0x59A0, 0x5CD7));
 
-            if (Main.saveIsPC)
+            if (Main.saveIsPC || Main.saveIsGC)
             {
                 uc_Main uc = new uc_Main();
                 TabPage tp = new TabPage();
                 tp.Controls.Add(uc);
+                if (Main.saveIsGC)
+                {
+                    int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes));
+                    uc.gcFileNo = fileNo;
+                }
                 Main.tc_Main.TabPages.Add(tp);
                 Main.tc_Main.SelectedTab = tp;
-
                 List<byte> header = new List<byte>(Main.loadedSave.Skip(0x27).Take(0x19));
                 tp.Text = Encoding.UTF8.GetString(header.Take(header.IndexOf(0x00)).ToArray());
 
@@ -99,7 +104,8 @@ namespace SA2SaveUtility
                 KeyValuePair<int, TabPage> currentMain = activeMain.Where(x => x.Key == Main.tc_Main.TabPages.IndexOf(tp)).First();
                 UpdateSave(Main.tc_Main, currentMain, Main.loadedSave.ToArray());
             }
-            else
+            
+            if (!Main.saveIsPC && !Main.saveIsGC)
             {
                 uint index = 0;
                 foreach (byte[] main in Main.SplitByteArray(Main.loadedSave.ToArray(), 0x6004))
@@ -128,202 +134,97 @@ namespace SA2SaveUtility
 
         public static void UpdateSave(TabControl tc, KeyValuePair<int, TabPage> currentMain, byte[] save)
         {
+            if (!Main.saveIsPC && !Main.saveIsGC) { save = save.Skip(0x04).ToArray();  }
+
             int playTime = 0;
             if (Main.saveIsPC) { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime)).Take(4).ToArray(), 0); }
-            else { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime + 4)).Take(4).Reverse().ToArray(), 0); }
+            else { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime)).Take(4).Reverse().ToArray(), 0); }
 
             int emblemTime = 0;
             if (Main.saveIsPC) { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime)).Take(4).ToArray(), 0); }
-            else { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime + 4)).Take(4).Reverse().ToArray(), 0); }
+            else { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime)).Take(4).Reverse().ToArray(), 0); }
 
             int lives = 0;
             if (Main.saveIsPC) { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).ToArray(), 0); }
-            else { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives + 4)).Take(2).Reverse().ToArray(), 0); }
+            else { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).Reverse().ToArray(), 0); }
 
             int rings = 0;
             if (Main.saveIsPC) { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).ToArray(), 0); }
-            else { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings + 4)).Take(4).Reverse().ToArray(), 0); }
+            else { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).Reverse().ToArray(), 0); }
 
-            int sonicCW = 0;
-            if (Main.saveIsPC) { sonicCW = (int)save[offsets.main.ChaoWorldSonic]; }
-            else { sonicCW = (int)save[offsets.main.ChaoWorldSonic + 4]; }
-            int tailsCW = 0;
-            if (Main.saveIsPC) { tailsCW = (int)save[offsets.main.ChaoWorldTails]; }
-            else { tailsCW = (int)save[offsets.main.ChaoWorldTails + 4]; }
-            int knucklesCW = 0;
-            if (Main.saveIsPC) { knucklesCW = (int)save[offsets.main.ChaoWorldKnuckles]; }
-            else { knucklesCW = (int)save[offsets.main.ChaoWorldKnuckles + 4]; }
-            int shadowCW = 0;
-            if (Main.saveIsPC) { shadowCW = (int)save[offsets.main.ChaoWorldShadow]; }
-            else { shadowCW = (int)save[offsets.main.ChaoWorldShadow + 4]; }
-            int eggmanCW = 0;
-            if (Main.saveIsPC) { eggmanCW = (int)save[offsets.main.ChaoWorldEggman]; }
-            else { eggmanCW = (int)save[offsets.main.ChaoWorldEggman + 4]; }
-            int rougeCW = 0;
-            if (Main.saveIsPC) { rougeCW = (int)save[offsets.main.ChaoWorldRouge]; }
-            else { rougeCW = (int)save[offsets.main.ChaoWorldRouge + 4]; }
+            int textLang = (int)save[offsets.main.TextLanguage];
+            int voiceLang = (int)save[offsets.main.VoiceLanguage];
 
-            int sonicLS = 0;
-            if (Main.saveIsPC) { sonicLS = (int)save[offsets.main.SonicLightShoes]; }
-            else { sonicLS = (int)save[offsets.main.SonicLightShoes + 4]; }
-            int sonicAL = 0;
-            if (Main.saveIsPC) { sonicAL = (int)save[offsets.main.ShadowAncientLight]; }
-            else { sonicAL = (int)save[offsets.main.ShadowAncientLight + 4]; }
-            int sonicMG = 0;
-            if (Main.saveIsPC) { sonicMG = (int)save[offsets.main.SonicMagic]; }
-            else { sonicMG = (int)save[offsets.main.SonicMagic + 4]; }
-            int sonicFR = 0;
-            if (Main.saveIsPC) { sonicFR = (int)save[offsets.main.SonicFlame]; }
-            else { sonicFR = (int)save[offsets.main.SonicFlame + 4]; }
-            int sonicBB = 0;
-            if (Main.saveIsPC) { sonicBB = (int)save[offsets.main.SonicBounce]; }
-            else { sonicBB = (int)save[offsets.main.SonicBounce + 4]; }
-            int sonicMM = 0;
-            if (Main.saveIsPC) { sonicMM = (int)save[offsets.main.SonicMM]; }
-            else { sonicMM = (int)save[offsets.main.SonicMM + 4]; }
+            int sonicCW = (int)save[offsets.main.ChaoWorldSonic];
+            int tailsCW = (int)save[offsets.main.ChaoWorldTails];
+            int knucklesCW = (int)save[offsets.main.ChaoWorldKnuckles];
+            int shadowCW = (int)save[offsets.main.ChaoWorldShadow];
+            int eggmanCW = (int)save[offsets.main.ChaoWorldEggman];
+            int rougeCW = (int)save[offsets.main.ChaoWorldRouge];
 
-            int tailsBo = 0;
-            if (Main.saveIsPC) { tailsBo = (int)save[offsets.main.TailsBooster]; }
-            else { tailsBo = (int)save[offsets.main.TailsBooster + 4]; }
-            int tailsBa = 0;
-            if (Main.saveIsPC) { tailsBa = (int)save[offsets.main.TailsBazooka]; }
-            else { tailsBa = (int)save[offsets.main.TailsBazooka + 4]; }
-            int tailsL = 0;
-            if (Main.saveIsPC) { tailsL = (int)save[offsets.main.TailsLaser]; }
-            else { tailsL = (int)save[offsets.main.TailsLaser + 4]; }
-            int tailsMM = 0;
-            if (Main.saveIsPC) { tailsMM = (int)save[offsets.main.TailsMM]; }
-            else { tailsMM = (int)save[offsets.main.TailsMM + 4]; }
+            int sonicLS = (int)save[offsets.main.SonicLightShoes];
+            int sonicAL = (int)save[offsets.main.ShadowAncientLight];
+            int sonicMG = (int)save[offsets.main.SonicMagic];
+            int sonicFR = (int)save[offsets.main.SonicFlame];
+            int sonicBB = (int)save[offsets.main.SonicBounce];
+            int sonicMM = (int)save[offsets.main.SonicMM];
 
-            int knucklesSC = 0;
-            if (Main.saveIsPC) { knucklesSC = (int)save[offsets.main.KnucklesShovel]; }
-            else { knucklesSC = (int)save[offsets.main.KnucklesShovel + 4]; }
-            int knucklesS = 0;
-            if (Main.saveIsPC) { knucklesS = (int)save[offsets.main.KnucklesSun]; }
-            else { knucklesS = (int)save[offsets.main.KnucklesSun + 4]; }
-            int knucklesHG = 0;
-            if (Main.saveIsPC) { knucklesHG = (int)save[offsets.main.KnucklesHammer]; }
-            else { knucklesHG = (int)save[offsets.main.KnucklesHammer + 4]; }
-            int knucklesAN = 0;
-            if (Main.saveIsPC) { knucklesAN = (int)save[offsets.main.KnucklesAir]; }
-            else { knucklesAN = (int)save[offsets.main.KnucklesAir + 4]; }
-            int knucklesMM = 0;
-            if (Main.saveIsPC) { knucklesMM = (int)save[offsets.main.KnucklesMM]; }
-            else { knucklesMM = (int)save[offsets.main.KnucklesMM + 4]; }
+            int tailsBo = (int)save[offsets.main.TailsBooster];
+            int tailsBa = (int)save[offsets.main.TailsBazooka];
+            int tailsL = (int)save[offsets.main.TailsLaser];
+            int tailsMM = (int)save[offsets.main.TailsMM];
 
-            int shadowAS = 0;
-            if (Main.saveIsPC) { shadowAS = (int)save[offsets.main.ShadowAir]; }
-            else { shadowAS = (int)save[offsets.main.ShadowAir + 4]; }
-            int shadowAL = 0;
-            if (Main.saveIsPC) { shadowAL = (int)save[offsets.main.ShadowAncientLight]; }
-            else { shadowAL = (int)save[offsets.main.ShadowAncientLight + 4]; }
-            int shadowFR = 0;
-            if (Main.saveIsPC) { shadowFR = (int)save[offsets.main.ShadowFlame]; }
-            else { shadowFR = (int)save[offsets.main.ShadowFlame + 4]; }
-            int shadowMM = 0;
-            if (Main.saveIsPC) { shadowMM = (int)save[offsets.main.ShadowMM]; }
-            else { shadowMM = (int)save[offsets.main.ShadowMM + 4]; }
+            int knucklesSC = (int)save[offsets.main.KnucklesShovel];
+            int knucklesS = (int)save[offsets.main.KnucklesSun];
+            int knucklesHG = (int)save[offsets.main.KnucklesHammer];
+            int knucklesAN = (int)save[offsets.main.KnucklesAir];
+            int knucklesMM = (int)save[offsets.main.KnucklesMM];
 
-            int eggmanJE = 0;
-            if (Main.saveIsPC) { eggmanJE = (int)save[offsets.main.EggmanJet]; }
-            else { eggmanJE = (int)save[offsets.main.EggmanJet + 4]; }
-            int eggmanLC = 0;
-            if (Main.saveIsPC) { eggmanLC = (int)save[offsets.main.EggmanCannon]; }
-            else { eggmanLC = (int)save[offsets.main.EggmanCannon + 4]; }
-            int eggmanLB = 0;
-            if (Main.saveIsPC) { eggmanLB = (int)save[offsets.main.EggmanLaser]; }
-            else { eggmanLB = (int)save[offsets.main.EggmanLaser + 4]; }
-            int eggmanPA = 0;
-            if (Main.saveIsPC) { eggmanPA = (int)save[offsets.main.EggmanArmor]; }
-            else { eggmanPA = (int)save[offsets.main.EggmanArmor + 4]; }
-            int eggmanMM = 0;
-            if (Main.saveIsPC) { eggmanMM = (int)save[offsets.main.EggmanMM]; }
-            else { eggmanMM = (int)save[offsets.main.EggmanMM + 4]; }
+            int shadowAS = (int)save[offsets.main.ShadowAir];
+            int shadowAL = (int)save[offsets.main.ShadowAncientLight];
+            int shadowFR = (int)save[offsets.main.ShadowFlame];
+            int shadowMM = (int)save[offsets.main.ShadowMM];
 
-            int rougePN = 0;
-            if (Main.saveIsPC) { rougePN = (int)save[offsets.main.RougePick]; }
-            else { rougePN = (int)save[offsets.main.RougePick + 4]; }
-            int rougeTS = 0;
-            if (Main.saveIsPC) { rougeTS = (int)save[offsets.main.RougeTreasure]; }
-            else { rougeTS = (int)save[offsets.main.RougeTreasure + 4]; }
-            int rougeIB = 0;
-            if (Main.saveIsPC) { rougeIB = (int)save[offsets.main.RougeBoots]; }
-            else { rougeIB = (int)save[offsets.main.RougeBoots + 4]; }
-            int rougeMM = 0;
-            if (Main.saveIsPC) { rougeMM = (int)save[offsets.main.RougeMM]; }
-            else { rougeMM = (int)save[offsets.main.RougeMM + 4]; }
+            int eggmanJE = (int)save[offsets.main.EggmanJet];
+            int eggmanLC = (int)save[offsets.main.EggmanCannon];
+            int eggmanLB = (int)save[offsets.main.EggmanLaser];
+            int eggmanPA = (int)save[offsets.main.EggmanArmor];
+            int eggmanMM = (int)save[offsets.main.EggmanMM];
 
-            int karateB = 0;
-            if (Main.saveIsPC) { karateB = (int)save[offsets.main.ChaoKarateBeginner]; }
-            else { karateB = (int)save[offsets.main.ChaoKarateBeginner + 4]; }
-            int karateS = 0;
-            if (Main.saveIsPC) { karateS = (int)save[offsets.main.ChaoKarateStandard]; }
-            else { karateS = (int)save[offsets.main.ChaoKarateStandard + 4]; }
-            int karateE = 0;
-            if (Main.saveIsPC) { karateE = (int)save[offsets.main.ChaoKarateExpert]; }
-            else { karateE = (int)save[offsets.main.ChaoKarateExpert + 4]; }
-            int karateSu = 0;
-            if (Main.saveIsPC) { karateSu = (int)save[offsets.main.ChaoKarateSuper]; }
-            else { karateSu = (int)save[offsets.main.ChaoKarateSuper + 4]; }
+            int rougePN = (int)save[offsets.main.RougePick];
+            int rougeTS = (int)save[offsets.main.RougeTreasure];
+            int rougeIB = (int)save[offsets.main.RougeBoots];
+            int rougeMM = (int)save[offsets.main.RougeMM];
 
-            int raceB = 0;
-            if (Main.saveIsPC) { raceB = (int)save[offsets.main.ChaoRaceBeginner]; }
-            else { raceB = (int)save[offsets.main.ChaoRaceBeginner + 4]; }
-            int raceJ = 0;
-            if (Main.saveIsPC) { raceJ = (int)save[offsets.main.ChaoRaceJewel]; }
-            else { raceJ = (int)save[offsets.main.ChaoRaceJewel + 4]; }
-            int raceC = 0;
-            if (Main.saveIsPC) { raceC = (int)save[offsets.main.ChaoRaceChallenge]; }
-            else { raceC = (int)save[offsets.main.ChaoRaceChallenge + 4]; }
-            int raceH = 0;
-            if (Main.saveIsPC) { raceH = (int)save[offsets.main.ChaoRaceHero]; }
-            else { raceH = (int)save[offsets.main.ChaoRaceHero + 4]; }
-            int raceD = 0;
-            if (Main.saveIsPC) { raceD = (int)save[offsets.main.ChaoRaceDark]; }
-            else { raceD = (int)save[offsets.main.ChaoRaceDark + 4]; }
+            int karateB = (int)save[offsets.main.ChaoKarateBeginner];
+            int karateS = (int)save[offsets.main.ChaoKarateStandard];
+            int karateE = (int)save[offsets.main.ChaoKarateExpert];
+            int karateSu = (int)save[offsets.main.ChaoKarateSuper];
 
-            int themeA = 0;
-            if (Main.saveIsPC) { themeA = (int)save[offsets.main.ThemeAmy]; }
-            else { themeA = (int)save[offsets.main.ThemeAmy + 4]; }
-            int themeM = 0;
-            if (Main.saveIsPC) { themeM = (int)save[offsets.main.ThemeMaria]; }
-            else { themeM = (int)save[offsets.main.ThemeMaria + 4]; }
-            int themeS = 0;
-            if (Main.saveIsPC) { themeS = (int)save[offsets.main.ThemeSecretary]; }
-            else { themeS = (int)save[offsets.main.ThemeSecretary + 4]; }
-            int themeO = 0;
-            if (Main.saveIsPC) { themeO = (int)save[offsets.main.ThemeOmochao]; }
-            else { themeO = (int)save[offsets.main.ThemeOmochao + 4]; }
+            int raceB = (int)save[offsets.main.ChaoRaceBeginner];
+            int raceJ = (int)save[offsets.main.ChaoRaceJewel];
+            int raceC = (int)save[offsets.main.ChaoRaceChallenge];
+            int raceH = (int)save[offsets.main.ChaoRaceHero];
+            int raceD = (int)save[offsets.main.ChaoRaceDark];
 
-            int greenH = 0;
-            if (Main.saveIsPC) { greenH = (int)save[offsets.main.GreenHill]; }
-            else { greenH = (int)save[offsets.main.GreenHill + 4]; }
+            int themeA = (int)save[offsets.main.ThemeAmy];
+            int themeM = (int)save[offsets.main.ThemeMaria];
+            int themeS = (int)save[offsets.main.ThemeSecretary];
+            int themeO = (int)save[offsets.main.ThemeOmochao];
+
+            int greenH = (int)save[offsets.main.GreenHill];
 
 
-            int kartS = 0;
-            if (Main.saveIsPC) { kartS = (int)save[offsets.main.KartSonic]; }
-            else { kartS = (int)save[offsets.main.KartSonic + 4]; }
-            int kartSh = 0;
-            if (Main.saveIsPC) { kartSh = (int)save[offsets.main.KartShadow]; }
-            else { kartSh = (int)save[offsets.main.KartShadow + 4]; }
-            int kartT = 0;
-            if (Main.saveIsPC) { kartT = (int)save[offsets.main.KartTails]; }
-            else { kartT = (int)save[offsets.main.KartTails + 4]; }
-            int kartE = 0;
-            if (Main.saveIsPC) { kartE = (int)save[offsets.main.KartEggman]; }
-            else { kartE = (int)save[offsets.main.KartEggman + 4]; }
-            int kartK = 0;
-            if (Main.saveIsPC) { kartK = (int)save[offsets.main.KartKnuckles]; }
-            else { kartK = (int)save[offsets.main.KartKnuckles + 4]; }
-            int kartR = 0;
-            if (Main.saveIsPC) { kartR = (int)save[offsets.main.KartRouge]; }
-            else { kartR = (int)save[offsets.main.KartRouge + 4]; }
+            int kartS = (int)save[offsets.main.KartSonic];
+            int kartSh = (int)save[offsets.main.KartShadow];
+            int kartT = (int)save[offsets.main.KartTails];
+            int kartE = (int)save[offsets.main.KartEggman];
+            int kartK = (int)save[offsets.main.KartKnuckles];
+            int kartR = (int)save[offsets.main.KartRouge];
 
             Control.ControlCollection controls = tc.TabPages[tc.TabPages.IndexOf(currentMain.Value)].Controls[0].Controls[0].Controls;
 
             //Main
-
-
             controls[0].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GreenHill").First().Checked = Convert.ToBoolean(greenH);
             foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
             {
@@ -337,6 +238,19 @@ namespace SA2SaveUtility
                     gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlayHour").First().Value = hours;
                     gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlayMinute").First().Value = minutes;
                     gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlaySecond").First().Value = seconds;
+                }
+                if (gb.Name == "gb_GCFileNo")
+                {
+                    if (Main.saveIsGC)
+                    {
+                        int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes).Replace("-", " "));
+                        gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_GCFileNumber").First().Value = fileNo;
+                    }
+                }
+                if (gb.Name == "gb_Languages")
+                {
+                    gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().SelectedIndex = textLang;
+                    gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Voice").First().SelectedIndex = voiceLang;
                 }
                 if (gb.Name == "gb_EmblemTime")
                 {
@@ -428,8 +342,7 @@ namespace SA2SaveUtility
                 uc.mainIndex = ucMain.mainIndex;
                 uc.currentPair = keyValuePair;
                 List<byte> currentMission = new List<byte>();
-                if (Main.saveIsPC) { currentMission.AddRange(save.Skip((int)keyValuePair.Value).Take(0xAB)); }
-                else { currentMission.AddRange(save.Skip((int)keyValuePair.Value + 4).Take(0xAB)); }
+                currentMission.AddRange(save.Skip((int)keyValuePair.Value).Take(0xAB));
 
                 int M1 = (int)(currentMission[(int)offsets.mission.M1]);
                 int M2 = (int)(currentMission[(int)offsets.mission.M2]);
@@ -502,8 +415,7 @@ namespace SA2SaveUtility
                 uc.mainIndex = ucMain.mainIndex;
                 uc.currentPair = keyValuePair;
                 List<byte> currentMission = new List<byte>();
-                if (Main.saveIsPC) { currentMission.AddRange(save.Skip((int)keyValuePair.Value).Take(0x29)); }
-                else { currentMission.AddRange(save.Skip((int)keyValuePair.Value + 4).Take(0x29)); }
+                currentMission.AddRange(save.Skip((int)keyValuePair.Value).Take(0x29));
 
                 int E = (int)(currentMission[(int)offsets.kart.Emblem]);
 
@@ -549,8 +461,7 @@ namespace SA2SaveUtility
                 uc.mainIndex = ucMain.mainIndex;
                 uc.currentPair = keyValuePair;
                 List<byte> currentMission = new List<byte>();
-                if (Main.saveIsPC) { currentMission.AddRange(save.Skip((int)keyValuePair.Value.Key).Take(0x8D)); }
-                else { currentMission.AddRange(save.Skip((int)keyValuePair.Value.Key + 4).Take(0x8D)); }
+                currentMission.AddRange(save.Skip((int)keyValuePair.Value.Key).Take(0x8D));
 
                 int E = (int)save[keyValuePair.Value.Value];
 

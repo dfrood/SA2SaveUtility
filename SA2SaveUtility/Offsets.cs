@@ -13,12 +13,14 @@ namespace SA2SaveUtility
 
     class Save
     {
+        public uint TextLanguage = 0x2848;
         public uint EmblemCount = 0x284E;
         public uint Lives = 0x285C;
         //Time is an integer, 0x01 = 1 60th of a second
         public uint EmblemResultsTime = 0x2868;
         public uint PlayTime = 0x286C;
         public uint Rings = 0x2870;
+        public uint VoiceLanguage = 0x2877;
 
         public uint GreenHill = 0x4034;
 

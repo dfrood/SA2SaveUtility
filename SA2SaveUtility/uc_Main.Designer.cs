@@ -101,6 +101,13 @@
             this.nud_TotalRings = new System.Windows.Forms.NumericUpDown();
             this.tp_Emblems = new System.Windows.Forms.TabPage();
             this.tc_Missions = new System.Windows.Forms.TabControl();
+            this.nud_GCFileNumber = new System.Windows.Forms.NumericUpDown();
+            this.gb_GCFileNo = new System.Windows.Forms.GroupBox();
+            this.gb_Languages = new System.Windows.Forms.GroupBox();
+            this.cb_Text = new System.Windows.Forms.ComboBox();
+            this.lb_Text = new System.Windows.Forms.Label();
+            this.cb_Voice = new System.Windows.Forms.ComboBox();
+            this.lb_Voice = new System.Windows.Forms.Label();
             this.tc_Main.SuspendLayout();
             this.tp_Main.SuspendLayout();
             this.gb_EmblemTime.SuspendLayout();
@@ -127,6 +134,9 @@
             this.gb_TotalRings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_TotalRings)).BeginInit();
             this.tp_Emblems.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_GCFileNumber)).BeginInit();
+            this.gb_GCFileNo.SuspendLayout();
+            this.gb_Languages.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc_Main
@@ -142,6 +152,8 @@
             // tp_Main
             // 
             this.tp_Main.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_Main.Controls.Add(this.gb_Languages);
+            this.tp_Main.Controls.Add(this.gb_GCFileNo);
             this.tp_Main.Controls.Add(this.gb_EmblemTime);
             this.tp_Main.Controls.Add(this.gb_PlayTime);
             this.tp_Main.Controls.Add(this.gb_UnlockedKarts);
@@ -164,7 +176,7 @@
             this.gb_EmblemTime.Controls.Add(this.nud_EmblemHour);
             this.gb_EmblemTime.Controls.Add(this.nud_EmblemMinute);
             this.gb_EmblemTime.Controls.Add(this.nud_EmblemSecond);
-            this.gb_EmblemTime.Location = new System.Drawing.Point(319, 7);
+            this.gb_EmblemTime.Location = new System.Drawing.Point(402, 7);
             this.gb_EmblemTime.Name = "gb_EmblemTime";
             this.gb_EmblemTime.Size = new System.Drawing.Size(137, 38);
             this.gb_EmblemTime.TabIndex = 112;
@@ -215,7 +227,7 @@
             this.gb_PlayTime.Controls.Add(this.nud_PlayHour);
             this.gb_PlayTime.Controls.Add(this.nud_PlayMinute);
             this.gb_PlayTime.Controls.Add(this.nud_PlaySecond);
-            this.gb_PlayTime.Location = new System.Drawing.Point(176, 6);
+            this.gb_PlayTime.Location = new System.Drawing.Point(259, 7);
             this.gb_PlayTime.Name = "gb_PlayTime";
             this.gb_PlayTime.Size = new System.Drawing.Size(137, 38);
             this.gb_PlayTime.TabIndex = 55;
@@ -345,7 +357,7 @@
             // checkb_GreenHill
             // 
             this.checkb_GreenHill.AutoSize = true;
-            this.checkb_GreenHill.Location = new System.Drawing.Point(433, 51);
+            this.checkb_GreenHill.Location = new System.Drawing.Point(324, 53);
             this.checkb_GreenHill.Name = "checkb_GreenHill";
             this.checkb_GreenHill.Size = new System.Drawing.Size(121, 17);
             this.checkb_GreenHill.TabIndex = 53;
@@ -356,7 +368,7 @@
             // gb_Lives
             // 
             this.gb_Lives.Controls.Add(this.nud_Lives);
-            this.gb_Lives.Location = new System.Drawing.Point(118, 6);
+            this.gb_Lives.Location = new System.Drawing.Point(89, 7);
             this.gb_Lives.Name = "gb_Lives";
             this.gb_Lives.Size = new System.Drawing.Size(52, 38);
             this.gb_Lives.TabIndex = 48;
@@ -879,7 +891,7 @@
             // 
             // btn_UnlockAll
             // 
-            this.btn_UnlockAll.Location = new System.Drawing.Point(473, 6);
+            this.btn_UnlockAll.Location = new System.Drawing.Point(457, 49);
             this.btn_UnlockAll.Name = "btn_UnlockAll";
             this.btn_UnlockAll.Size = new System.Drawing.Size(81, 23);
             this.btn_UnlockAll.TabIndex = 49;
@@ -947,7 +959,7 @@
             // gb_TotalRings
             // 
             this.gb_TotalRings.Controls.Add(this.nud_TotalRings);
-            this.gb_TotalRings.Location = new System.Drawing.Point(6, 6);
+            this.gb_TotalRings.Location = new System.Drawing.Point(147, 7);
             this.gb_TotalRings.Name = "gb_TotalRings";
             this.gb_TotalRings.Size = new System.Drawing.Size(106, 38);
             this.gb_TotalRings.TabIndex = 47;
@@ -985,6 +997,87 @@
             this.tc_Missions.SelectedIndex = 0;
             this.tc_Missions.Size = new System.Drawing.Size(566, 198);
             this.tc_Missions.TabIndex = 0;
+            // 
+            // nud_GCFileNumber
+            // 
+            this.nud_GCFileNumber.Location = new System.Drawing.Point(4, 14);
+            this.nud_GCFileNumber.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.nud_GCFileNumber.Name = "nud_GCFileNumber";
+            this.nud_GCFileNumber.Size = new System.Drawing.Size(67, 20);
+            this.nud_GCFileNumber.TabIndex = 113;
+            this.nud_GCFileNumber.ValueChanged += new System.EventHandler(this.Nud_GCFileNumber_ValueChanged);
+            // 
+            // gb_GCFileNo
+            // 
+            this.gb_GCFileNo.Controls.Add(this.nud_GCFileNumber);
+            this.gb_GCFileNo.Location = new System.Drawing.Point(6, 6);
+            this.gb_GCFileNo.Name = "gb_GCFileNo";
+            this.gb_GCFileNo.Size = new System.Drawing.Size(77, 39);
+            this.gb_GCFileNo.TabIndex = 114;
+            this.gb_GCFileNo.TabStop = false;
+            this.gb_GCFileNo.Text = "GC File #";
+            // 
+            // gb_Languages
+            // 
+            this.gb_Languages.Controls.Add(this.lb_Voice);
+            this.gb_Languages.Controls.Add(this.cb_Voice);
+            this.gb_Languages.Controls.Add(this.lb_Text);
+            this.gb_Languages.Controls.Add(this.cb_Text);
+            this.gb_Languages.Location = new System.Drawing.Point(157, 47);
+            this.gb_Languages.Name = "gb_Languages";
+            this.gb_Languages.Size = new System.Drawing.Size(152, 52);
+            this.gb_Languages.TabIndex = 115;
+            this.gb_Languages.TabStop = false;
+            this.gb_Languages.Text = "Languages";
+            // 
+            // cb_Text
+            // 
+            this.cb_Text.FormattingEnabled = true;
+            this.cb_Text.Items.AddRange(new object[] {
+            "Japanese",
+            "English",
+            "French",
+            "Spanish",
+            "German"});
+            this.cb_Text.Location = new System.Drawing.Point(6, 27);
+            this.cb_Text.Name = "cb_Text";
+            this.cb_Text.Size = new System.Drawing.Size(69, 21);
+            this.cb_Text.TabIndex = 0;
+            this.cb_Text.SelectedIndexChanged += new System.EventHandler(this.Cb_Text_SelectedIndexChanged);
+            // 
+            // lb_Text
+            // 
+            this.lb_Text.AutoSize = true;
+            this.lb_Text.Location = new System.Drawing.Point(6, 14);
+            this.lb_Text.Name = "lb_Text";
+            this.lb_Text.Size = new System.Drawing.Size(28, 13);
+            this.lb_Text.TabIndex = 1;
+            this.lb_Text.Text = "Text";
+            // 
+            // cb_Voice
+            // 
+            this.cb_Voice.FormattingEnabled = true;
+            this.cb_Voice.Items.AddRange(new object[] {
+            "Japanese",
+            "English"});
+            this.cb_Voice.Location = new System.Drawing.Point(78, 27);
+            this.cb_Voice.Name = "cb_Voice";
+            this.cb_Voice.Size = new System.Drawing.Size(69, 21);
+            this.cb_Voice.TabIndex = 2;
+            this.cb_Voice.SelectedIndexChanged += new System.EventHandler(this.Cb_Voice_SelectedIndexChanged);
+            // 
+            // lb_Voice
+            // 
+            this.lb_Voice.AutoSize = true;
+            this.lb_Voice.Location = new System.Drawing.Point(74, 14);
+            this.lb_Voice.Name = "lb_Voice";
+            this.lb_Voice.Size = new System.Drawing.Size(34, 13);
+            this.lb_Voice.TabIndex = 3;
+            this.lb_Voice.Text = "Voice";
             // 
             // uc_Main
             // 
@@ -1029,6 +1122,10 @@
             this.gb_TotalRings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nud_TotalRings)).EndInit();
             this.tp_Emblems.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nud_GCFileNumber)).EndInit();
+            this.gb_GCFileNo.ResumeLayout(false);
+            this.gb_Languages.ResumeLayout(false);
+            this.gb_Languages.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1108,5 +1205,12 @@
         private System.Windows.Forms.NumericUpDown nud_EmblemHour;
         private System.Windows.Forms.NumericUpDown nud_EmblemMinute;
         private System.Windows.Forms.NumericUpDown nud_EmblemSecond;
+        private System.Windows.Forms.GroupBox gb_GCFileNo;
+        private System.Windows.Forms.NumericUpDown nud_GCFileNumber;
+        private System.Windows.Forms.GroupBox gb_Languages;
+        private System.Windows.Forms.Label lb_Voice;
+        private System.Windows.Forms.ComboBox cb_Voice;
+        private System.Windows.Forms.Label lb_Text;
+        private System.Windows.Forms.ComboBox cb_Text;
     }
 }

@@ -12,6 +12,8 @@ namespace SA2SaveUtility
 
         public uint mainIndex = 0;
 
+        public int gcFileNo = 0;
+
         public uc_Main()
         {
             InitializeComponent();
@@ -375,6 +377,21 @@ namespace SA2SaveUtility
             time += (int)(nud_EmblemSecond.Value * 60);
 
             Main.WriteBytes((int)offsets.main.EmblemResultsTime, BitConverter.GetBytes(time), mainIndex, 4);
+        }
+
+        private void Nud_GCFileNumber_ValueChanged(object sender, EventArgs e)
+        {
+            gcFileNo = (int)nud_GCFileNumber.Value;
+        }
+
+        private void Cb_Text_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Main.WriteByte((int)offsets.main.TextLanguage, cb_Text.SelectedIndex, mainIndex);
+        }
+
+        private void Cb_Voice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Main.WriteByte((int)offsets.main.VoiceLanguage, cb_Voice.SelectedIndex, mainIndex);
         }
     }
 }

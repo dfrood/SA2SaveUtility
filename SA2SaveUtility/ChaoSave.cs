@@ -559,7 +559,8 @@ namespace SA2SaveUtility
         public static void GetChao()
         {
             uint chaoIndex = 0;
-            foreach (byte[] chao in Main.SplitByteArray(Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
+            List<byte[]> chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800);
+            foreach (byte[] chao in chaoArray)
             {
                 byte[] nameBytes = chao.Skip(Convert.ToInt32(offsets.chao.Name)).Take(7).ToArray();
                 if (chao[offsets.chao.Garden] != 0 && chao[offsets.chao.Garden] != 255)
@@ -586,7 +587,6 @@ namespace SA2SaveUtility
                         KeyValuePair<uint, TabPage> currentChao = activeChao.Where(x => x.Key == chaoIndex).First();
                         Main.tc_Main.TabPages.Remove(currentChao.Value);
                         activeChao.Remove(currentChao.Key);
-
                     }
                 }
                 chaoIndex++;

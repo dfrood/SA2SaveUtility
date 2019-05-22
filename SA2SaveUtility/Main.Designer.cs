@@ -34,9 +34,10 @@
             this.tsmi_Open = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAsPC = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_saveAsConsole = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_saveAsConsoleNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_saveAsConsoleAppend = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAsGC = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAs360PS3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAs360PS3New = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAs360PS3Append = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Chao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_LoadChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_SaveCurrentChao = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,7 +73,7 @@
             // tsmi_Open
             // 
             this.tsmi_Open.Name = "tsmi_Open";
-            this.tsmi_Open.Size = new System.Drawing.Size(100, 22);
+            this.tsmi_Open.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Open.Text = "Load";
             this.tsmi_Open.Click += new System.EventHandler(this.Tsmi_Open_Click);
             // 
@@ -80,44 +81,52 @@
             // 
             this.tsmi_Save.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_saveAsPC,
-            this.tsmi_saveAsConsole});
+            this.tsmi_saveAsGC,
+            this.tsmi_saveAs360PS3});
             this.tsmi_Save.Enabled = false;
             this.tsmi_Save.Name = "tsmi_Save";
-            this.tsmi_Save.Size = new System.Drawing.Size(100, 22);
+            this.tsmi_Save.Size = new System.Drawing.Size(180, 22);
             this.tsmi_Save.Text = "Save";
             // 
             // tsmi_saveAsPC
             // 
             this.tsmi_saveAsPC.Name = "tsmi_saveAsPC";
-            this.tsmi_saveAsPC.Size = new System.Drawing.Size(158, 22);
+            this.tsmi_saveAsPC.Size = new System.Drawing.Size(180, 22);
             this.tsmi_saveAsPC.Text = "as PC Save";
             this.tsmi_saveAsPC.Click += new System.EventHandler(this.Tsmi_saveAsPC_Click);
             // 
-            // tsmi_saveAsConsole
+            // tsmi_saveAsGC
             // 
-            this.tsmi_saveAsConsole.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmi_saveAsConsoleNew,
-            this.tsmi_saveAsConsoleAppend});
-            this.tsmi_saveAsConsole.Name = "tsmi_saveAsConsole";
-            this.tsmi_saveAsConsole.Size = new System.Drawing.Size(158, 22);
-            this.tsmi_saveAsConsole.Text = "as Console Save";
-            this.tsmi_saveAsConsole.Click += new System.EventHandler(this.Tsmi_saveAsConsole_Click);
+            this.tsmi_saveAsGC.Name = "tsmi_saveAsGC";
+            this.tsmi_saveAsGC.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAsGC.Text = "as Gamecube Save";
+            this.tsmi_saveAsGC.Click += new System.EventHandler(this.Tsmi_saveAsGC_Click);
             // 
-            // tsmi_saveAsConsoleNew
+            // tsmi_saveAs360PS3
             // 
-            this.tsmi_saveAsConsoleNew.Name = "tsmi_saveAsConsoleNew";
-            this.tsmi_saveAsConsoleNew.Size = new System.Drawing.Size(266, 22);
-            this.tsmi_saveAsConsoleNew.Text = "Save to New Save";
-            this.tsmi_saveAsConsoleNew.Visible = false;
-            this.tsmi_saveAsConsoleNew.Click += new System.EventHandler(this.Tsmi_saveAsConsoleNew_Click);
+            this.tsmi_saveAs360PS3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_saveAs360PS3New,
+            this.tsmi_saveAs360PS3Append});
+            this.tsmi_saveAs360PS3.Name = "tsmi_saveAs360PS3";
+            this.tsmi_saveAs360PS3.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAs360PS3.Text = "as 360/PS3 Save";
+            this.tsmi_saveAs360PS3.Click += new System.EventHandler(this.Tsmi_saveAs360PS3_Click);
             // 
-            // tsmi_saveAsConsoleAppend
+            // tsmi_saveAs360PS3New
             // 
-            this.tsmi_saveAsConsoleAppend.Name = "tsmi_saveAsConsoleAppend";
-            this.tsmi_saveAsConsoleAppend.Size = new System.Drawing.Size(266, 22);
-            this.tsmi_saveAsConsoleAppend.Text = "Append Current Slot to Existing Save";
-            this.tsmi_saveAsConsoleAppend.Visible = false;
-            this.tsmi_saveAsConsoleAppend.Click += new System.EventHandler(this.Tsmi_saveAsConsoleAppend_Click);
+            this.tsmi_saveAs360PS3New.Name = "tsmi_saveAs360PS3New";
+            this.tsmi_saveAs360PS3New.Size = new System.Drawing.Size(266, 22);
+            this.tsmi_saveAs360PS3New.Text = "Save to New Save";
+            this.tsmi_saveAs360PS3New.Visible = false;
+            this.tsmi_saveAs360PS3New.Click += new System.EventHandler(this.Tsmi_saveAs360PS3New_Click);
+            // 
+            // tsmi_saveAs360PS3Append
+            // 
+            this.tsmi_saveAs360PS3Append.Name = "tsmi_saveAs360PS3Append";
+            this.tsmi_saveAs360PS3Append.Size = new System.Drawing.Size(266, 22);
+            this.tsmi_saveAs360PS3Append.Text = "Append Current Slot to Existing Save";
+            this.tsmi_saveAs360PS3Append.Visible = false;
+            this.tsmi_saveAs360PS3Append.Click += new System.EventHandler(this.Tsmi_saveAs360PS3Append_Click);
             // 
             // tsmi_Chao
             // 
@@ -192,7 +201,6 @@
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "Sonic Adventure 2 - Save Utility";
-            this.Load += new System.EventHandler(this.Main_Load);
             this.ms_Main.ResumeLayout(false);
             this.ms_Main.PerformLayout();
             this.ResumeLayout(false);
@@ -211,12 +219,13 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_SaveCurrentChao;
         private System.Windows.Forms.ToolStripMenuItem tsmi_DupeChao;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPC;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsConsole;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3;
         private System.Windows.Forms.ToolStripMenuItem tsmi_About;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsConsoleNew;
-        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsConsoleAppend;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3New;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3Append;
         private System.Windows.Forms.Label lb_UpdateAvailable;
         public static System.Windows.Forms.TabControl tc_Main;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsGC;
     }
 }
 
