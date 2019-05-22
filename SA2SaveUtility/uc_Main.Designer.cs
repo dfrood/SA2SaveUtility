@@ -30,6 +30,22 @@
         {
             this.tc_Main = new System.Windows.Forms.TabControl();
             this.tp_Main = new System.Windows.Forms.TabPage();
+            this.gb_EmblemTime = new System.Windows.Forms.GroupBox();
+            this.nud_EmblemHour = new System.Windows.Forms.NumericUpDown();
+            this.nud_EmblemMinute = new System.Windows.Forms.NumericUpDown();
+            this.nud_EmblemSecond = new System.Windows.Forms.NumericUpDown();
+            this.gb_PlayTime = new System.Windows.Forms.GroupBox();
+            this.nud_PlayHour = new System.Windows.Forms.NumericUpDown();
+            this.nud_PlayMinute = new System.Windows.Forms.NumericUpDown();
+            this.nud_PlaySecond = new System.Windows.Forms.NumericUpDown();
+            this.gb_UnlockedKarts = new System.Windows.Forms.GroupBox();
+            this.checkb_KartRouge = new System.Windows.Forms.CheckBox();
+            this.checkb_KartEggman = new System.Windows.Forms.CheckBox();
+            this.checkb_KartShadow = new System.Windows.Forms.CheckBox();
+            this.checkb_KartKnuckles = new System.Windows.Forms.CheckBox();
+            this.checkb_KartTails = new System.Windows.Forms.CheckBox();
+            this.checkb_KartSonic = new System.Windows.Forms.CheckBox();
+            this.checkb_GreenHill = new System.Windows.Forms.CheckBox();
             this.gb_Lives = new System.Windows.Forms.GroupBox();
             this.nud_Lives = new System.Windows.Forms.NumericUpDown();
             this.gb_Upgrades = new System.Windows.Forms.GroupBox();
@@ -85,24 +101,17 @@
             this.nud_TotalRings = new System.Windows.Forms.NumericUpDown();
             this.tp_Emblems = new System.Windows.Forms.TabPage();
             this.tc_Missions = new System.Windows.Forms.TabControl();
-            this.checkb_GreenHill = new System.Windows.Forms.CheckBox();
-            this.gb_UnlockedKarts = new System.Windows.Forms.GroupBox();
-            this.checkb_KartRouge = new System.Windows.Forms.CheckBox();
-            this.checkb_KartEggman = new System.Windows.Forms.CheckBox();
-            this.checkb_KartShadow = new System.Windows.Forms.CheckBox();
-            this.checkb_KartKnuckles = new System.Windows.Forms.CheckBox();
-            this.checkb_KartTails = new System.Windows.Forms.CheckBox();
-            this.checkb_KartSonic = new System.Windows.Forms.CheckBox();
-            this.gb_PlayTime = new System.Windows.Forms.GroupBox();
-            this.nud_PlayHour = new System.Windows.Forms.NumericUpDown();
-            this.nud_PlayMinute = new System.Windows.Forms.NumericUpDown();
-            this.nud_PlaySecond = new System.Windows.Forms.NumericUpDown();
-            this.gb_EmblemTime = new System.Windows.Forms.GroupBox();
-            this.nud_EmblemHour = new System.Windows.Forms.NumericUpDown();
-            this.nud_EmblemMinute = new System.Windows.Forms.NumericUpDown();
-            this.nud_EmblemSecond = new System.Windows.Forms.NumericUpDown();
             this.tc_Main.SuspendLayout();
             this.tp_Main.SuspendLayout();
+            this.gb_EmblemTime.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemHour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemMinute)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemSecond)).BeginInit();
+            this.gb_PlayTime.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayHour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayMinute)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_PlaySecond)).BeginInit();
+            this.gb_UnlockedKarts.SuspendLayout();
             this.gb_Lives.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_Lives)).BeginInit();
             this.gb_Upgrades.SuspendLayout();
@@ -118,15 +127,6 @@
             this.gb_TotalRings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_TotalRings)).BeginInit();
             this.tp_Emblems.SuspendLayout();
-            this.gb_UnlockedKarts.SuspendLayout();
-            this.gb_PlayTime.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayHour)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayMinute)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_PlaySecond)).BeginInit();
-            this.gb_EmblemTime.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemHour)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemMinute)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemSecond)).BeginInit();
             this.SuspendLayout();
             // 
             // tc_Main
@@ -158,6 +158,200 @@
             this.tp_Main.Size = new System.Drawing.Size(560, 190);
             this.tp_Main.TabIndex = 0;
             this.tp_Main.Text = "Main";
+            // 
+            // gb_EmblemTime
+            // 
+            this.gb_EmblemTime.Controls.Add(this.nud_EmblemHour);
+            this.gb_EmblemTime.Controls.Add(this.nud_EmblemMinute);
+            this.gb_EmblemTime.Controls.Add(this.nud_EmblemSecond);
+            this.gb_EmblemTime.Location = new System.Drawing.Point(319, 7);
+            this.gb_EmblemTime.Name = "gb_EmblemTime";
+            this.gb_EmblemTime.Size = new System.Drawing.Size(137, 38);
+            this.gb_EmblemTime.TabIndex = 112;
+            this.gb_EmblemTime.TabStop = false;
+            this.gb_EmblemTime.Text = "Emblem Time (hh:mm:ss)";
+            // 
+            // nud_EmblemHour
+            // 
+            this.nud_EmblemHour.Location = new System.Drawing.Point(4, 14);
+            this.nud_EmblemHour.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nud_EmblemHour.Name = "nud_EmblemHour";
+            this.nud_EmblemHour.Size = new System.Drawing.Size(46, 20);
+            this.nud_EmblemHour.TabIndex = 109;
+            this.nud_EmblemHour.ValueChanged += new System.EventHandler(this.Nud_EmblemHour_ValueChanged);
+            // 
+            // nud_EmblemMinute
+            // 
+            this.nud_EmblemMinute.Location = new System.Drawing.Point(55, 14);
+            this.nud_EmblemMinute.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.nud_EmblemMinute.Name = "nud_EmblemMinute";
+            this.nud_EmblemMinute.Size = new System.Drawing.Size(36, 20);
+            this.nud_EmblemMinute.TabIndex = 110;
+            this.nud_EmblemMinute.ValueChanged += new System.EventHandler(this.Nud_EmblemMinute_ValueChanged);
+            // 
+            // nud_EmblemSecond
+            // 
+            this.nud_EmblemSecond.Location = new System.Drawing.Point(96, 14);
+            this.nud_EmblemSecond.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.nud_EmblemSecond.Name = "nud_EmblemSecond";
+            this.nud_EmblemSecond.Size = new System.Drawing.Size(36, 20);
+            this.nud_EmblemSecond.TabIndex = 111;
+            this.nud_EmblemSecond.ValueChanged += new System.EventHandler(this.Nud_EmblemSecond_ValueChanged);
+            // 
+            // gb_PlayTime
+            // 
+            this.gb_PlayTime.Controls.Add(this.nud_PlayHour);
+            this.gb_PlayTime.Controls.Add(this.nud_PlayMinute);
+            this.gb_PlayTime.Controls.Add(this.nud_PlaySecond);
+            this.gb_PlayTime.Location = new System.Drawing.Point(176, 6);
+            this.gb_PlayTime.Name = "gb_PlayTime";
+            this.gb_PlayTime.Size = new System.Drawing.Size(137, 38);
+            this.gb_PlayTime.TabIndex = 55;
+            this.gb_PlayTime.TabStop = false;
+            this.gb_PlayTime.Text = "Play Time (hh:mm:ss)";
+            // 
+            // nud_PlayHour
+            // 
+            this.nud_PlayHour.Location = new System.Drawing.Point(4, 14);
+            this.nud_PlayHour.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nud_PlayHour.Name = "nud_PlayHour";
+            this.nud_PlayHour.Size = new System.Drawing.Size(46, 20);
+            this.nud_PlayHour.TabIndex = 109;
+            this.nud_PlayHour.ValueChanged += new System.EventHandler(this.Nud_PlayHour_ValueChanged);
+            // 
+            // nud_PlayMinute
+            // 
+            this.nud_PlayMinute.Location = new System.Drawing.Point(55, 14);
+            this.nud_PlayMinute.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.nud_PlayMinute.Name = "nud_PlayMinute";
+            this.nud_PlayMinute.Size = new System.Drawing.Size(36, 20);
+            this.nud_PlayMinute.TabIndex = 110;
+            this.nud_PlayMinute.ValueChanged += new System.EventHandler(this.Nud_PlayMinute_ValueChanged);
+            // 
+            // nud_PlaySecond
+            // 
+            this.nud_PlaySecond.Location = new System.Drawing.Point(96, 14);
+            this.nud_PlaySecond.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.nud_PlaySecond.Name = "nud_PlaySecond";
+            this.nud_PlaySecond.Size = new System.Drawing.Size(36, 20);
+            this.nud_PlaySecond.TabIndex = 111;
+            this.nud_PlaySecond.ValueChanged += new System.EventHandler(this.Nud_PlaySecond_ValueChanged);
+            // 
+            // gb_UnlockedKarts
+            // 
+            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartRouge);
+            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartEggman);
+            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartShadow);
+            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartKnuckles);
+            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartTails);
+            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartSonic);
+            this.gb_UnlockedKarts.Location = new System.Drawing.Point(157, 105);
+            this.gb_UnlockedKarts.Name = "gb_UnlockedKarts";
+            this.gb_UnlockedKarts.Size = new System.Drawing.Size(145, 71);
+            this.gb_UnlockedKarts.TabIndex = 54;
+            this.gb_UnlockedKarts.TabStop = false;
+            this.gb_UnlockedKarts.Text = "Unlocked Alt Karts";
+            // 
+            // checkb_KartRouge
+            // 
+            this.checkb_KartRouge.AutoSize = true;
+            this.checkb_KartRouge.Location = new System.Drawing.Point(77, 49);
+            this.checkb_KartRouge.Name = "checkb_KartRouge";
+            this.checkb_KartRouge.Size = new System.Drawing.Size(58, 17);
+            this.checkb_KartRouge.TabIndex = 11;
+            this.checkb_KartRouge.Text = "Rouge";
+            this.checkb_KartRouge.UseVisualStyleBackColor = true;
+            this.checkb_KartRouge.CheckedChanged += new System.EventHandler(this.Checkb_KartRouge_CheckedChanged);
+            // 
+            // checkb_KartEggman
+            // 
+            this.checkb_KartEggman.AutoSize = true;
+            this.checkb_KartEggman.Location = new System.Drawing.Point(77, 34);
+            this.checkb_KartEggman.Name = "checkb_KartEggman";
+            this.checkb_KartEggman.Size = new System.Drawing.Size(65, 17);
+            this.checkb_KartEggman.TabIndex = 10;
+            this.checkb_KartEggman.Text = "Eggman";
+            this.checkb_KartEggman.UseVisualStyleBackColor = true;
+            this.checkb_KartEggman.CheckedChanged += new System.EventHandler(this.Checkb_KartEggman_CheckedChanged);
+            // 
+            // checkb_KartShadow
+            // 
+            this.checkb_KartShadow.AutoSize = true;
+            this.checkb_KartShadow.Location = new System.Drawing.Point(77, 19);
+            this.checkb_KartShadow.Name = "checkb_KartShadow";
+            this.checkb_KartShadow.Size = new System.Drawing.Size(65, 17);
+            this.checkb_KartShadow.TabIndex = 9;
+            this.checkb_KartShadow.Text = "Shadow";
+            this.checkb_KartShadow.UseVisualStyleBackColor = true;
+            this.checkb_KartShadow.CheckedChanged += new System.EventHandler(this.Checkb_KartShadow_CheckedChanged);
+            // 
+            // checkb_KartKnuckles
+            // 
+            this.checkb_KartKnuckles.AutoSize = true;
+            this.checkb_KartKnuckles.Location = new System.Drawing.Point(6, 50);
+            this.checkb_KartKnuckles.Name = "checkb_KartKnuckles";
+            this.checkb_KartKnuckles.Size = new System.Drawing.Size(70, 17);
+            this.checkb_KartKnuckles.TabIndex = 8;
+            this.checkb_KartKnuckles.Text = "Knuckles";
+            this.checkb_KartKnuckles.UseVisualStyleBackColor = true;
+            this.checkb_KartKnuckles.CheckedChanged += new System.EventHandler(this.Checkb_KartKnuckles_CheckedChanged);
+            // 
+            // checkb_KartTails
+            // 
+            this.checkb_KartTails.AutoSize = true;
+            this.checkb_KartTails.Location = new System.Drawing.Point(6, 35);
+            this.checkb_KartTails.Name = "checkb_KartTails";
+            this.checkb_KartTails.Size = new System.Drawing.Size(48, 17);
+            this.checkb_KartTails.TabIndex = 7;
+            this.checkb_KartTails.Text = "Tails";
+            this.checkb_KartTails.UseVisualStyleBackColor = true;
+            this.checkb_KartTails.CheckedChanged += new System.EventHandler(this.Checkb_KartTails_CheckedChanged);
+            // 
+            // checkb_KartSonic
+            // 
+            this.checkb_KartSonic.AutoSize = true;
+            this.checkb_KartSonic.Location = new System.Drawing.Point(6, 20);
+            this.checkb_KartSonic.Name = "checkb_KartSonic";
+            this.checkb_KartSonic.Size = new System.Drawing.Size(53, 17);
+            this.checkb_KartSonic.TabIndex = 6;
+            this.checkb_KartSonic.Text = "Sonic";
+            this.checkb_KartSonic.UseVisualStyleBackColor = true;
+            this.checkb_KartSonic.CheckedChanged += new System.EventHandler(this.Checkb_KartSonic_CheckedChanged);
+            // 
+            // checkb_GreenHill
+            // 
+            this.checkb_GreenHill.AutoSize = true;
+            this.checkb_GreenHill.Location = new System.Drawing.Point(433, 51);
+            this.checkb_GreenHill.Name = "checkb_GreenHill";
+            this.checkb_GreenHill.Size = new System.Drawing.Size(121, 17);
+            this.checkb_GreenHill.TabIndex = 53;
+            this.checkb_GreenHill.Text = "Green Hill Unlocked";
+            this.checkb_GreenHill.UseVisualStyleBackColor = true;
+            this.checkb_GreenHill.CheckedChanged += new System.EventHandler(this.Checkb_GreenHill_CheckedChanged);
             // 
             // gb_Lives
             // 
@@ -792,197 +986,6 @@
             this.tc_Missions.Size = new System.Drawing.Size(566, 198);
             this.tc_Missions.TabIndex = 0;
             // 
-            // checkb_GreenHill
-            // 
-            this.checkb_GreenHill.AutoSize = true;
-            this.checkb_GreenHill.Location = new System.Drawing.Point(433, 51);
-            this.checkb_GreenHill.Name = "checkb_GreenHill";
-            this.checkb_GreenHill.Size = new System.Drawing.Size(121, 17);
-            this.checkb_GreenHill.TabIndex = 53;
-            this.checkb_GreenHill.Text = "Green Hill Unlocked";
-            this.checkb_GreenHill.UseVisualStyleBackColor = true;
-            this.checkb_GreenHill.CheckedChanged += new System.EventHandler(this.Checkb_GreenHill_CheckedChanged);
-            // 
-            // gb_UnlockedKarts
-            // 
-            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartRouge);
-            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartEggman);
-            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartShadow);
-            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartKnuckles);
-            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartTails);
-            this.gb_UnlockedKarts.Controls.Add(this.checkb_KartSonic);
-            this.gb_UnlockedKarts.Location = new System.Drawing.Point(157, 105);
-            this.gb_UnlockedKarts.Name = "gb_UnlockedKarts";
-            this.gb_UnlockedKarts.Size = new System.Drawing.Size(145, 71);
-            this.gb_UnlockedKarts.TabIndex = 54;
-            this.gb_UnlockedKarts.TabStop = false;
-            this.gb_UnlockedKarts.Text = "Unlocked Alt Karts";
-            // 
-            // checkb_KartRouge
-            // 
-            this.checkb_KartRouge.AutoSize = true;
-            this.checkb_KartRouge.Location = new System.Drawing.Point(77, 49);
-            this.checkb_KartRouge.Name = "checkb_KartRouge";
-            this.checkb_KartRouge.Size = new System.Drawing.Size(58, 17);
-            this.checkb_KartRouge.TabIndex = 11;
-            this.checkb_KartRouge.Text = "Rouge";
-            this.checkb_KartRouge.UseVisualStyleBackColor = true;
-            this.checkb_KartRouge.CheckedChanged += new System.EventHandler(this.Checkb_KartRouge_CheckedChanged);
-            // 
-            // checkb_KartEggman
-            // 
-            this.checkb_KartEggman.AutoSize = true;
-            this.checkb_KartEggman.Location = new System.Drawing.Point(77, 34);
-            this.checkb_KartEggman.Name = "checkb_KartEggman";
-            this.checkb_KartEggman.Size = new System.Drawing.Size(65, 17);
-            this.checkb_KartEggman.TabIndex = 10;
-            this.checkb_KartEggman.Text = "Eggman";
-            this.checkb_KartEggman.UseVisualStyleBackColor = true;
-            this.checkb_KartEggman.CheckedChanged += new System.EventHandler(this.Checkb_KartEggman_CheckedChanged);
-            // 
-            // checkb_KartShadow
-            // 
-            this.checkb_KartShadow.AutoSize = true;
-            this.checkb_KartShadow.Location = new System.Drawing.Point(77, 19);
-            this.checkb_KartShadow.Name = "checkb_KartShadow";
-            this.checkb_KartShadow.Size = new System.Drawing.Size(65, 17);
-            this.checkb_KartShadow.TabIndex = 9;
-            this.checkb_KartShadow.Text = "Shadow";
-            this.checkb_KartShadow.UseVisualStyleBackColor = true;
-            this.checkb_KartShadow.CheckedChanged += new System.EventHandler(this.Checkb_KartShadow_CheckedChanged);
-            // 
-            // checkb_KartKnuckles
-            // 
-            this.checkb_KartKnuckles.AutoSize = true;
-            this.checkb_KartKnuckles.Location = new System.Drawing.Point(6, 50);
-            this.checkb_KartKnuckles.Name = "checkb_KartKnuckles";
-            this.checkb_KartKnuckles.Size = new System.Drawing.Size(70, 17);
-            this.checkb_KartKnuckles.TabIndex = 8;
-            this.checkb_KartKnuckles.Text = "Knuckles";
-            this.checkb_KartKnuckles.UseVisualStyleBackColor = true;
-            this.checkb_KartKnuckles.CheckedChanged += new System.EventHandler(this.Checkb_KartKnuckles_CheckedChanged);
-            // 
-            // checkb_KartTails
-            // 
-            this.checkb_KartTails.AutoSize = true;
-            this.checkb_KartTails.Location = new System.Drawing.Point(6, 35);
-            this.checkb_KartTails.Name = "checkb_KartTails";
-            this.checkb_KartTails.Size = new System.Drawing.Size(48, 17);
-            this.checkb_KartTails.TabIndex = 7;
-            this.checkb_KartTails.Text = "Tails";
-            this.checkb_KartTails.UseVisualStyleBackColor = true;
-            this.checkb_KartTails.CheckedChanged += new System.EventHandler(this.Checkb_KartTails_CheckedChanged);
-            // 
-            // checkb_KartSonic
-            // 
-            this.checkb_KartSonic.AutoSize = true;
-            this.checkb_KartSonic.Location = new System.Drawing.Point(6, 20);
-            this.checkb_KartSonic.Name = "checkb_KartSonic";
-            this.checkb_KartSonic.Size = new System.Drawing.Size(53, 17);
-            this.checkb_KartSonic.TabIndex = 6;
-            this.checkb_KartSonic.Text = "Sonic";
-            this.checkb_KartSonic.UseVisualStyleBackColor = true;
-            this.checkb_KartSonic.CheckedChanged += new System.EventHandler(this.Checkb_KartSonic_CheckedChanged);
-            // 
-            // gb_PlayTime
-            // 
-            this.gb_PlayTime.Controls.Add(this.nud_PlayHour);
-            this.gb_PlayTime.Controls.Add(this.nud_PlayMinute);
-            this.gb_PlayTime.Controls.Add(this.nud_PlaySecond);
-            this.gb_PlayTime.Location = new System.Drawing.Point(176, 6);
-            this.gb_PlayTime.Name = "gb_PlayTime";
-            this.gb_PlayTime.Size = new System.Drawing.Size(137, 38);
-            this.gb_PlayTime.TabIndex = 55;
-            this.gb_PlayTime.TabStop = false;
-            this.gb_PlayTime.Text = "Play Time (hh:mm:ss)";
-            // 
-            // nud_PlayHour
-            // 
-            this.nud_PlayHour.Location = new System.Drawing.Point(4, 14);
-            this.nud_PlayHour.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nud_PlayHour.Name = "nud_PlayHour";
-            this.nud_PlayHour.Size = new System.Drawing.Size(46, 20);
-            this.nud_PlayHour.TabIndex = 109;
-            this.nud_PlayHour.ValueChanged += new System.EventHandler(this.Nud_PlayHour_ValueChanged);
-            // 
-            // nud_PlayMinute
-            // 
-            this.nud_PlayMinute.Location = new System.Drawing.Point(55, 14);
-            this.nud_PlayMinute.Maximum = new decimal(new int[] {
-            59,
-            0,
-            0,
-            0});
-            this.nud_PlayMinute.Name = "nud_PlayMinute";
-            this.nud_PlayMinute.Size = new System.Drawing.Size(36, 20);
-            this.nud_PlayMinute.TabIndex = 110;
-            this.nud_PlayMinute.ValueChanged += new System.EventHandler(this.Nud_PlayMinute_ValueChanged);
-            // 
-            // nud_PlaySecond
-            // 
-            this.nud_PlaySecond.Location = new System.Drawing.Point(96, 14);
-            this.nud_PlaySecond.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-            this.nud_PlaySecond.Name = "nud_PlaySecond";
-            this.nud_PlaySecond.Size = new System.Drawing.Size(36, 20);
-            this.nud_PlaySecond.TabIndex = 111;
-            this.nud_PlaySecond.ValueChanged += new System.EventHandler(this.Nud_PlaySecond_ValueChanged);
-            // 
-            // gb_EmblemTime
-            // 
-            this.gb_EmblemTime.Controls.Add(this.nud_EmblemHour);
-            this.gb_EmblemTime.Controls.Add(this.nud_EmblemMinute);
-            this.gb_EmblemTime.Controls.Add(this.nud_EmblemSecond);
-            this.gb_EmblemTime.Location = new System.Drawing.Point(319, 7);
-            this.gb_EmblemTime.Name = "gb_EmblemTime";
-            this.gb_EmblemTime.Size = new System.Drawing.Size(137, 38);
-            this.gb_EmblemTime.TabIndex = 112;
-            this.gb_EmblemTime.TabStop = false;
-            this.gb_EmblemTime.Text = "Emblem Time (hh:mm:ss)";
-            // 
-            // nud_EmblemHour
-            // 
-            this.nud_EmblemHour.Location = new System.Drawing.Point(4, 14);
-            this.nud_EmblemHour.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nud_EmblemHour.Name = "nud_EmblemHour";
-            this.nud_EmblemHour.Size = new System.Drawing.Size(46, 20);
-            this.nud_EmblemHour.TabIndex = 109;
-            // 
-            // nud_EmblemMinute
-            // 
-            this.nud_EmblemMinute.Location = new System.Drawing.Point(55, 14);
-            this.nud_EmblemMinute.Maximum = new decimal(new int[] {
-            59,
-            0,
-            0,
-            0});
-            this.nud_EmblemMinute.Name = "nud_EmblemMinute";
-            this.nud_EmblemMinute.Size = new System.Drawing.Size(36, 20);
-            this.nud_EmblemMinute.TabIndex = 110;
-            // 
-            // nud_EmblemSecond
-            // 
-            this.nud_EmblemSecond.Location = new System.Drawing.Point(96, 14);
-            this.nud_EmblemSecond.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-            this.nud_EmblemSecond.Name = "nud_EmblemSecond";
-            this.nud_EmblemSecond.Size = new System.Drawing.Size(36, 20);
-            this.nud_EmblemSecond.TabIndex = 111;
-            // 
             // uc_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -993,6 +996,16 @@
             this.tc_Main.ResumeLayout(false);
             this.tp_Main.ResumeLayout(false);
             this.tp_Main.PerformLayout();
+            this.gb_EmblemTime.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemHour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemMinute)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemSecond)).EndInit();
+            this.gb_PlayTime.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayHour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayMinute)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_PlaySecond)).EndInit();
+            this.gb_UnlockedKarts.ResumeLayout(false);
+            this.gb_UnlockedKarts.PerformLayout();
             this.gb_Lives.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nud_Lives)).EndInit();
             this.gb_Upgrades.ResumeLayout(false);
@@ -1016,16 +1029,6 @@
             this.gb_TotalRings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nud_TotalRings)).EndInit();
             this.tp_Emblems.ResumeLayout(false);
-            this.gb_UnlockedKarts.ResumeLayout(false);
-            this.gb_UnlockedKarts.PerformLayout();
-            this.gb_PlayTime.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayHour)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_PlayMinute)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_PlaySecond)).EndInit();
-            this.gb_EmblemTime.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemHour)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemMinute)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_EmblemSecond)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -346,5 +346,35 @@ namespace SA2SaveUtility
 
             Main.WriteBytes((int)offsets.main.PlayTime, BitConverter.GetBytes(time), mainIndex, 4);
         }
+
+        private void Nud_EmblemHour_ValueChanged(object sender, EventArgs e)
+        {
+            int time = 0;
+            time += (int)(nud_EmblemHour.Value * 216000);
+            time += (int)(nud_EmblemMinute.Value * 3600);
+            time += (int)(nud_EmblemSecond.Value * 60);
+
+            Main.WriteBytes((int)offsets.main.EmblemResultsTime, BitConverter.GetBytes(time), mainIndex, 4);
+        }
+
+        private void Nud_EmblemMinute_ValueChanged(object sender, EventArgs e)
+        {
+            int time = 0;
+            time += (int)(nud_EmblemHour.Value * 216000);
+            time += (int)(nud_EmblemMinute.Value * 3600);
+            time += (int)(nud_EmblemSecond.Value * 60);
+
+            Main.WriteBytes((int)offsets.main.EmblemResultsTime, BitConverter.GetBytes(time), mainIndex, 4);
+        }
+
+        private void Nud_EmblemSecond_ValueChanged(object sender, EventArgs e)
+        {
+            int time = 0;
+            time += (int)(nud_EmblemHour.Value * 216000);
+            time += (int)(nud_EmblemMinute.Value * 3600);
+            time += (int)(nud_EmblemSecond.Value * 60);
+
+            Main.WriteBytes((int)offsets.main.EmblemResultsTime, BitConverter.GetBytes(time), mainIndex, 4);
+        }
     }
 }
