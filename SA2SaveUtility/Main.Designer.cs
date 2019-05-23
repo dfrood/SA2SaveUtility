@@ -45,6 +45,7 @@
             this.tsmi_About = new System.Windows.Forms.ToolStripMenuItem();
             tc_Main = new System.Windows.Forms.TabControl();
             this.lb_UpdateAvailable = new System.Windows.Forms.Label();
+            this.checkb_CheckForUpdates = new System.Windows.Forms.CheckBox();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,7 +74,7 @@
             // tsmi_Open
             // 
             this.tsmi_Open.Name = "tsmi_Open";
-            this.tsmi_Open.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Open.Size = new System.Drawing.Size(100, 22);
             this.tsmi_Open.Text = "Load";
             this.tsmi_Open.Click += new System.EventHandler(this.Tsmi_Open_Click);
             // 
@@ -85,20 +86,20 @@
             this.tsmi_saveAs360PS3});
             this.tsmi_Save.Enabled = false;
             this.tsmi_Save.Name = "tsmi_Save";
-            this.tsmi_Save.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Save.Size = new System.Drawing.Size(100, 22);
             this.tsmi_Save.Text = "Save";
             // 
             // tsmi_saveAsPC
             // 
             this.tsmi_saveAsPC.Name = "tsmi_saveAsPC";
-            this.tsmi_saveAsPC.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAsPC.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAsPC.Text = "as PC Save";
             this.tsmi_saveAsPC.Click += new System.EventHandler(this.Tsmi_saveAsPC_Click);
             // 
             // tsmi_saveAsGC
             // 
             this.tsmi_saveAsGC.Name = "tsmi_saveAsGC";
-            this.tsmi_saveAsGC.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAsGC.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAsGC.Text = "as Gamecube Save";
             this.tsmi_saveAsGC.Click += new System.EventHandler(this.Tsmi_saveAsGC_Click);
             // 
@@ -108,7 +109,7 @@
             this.tsmi_saveAs360PS3New,
             this.tsmi_saveAs360PS3Append});
             this.tsmi_saveAs360PS3.Name = "tsmi_saveAs360PS3";
-            this.tsmi_saveAs360PS3.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAs360PS3.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAs360PS3.Text = "as 360/PS3 Save";
             this.tsmi_saveAs360PS3.Click += new System.EventHandler(this.Tsmi_saveAs360PS3_Click);
             // 
@@ -179,7 +180,7 @@
             // 
             this.lb_UpdateAvailable.AutoSize = true;
             this.lb_UpdateAvailable.ForeColor = System.Drawing.Color.ForestGreen;
-            this.lb_UpdateAvailable.Location = new System.Drawing.Point(443, 7);
+            this.lb_UpdateAvailable.Location = new System.Drawing.Point(322, 7);
             this.lb_UpdateAvailable.Name = "lb_UpdateAvailable";
             this.lb_UpdateAvailable.Size = new System.Drawing.Size(114, 13);
             this.lb_UpdateAvailable.TabIndex = 2;
@@ -187,11 +188,23 @@
             this.lb_UpdateAvailable.Visible = false;
             this.lb_UpdateAvailable.Click += new System.EventHandler(this.Lb_UpdateAvailable_Click);
             // 
+            // checkb_CheckForUpdates
+            // 
+            this.checkb_CheckForUpdates.AutoSize = true;
+            this.checkb_CheckForUpdates.Location = new System.Drawing.Point(442, 5);
+            this.checkb_CheckForUpdates.Name = "checkb_CheckForUpdates";
+            this.checkb_CheckForUpdates.Size = new System.Drawing.Size(115, 17);
+            this.checkb_CheckForUpdates.TabIndex = 3;
+            this.checkb_CheckForUpdates.Text = "Check for Updates";
+            this.checkb_CheckForUpdates.UseVisualStyleBackColor = true;
+            this.checkb_CheckForUpdates.CheckedChanged += new System.EventHandler(this.Checkb_CheckForUpdates_CheckedChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(569, 258);
+            this.Controls.Add(this.checkb_CheckForUpdates);
             this.Controls.Add(this.lb_UpdateAvailable);
             this.Controls.Add(tc_Main);
             this.Controls.Add(this.ms_Main);
@@ -224,8 +237,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3New;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3Append;
         private System.Windows.Forms.Label lb_UpdateAvailable;
-        public static System.Windows.Forms.TabControl tc_Main;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsGC;
+        public static System.Windows.Forms.TabControl tc_Main;
+        private System.Windows.Forms.CheckBox checkb_CheckForUpdates;
     }
 }
 

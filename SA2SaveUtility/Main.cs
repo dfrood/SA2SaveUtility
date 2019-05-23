@@ -17,8 +17,9 @@ namespace SA2SaveUtility
         public static bool saveIsPC;
         public static bool saveIsGC;
         public static bool saveIsMain;
-        public bool isLatest;
+        public bool isLatest = true;
         public string latestVersionString;
+        public bool checkForUpdates;
 
         public string loadedFile { get; set; }
         public string currentDir = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
@@ -37,8 +38,15 @@ namespace SA2SaveUtility
             InitializeComponent();
             if (!Directory.Exists(backupsDir)) { Directory.CreateDirectory(backupsDir); }
             if (!Directory.Exists(chaoDirectory)) { Directory.CreateDirectory(chaoDirectory); }
-            Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
-            updateCheckThread.Start();
+
+            checkForUpdates = Properties.Settings.Default.checkForUpdates;
+            checkb_CheckForUpdates.Checked = checkForUpdates;
+
+            if (checkForUpdates)
+            {
+                Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
+                updateCheckThread.Start();
+            }
         }
 
         public void UpdateCheck()
@@ -1111,5 +1119,16 @@ namespace SA2SaveUtility
             System.Diagnostics.Process.Start("https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString);
         }
 
+        private void Checkb_CheckForUpdates_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.checkForUpdates = checkb_CheckForUpdates.Checked;
+            Properties.Settings.Default.Save();
+            checkForUpdates = checkb_CheckForUpdates.Checked;
+            if (checkForUpdates)
+            {
+                Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
+                updateCheckThread.Start();
+            }
+        }
     }
 }
