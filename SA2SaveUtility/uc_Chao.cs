@@ -310,66 +310,74 @@ namespace SA2SaveUtility
 
         private void Cb_ArmsPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_ArmsPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_ArmsPart.SelectedIndex > 0) { flag = cb_ArmsPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2ArmsPart)] = (byte)(flag);
+            if (cb_ArmsPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_ArmsPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2ArmsPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_EarsPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_EarsPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_EarsPart.SelectedIndex > 0) { flag = cb_EarsPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2EarsPart)] = (byte)(flag);
+            if (cb_EarsPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_EarsPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2EarsPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_ForeheadPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_ForeheadPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_ForeheadPart.SelectedIndex > 0) { flag = cb_ForeheadPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2ForeheadPart)] = (byte)(flag);
+            if (cb_ForeheadPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_ForeheadPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2ForeheadPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_HornsPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_HornsPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_HornsPart.SelectedIndex > 0) { flag = cb_HornsPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2HornsPart)] = (byte)(flag);
+            if (cb_HornsPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_HornsPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2HornsPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_LegsPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_LegsPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_LegsPart.SelectedIndex > 0) { flag = cb_LegsPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2LegsPart)] = (byte)(flag);
+            if (cb_LegsPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_LegsPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2LegsPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_TailPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_TailPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_TailPart.SelectedIndex > 0) { flag = cb_TailPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2TailPart)] = (byte)(flag);
+            if (cb_TailPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_TailPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2TailPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_WingsPart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_WingsPart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_WingsPart.SelectedIndex > 0) { flag = cb_WingsPart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2WingsPart)] = (byte)(flag);
+            if (cb_WingsPart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_WingsPart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2WingsPart)] = (byte)(flag);
+            }
         }
 
         private void Cb_FacePart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int flag = 0;
-            if (cb_FacePart.SelectedIndex == 0) { flag = 0xFF; }
-            if (cb_FacePart.SelectedIndex > 0) { flag = cb_FacePart.SelectedIndex - 1; }
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2FacePart)] = (byte)(flag);
+            if (cb_FacePart.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.animalParts.Where(x => x.Key == cb_FacePart.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SA2FacePart)] = (byte)(flag);
+            }
         }
 
         private void Cb_EggColour_SelectedIndexChanged(object sender, EventArgs e)

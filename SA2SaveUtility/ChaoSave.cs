@@ -10,6 +10,31 @@ namespace SA2SaveUtility
         public static Offsets offsets = new Offsets();
         public static Dictionary<uint, TabPage> activeChao = new Dictionary<uint, TabPage>();
 
+        public static Dictionary<string, int> animalParts = new Dictionary<string, int>()
+        {
+            {  "None", 255 },
+            {  "Penguin", 0 },
+            {  "Seal", 1 },
+            {  "Otter", 2 },
+            {  "Rabbit", 3 },
+            {  "Cheetah", 4 },
+            {  "Warthog", 5 },
+            {  "Bear", 6 },
+            {  "Tiger", 7 },
+            {  "Gorilla", 8 },
+            {  "Peacock", 9 },
+            {  "Parrot", 10 },
+            {  "Condor", 11 },
+            {  "Skunk", 12 },
+            {  "Sheep", 13 },
+            {  "Raccoon", 14 },
+            {  "Half Fish", 15 },
+            {  "Skeleton Dog", 16 },
+            {  "Bat", 17 },
+            {  "Dragon", 18 },
+            {  "Unicorn", 19 },
+            {  "Phoenix", 20 }
+    };
         public enum Toys
         {
             Rattle = 0x01,
@@ -396,43 +421,35 @@ namespace SA2SaveUtility
                 if (cb.Name == "cb_Mouth" && cb.SelectedIndex != mouth) { cb.SelectedIndex = mouth; }
                 if (cb.Name == "cb_ArmsPart" && cb.SelectedIndex != armsPart)
                 {
-                    if (armsPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (armsPart != 0xFF) { cb.SelectedIndex = armsPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == armsPart).First().Key);
                 }
                 if (cb.Name == "cb_EarsPart" && cb.SelectedIndex != earsPart)
                 {
-                    if (earsPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (earsPart != 0xFF) { cb.SelectedIndex = earsPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == earsPart).First().Key);
                 }
                 if (cb.Name == "cb_ForeheadPart" && cb.SelectedIndex != foreheadPart)
                 {
-                    if (foreheadPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (foreheadPart != 0xFF) { cb.SelectedIndex = foreheadPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == foreheadPart).First().Key);
                 }
                 if (cb.Name == "cb_HornsPart" && cb.SelectedIndex != hornsPart)
                 {
-                    if (hornsPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (hornsPart != 0xFF) { cb.SelectedIndex = hornsPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == hornsPart).First().Key);
                 }
                 if (cb.Name == "cb_LegsPart" && cb.SelectedIndex != legsPart)
                 {
-                    if (legsPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (legsPart != 0xFF) { cb.SelectedIndex = legsPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == legsPart).First().Key);
                 }
                 if (cb.Name == "cb_TailPart" && cb.SelectedIndex != tailPart)
                 {
-                    if (tailPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (tailPart != 0xFF) { cb.SelectedIndex = tailPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == tailPart).First().Key);
                 }
                 if (cb.Name == "cb_WingsPart" && cb.SelectedIndex != wingsPart)
                 {
-                    if (wingsPart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (wingsPart != 0xFF) { cb.SelectedIndex = wingsPart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == wingsPart).First().Key);
                 }
                 if (cb.Name == "cb_FacePart" && cb.SelectedIndex != facePart)
                 {
-                    if (facePart == 0xFF) { cb.SelectedIndex = 0; }
-                    if (facePart != 0xFF) { cb.SelectedIndex = facePart + 1; }
+                    cb.SelectedIndex = cb.FindStringExact(animalParts.Where(x => x.Value == facePart).First().Key);
                 }
                 if (cb.Name == "cb_EggColour" && cb.SelectedIndex != eggColour) { cb.SelectedIndex = eggColour; }
             }
