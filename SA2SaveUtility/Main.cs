@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -17,15 +19,19 @@ namespace SA2SaveUtility
         public static bool saveIsPC;
         public static bool saveIsGC;
         public static bool saveIsMain;
-        public bool isLatest = true;
-        public string latestVersionString;
-        public bool checkForUpdates;
+        public static bool isLatest = true;
+        public static string latestVersionString;
+        public static string latestVersionFile;
+        public static string latestVersionDownloadURL;
+        public static bool checkForUpdates;
+        public static bool autoUpdate;
 
         public string loadedFile { get; set; }
         public string currentDir = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
         public string backupsDir = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString() + @"\backups";
+        public static string oldDir = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString() + @"\old";
         string chaoDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location) + @"\chao";
-
+        public static string configFile = Directory.GetParent(Assembly.GetExecutingAssembly().Location) + @"\config.xml";
 
         public static byte[] loadedSave;
         public static byte[] gcBytes;
@@ -36,10 +42,39 @@ namespace SA2SaveUtility
         public Main()
         {
             InitializeComponent();
+
+            //Delete Old Files From Auto Update
+            if (Directory.Exists(oldDir))
+            {
+                foreach (string file in Directory.GetFiles(oldDir))
+                {
+                    File.Delete(file);
+                }
+                Directory.Delete(oldDir);
+            }
+            //Create Directories
             if (!Directory.Exists(backupsDir)) { Directory.CreateDirectory(backupsDir); }
             if (!Directory.Exists(chaoDirectory)) { Directory.CreateDirectory(chaoDirectory); }
+            //Create Default Config
+            if (!File.Exists(configFile))
+            {
+                using (Stream stream = GetType().Assembly.GetManifestResourceStream("SA2SaveUtility.DefaultConfig.xml"))
+                {
+                    using (StreamReader streamReader = new StreamReader(stream))
+                    {
+                        XmlDocument defaultCFG = new XmlDocument();
+                        defaultCFG.LoadXml(streamReader.ReadToEnd());
+                        defaultCFG.Save(configFile);
+                    }
+                }
 
-            checkForUpdates = Properties.Settings.Default.checkForUpdates;
+            }
+
+            XDocument config = XDocument.Parse(File.ReadAllText(configFile));
+            checkForUpdates = Convert.ToBoolean(config.XPathSelectElement("Config/CheckForUpdates").Value);
+            autoUpdate = Convert.ToBoolean(config.XPathSelectElement("Config/AutoUpdate").Value);
+
+            checkb_AutoUpdate.Checked = autoUpdate;
             checkb_CheckForUpdates.Checked = checkForUpdates;
 
             if (checkForUpdates)
@@ -53,20 +88,29 @@ namespace SA2SaveUtility
         {
             try
             {
-                string xml = new WebClient().DownloadString("https://dev.froody.tech/version.xml");
+                string xml = new WebClient().DownloadString("https://dev.froody.tech/autoupdate.xml");
                 XDocument doc = XDocument.Parse(xml);
-                latestVersionString = doc.XPathSelectElement("Applications/SA2SaveUtility").Value;
+                latestVersionString = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestVersion").Value;
+                latestVersionFile = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestFile").Value;
+                latestVersionDownloadURL = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestDownload").Value; ;
                 Version latestVersion = Version.Parse(latestVersionString);
                 Version currentVersion = Version.Parse(ProductVersion);
                 if (currentVersion.CompareTo(latestVersion) < 0)
                 {
                     isLatest = false;
-                    lb_UpdateAvailable.BeginInvoke((MethodInvoker)delegate () { lb_UpdateAvailable.Visible = true; ; });
+                    btn_AutoUpdate.BeginInvoke(new MethodInvoker(() =>
+                    {
+                       btn_AutoUpdate.Visible = true;
+                    }));
+                    if (!isLatest && autoUpdate) { UpdateApplication(); }
                 }
                 else
                 {
                     isLatest = true;
-                    lb_UpdateAvailable.BeginInvoke((MethodInvoker)delegate () { lb_UpdateAvailable.Visible = false; ; });
+                    btn_AutoUpdate.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        btn_AutoUpdate.Visible = false;
+                    }));
                 }
 
             }
@@ -74,6 +118,13 @@ namespace SA2SaveUtility
             {
                 Console.WriteLine(ex);
             }
+        }
+        public bool ControlInvokeRequired(Control c, Action a)
+        {
+            if (c.InvokeRequired) c.Invoke(new MethodInvoker(delegate { a(); }));
+            else return false;
+
+            return true;
         }
 
         public static void WriteByte(int offset, int value, uint mainIndex)
@@ -217,6 +268,7 @@ namespace SA2SaveUtility
         private void SaveIsChao()
         {
             saveIsMain = false;
+            ChaoSave.GetChaoWorld();
             ChaoSave.GetChao();
             tsmi_SaveCurrentChao.Enabled = true;
             tsmi_Chao.Enabled = true;
@@ -928,7 +980,7 @@ namespace SA2SaveUtility
         private void Tsmi_About_Click(object sender, EventArgs e)
         {
             if (isLatest) { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
-            else { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+            else { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at " + latestVersionDownloadURL + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
         }
 
         private void Tsmi_saveAs360PS3New_Click(object sender, EventArgs e)
@@ -1114,18 +1166,67 @@ namespace SA2SaveUtility
             }
         }
 
-        private void Lb_UpdateAvailable_Click(object sender, EventArgs e)
+        private void Btn_AutoUpdate_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/dfrood/SA2SaveUtility/releases/tag/" + latestVersionString);
+            DialogResult result = MessageBox.Show("Do you want to update now?", "Auto Updater", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                UpdateApplication();
+            }
+        }
+
+        private void UpdateApplication()
+        {
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(latestVersionDownloadURL, "temp.exe");
+                if (File.Exists("temp.exe"))
+                {
+                    Assembly currentAssembly = Assembly.GetEntryAssembly();
+                    if (currentAssembly != null)
+                    {
+                        string currentFolder = Path.GetDirectoryName(currentAssembly.Location);
+                        string currentName = Path.GetFileNameWithoutExtension(currentAssembly.Location);
+                        string currentExtension = Path.GetExtension(currentAssembly.Location);
+                        string tempFile = Path.Combine(currentFolder, "temp.exe");
+                        string newFile = Path.Combine(currentFolder, latestVersionFile);
+                        string currentFile = Path.Combine(currentFolder, currentName + currentExtension);
+                        if (!Directory.Exists(oldDir)) { Directory.CreateDirectory(oldDir); }
+                        string backupPath = Path.Combine(oldDir, currentName + ".old");
+                        File.Move(currentFile, backupPath);
+                        File.Move(tempFile, newFile);
+                        Application.Restart();
+                    }
+                }
+            }
         }
 
         private void Checkb_CheckForUpdates_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.checkForUpdates = checkb_CheckForUpdates.Checked;
-            Properties.Settings.Default.Save();
+            XmlDocument xml = new XmlDocument();
+            xml.Load(configFile);
+            XmlNode root = xml.DocumentElement["CheckForUpdates"];
+            root.FirstChild.InnerText = checkb_CheckForUpdates.Checked.ToString();
+            xml.Save(configFile);
             checkForUpdates = checkb_CheckForUpdates.Checked;
             if (checkForUpdates)
             {
+                Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
+                updateCheckThread.Start();
+            }
+        }
+
+        private void Checkb_AutoUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            XmlDocument xml = new XmlDocument();
+            xml.Load(configFile);
+            XmlNode root = xml.DocumentElement["AutoUpdate"];
+            root.FirstChild.InnerText = checkb_AutoUpdate.Checked.ToString();
+            xml.Save(configFile);
+            autoUpdate = checkb_AutoUpdate.Checked;
+            if (autoUpdate)
+            {
+                checkb_CheckForUpdates.Checked = autoUpdate;
                 Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
                 updateCheckThread.Start();
             }

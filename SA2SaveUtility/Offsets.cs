@@ -4,11 +4,17 @@ namespace SA2SaveUtility
 {
     class Offsets
     {
+        public ChaoWorld chaoSave = new ChaoWorld();
         public Save main = new Save();
         public Chao chao = new Chao();
         public Mission mission = new Mission();
         public Kart kart = new Kart();
         public Boss boss = new Boss();
+    }
+
+    class ChaoWorld
+    {
+        public uint Gardens = 0x304C;
     }
 
     class Save

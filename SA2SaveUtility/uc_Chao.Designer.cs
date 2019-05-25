@@ -194,6 +194,7 @@
             this.cb_Colour = new System.Windows.Forms.ComboBox();
             this.lb_Colour = new System.Windows.Forms.Label();
             this.tp_Evolution = new System.Windows.Forms.TabPage();
+            this.checkb_RealisticValues = new System.Windows.Forms.CheckBox();
             this.lb_Lifespan2 = new System.Windows.Forms.Label();
             this.trackb_Lifespan2 = new System.Windows.Forms.TrackBar();
             this.lb_Lifespan1 = new System.Windows.Forms.Label();
@@ -3027,6 +3028,7 @@
             // tp_Evolution
             // 
             this.tp_Evolution.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_Evolution.Controls.Add(this.checkb_RealisticValues);
             this.tp_Evolution.Controls.Add(this.lb_Lifespan2);
             this.tp_Evolution.Controls.Add(this.trackb_Lifespan2);
             this.tp_Evolution.Controls.Add(this.lb_Lifespan1);
@@ -3056,10 +3058,21 @@
             this.tp_Evolution.TabIndex = 3;
             this.tp_Evolution.Text = "Evolution";
             // 
+            // checkb_RealisticValues
+            // 
+            this.checkb_RealisticValues.AutoSize = true;
+            this.checkb_RealisticValues.Location = new System.Drawing.Point(453, 6);
+            this.checkb_RealisticValues.Name = "checkb_RealisticValues";
+            this.checkb_RealisticValues.Size = new System.Drawing.Size(101, 17);
+            this.checkb_RealisticValues.TabIndex = 22;
+            this.checkb_RealisticValues.Text = "Realistic Values";
+            this.checkb_RealisticValues.UseVisualStyleBackColor = true;
+            this.checkb_RealisticValues.CheckedChanged += new System.EventHandler(this.Checkb_RealisticValues_CheckedChanged);
+            // 
             // lb_Lifespan2
             // 
             this.lb_Lifespan2.AutoSize = true;
-            this.lb_Lifespan2.Location = new System.Drawing.Point(137, 92);
+            this.lb_Lifespan2.Location = new System.Drawing.Point(151, 92);
             this.lb_Lifespan2.Name = "lb_Lifespan2";
             this.lb_Lifespan2.Size = new System.Drawing.Size(109, 13);
             this.lb_Lifespan2.TabIndex = 21;
@@ -3068,7 +3081,7 @@
             // trackb_Lifespan2
             // 
             this.trackb_Lifespan2.LargeChange = 50;
-            this.trackb_Lifespan2.Location = new System.Drawing.Point(140, 108);
+            this.trackb_Lifespan2.Location = new System.Drawing.Point(154, 108);
             this.trackb_Lifespan2.Maximum = 10000;
             this.trackb_Lifespan2.Name = "trackb_Lifespan2";
             this.trackb_Lifespan2.Size = new System.Drawing.Size(104, 45);
@@ -3080,7 +3093,7 @@
             // lb_Lifespan1
             // 
             this.lb_Lifespan1.AutoSize = true;
-            this.lb_Lifespan1.Location = new System.Drawing.Point(6, 92);
+            this.lb_Lifespan1.Location = new System.Drawing.Point(13, 92);
             this.lb_Lifespan1.Name = "lb_Lifespan1";
             this.lb_Lifespan1.Size = new System.Drawing.Size(109, 13);
             this.lb_Lifespan1.TabIndex = 19;
@@ -3089,7 +3102,7 @@
             // trackb_Lifespan1
             // 
             this.trackb_Lifespan1.LargeChange = 50;
-            this.trackb_Lifespan1.Location = new System.Drawing.Point(9, 108);
+            this.trackb_Lifespan1.Location = new System.Drawing.Point(16, 108);
             this.trackb_Lifespan1.Maximum = 10000;
             this.trackb_Lifespan1.Name = "trackb_Lifespan1";
             this.trackb_Lifespan1.Size = new System.Drawing.Size(104, 45);
@@ -3101,7 +3114,7 @@
             // lb_TransformationMagnitudeUpper
             // 
             this.lb_TransformationMagnitudeUpper.AutoSize = true;
-            this.lb_TransformationMagnitudeUpper.Location = new System.Drawing.Point(497, 64);
+            this.lb_TransformationMagnitudeUpper.Location = new System.Drawing.Point(531, 64);
             this.lb_TransformationMagnitudeUpper.Name = "lb_TransformationMagnitudeUpper";
             this.lb_TransformationMagnitudeUpper.Size = new System.Drawing.Size(22, 13);
             this.lb_TransformationMagnitudeUpper.TabIndex = 17;
@@ -3110,7 +3123,7 @@
             // lb_TranformationMagnitudeLower
             // 
             this.lb_TranformationMagnitudeLower.AutoSize = true;
-            this.lb_TranformationMagnitudeLower.Location = new System.Drawing.Point(390, 64);
+            this.lb_TranformationMagnitudeLower.Location = new System.Drawing.Point(414, 64);
             this.lb_TranformationMagnitudeLower.Name = "lb_TranformationMagnitudeLower";
             this.lb_TranformationMagnitudeLower.Size = new System.Drawing.Size(13, 13);
             this.lb_TranformationMagnitudeLower.TabIndex = 16;
@@ -3119,7 +3132,7 @@
             // lb_TransformationMagnitude
             // 
             this.lb_TransformationMagnitude.AutoSize = true;
-            this.lb_TransformationMagnitude.Location = new System.Drawing.Point(388, 45);
+            this.lb_TransformationMagnitude.Location = new System.Drawing.Point(417, 45);
             this.lb_TransformationMagnitude.Name = "lb_TransformationMagnitude";
             this.lb_TransformationMagnitude.Size = new System.Drawing.Size(130, 13);
             this.lb_TransformationMagnitude.TabIndex = 15;
@@ -3127,10 +3140,12 @@
             // 
             // trackb_TransformationMagnitude
             // 
-            this.trackb_TransformationMagnitude.Location = new System.Drawing.Point(399, 61);
-            this.trackb_TransformationMagnitude.Maximum = 120;
+            this.trackb_TransformationMagnitude.LargeChange = 10000;
+            this.trackb_TransformationMagnitude.Location = new System.Drawing.Point(428, 61);
+            this.trackb_TransformationMagnitude.Maximum = 12000000;
             this.trackb_TransformationMagnitude.Name = "trackb_TransformationMagnitude";
             this.trackb_TransformationMagnitude.Size = new System.Drawing.Size(104, 45);
+            this.trackb_TransformationMagnitude.SmallChange = 1000;
             this.trackb_TransformationMagnitude.TabIndex = 14;
             this.trackb_TransformationMagnitude.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_TransformationMagnitude.Scroll += new System.EventHandler(this.Trackb_TransformationMagnitude_Scroll);
@@ -3138,7 +3153,7 @@
             // lb_Fly
             // 
             this.lb_Fly.AutoSize = true;
-            this.lb_Fly.Location = new System.Drawing.Point(367, 64);
+            this.lb_Fly.Location = new System.Drawing.Point(394, 64);
             this.lb_Fly.Name = "lb_Fly";
             this.lb_Fly.Size = new System.Drawing.Size(13, 13);
             this.lb_Fly.TabIndex = 13;
@@ -3147,7 +3162,7 @@
             // lb_Swim
             // 
             this.lb_Swim.AutoSize = true;
-            this.lb_Swim.Location = new System.Drawing.Point(260, 64);
+            this.lb_Swim.Location = new System.Drawing.Point(277, 64);
             this.lb_Swim.Name = "lb_Swim";
             this.lb_Swim.Size = new System.Drawing.Size(16, 13);
             this.lb_Swim.TabIndex = 12;
@@ -3156,7 +3171,7 @@
             // lb_Swim2Fly
             // 
             this.lb_Swim2Fly.AutoSize = true;
-            this.lb_Swim2Fly.Location = new System.Drawing.Point(286, 45);
+            this.lb_Swim2Fly.Location = new System.Drawing.Point(308, 45);
             this.lb_Swim2Fly.Name = "lb_Swim2Fly";
             this.lb_Swim2Fly.Size = new System.Drawing.Size(62, 13);
             this.lb_Swim2Fly.TabIndex = 11;
@@ -3164,11 +3179,13 @@
             // 
             // trackb_Swim2Fly
             // 
-            this.trackb_Swim2Fly.Location = new System.Drawing.Point(269, 61);
-            this.trackb_Swim2Fly.Maximum = 100;
-            this.trackb_Swim2Fly.Minimum = -100;
+            this.trackb_Swim2Fly.LargeChange = 1000;
+            this.trackb_Swim2Fly.Location = new System.Drawing.Point(291, 61);
+            this.trackb_Swim2Fly.Maximum = 1000000;
+            this.trackb_Swim2Fly.Minimum = -1000000;
             this.trackb_Swim2Fly.Name = "trackb_Swim2Fly";
             this.trackb_Swim2Fly.Size = new System.Drawing.Size(104, 45);
+            this.trackb_Swim2Fly.SmallChange = 100;
             this.trackb_Swim2Fly.TabIndex = 10;
             this.trackb_Swim2Fly.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_Swim2Fly.Scroll += new System.EventHandler(this.Trackb_Swim2Fly_Scroll);
@@ -3176,7 +3193,7 @@
             // lb_Power
             // 
             this.lb_Power.AutoSize = true;
-            this.lb_Power.Location = new System.Drawing.Point(238, 64);
+            this.lb_Power.Location = new System.Drawing.Point(258, 64);
             this.lb_Power.Name = "lb_Power";
             this.lb_Power.Size = new System.Drawing.Size(13, 13);
             this.lb_Power.TabIndex = 9;
@@ -3185,7 +3202,7 @@
             // lb_Run
             // 
             this.lb_Run.AutoSize = true;
-            this.lb_Run.Location = new System.Drawing.Point(131, 64);
+            this.lb_Run.Location = new System.Drawing.Point(141, 64);
             this.lb_Run.Name = "lb_Run";
             this.lb_Run.Size = new System.Drawing.Size(16, 13);
             this.lb_Run.TabIndex = 8;
@@ -3194,7 +3211,7 @@
             // lb_Run2Power
             // 
             this.lb_Run2Power.AutoSize = true;
-            this.lb_Run2Power.Location = new System.Drawing.Point(161, 45);
+            this.lb_Run2Power.Location = new System.Drawing.Point(176, 45);
             this.lb_Run2Power.Name = "lb_Run2Power";
             this.lb_Run2Power.Size = new System.Drawing.Size(74, 13);
             this.lb_Run2Power.TabIndex = 7;
@@ -3202,11 +3219,13 @@
             // 
             // trackb_Run2Power
             // 
-            this.trackb_Run2Power.Location = new System.Drawing.Point(140, 61);
-            this.trackb_Run2Power.Maximum = 100;
-            this.trackb_Run2Power.Minimum = -100;
+            this.trackb_Run2Power.LargeChange = 1000;
+            this.trackb_Run2Power.Location = new System.Drawing.Point(155, 61);
+            this.trackb_Run2Power.Maximum = 1000000;
+            this.trackb_Run2Power.Minimum = -1000000;
             this.trackb_Run2Power.Name = "trackb_Run2Power";
             this.trackb_Run2Power.Size = new System.Drawing.Size(104, 45);
+            this.trackb_Run2Power.SmallChange = 100;
             this.trackb_Run2Power.TabIndex = 6;
             this.trackb_Run2Power.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_Run2Power.Scroll += new System.EventHandler(this.Trackb_Run2Power_Scroll);
@@ -3214,7 +3233,7 @@
             // lb_AlignmentHero
             // 
             this.lb_AlignmentHero.AutoSize = true;
-            this.lb_AlignmentHero.Location = new System.Drawing.Point(107, 64);
+            this.lb_AlignmentHero.Location = new System.Drawing.Point(120, 64);
             this.lb_AlignmentHero.Name = "lb_AlignmentHero";
             this.lb_AlignmentHero.Size = new System.Drawing.Size(13, 13);
             this.lb_AlignmentHero.TabIndex = 5;
@@ -3223,7 +3242,7 @@
             // lb_AlignmentDark
             // 
             this.lb_AlignmentDark.AutoSize = true;
-            this.lb_AlignmentDark.Location = new System.Drawing.Point(0, 64);
+            this.lb_AlignmentDark.Location = new System.Drawing.Point(3, 64);
             this.lb_AlignmentDark.Name = "lb_AlignmentDark";
             this.lb_AlignmentDark.Size = new System.Drawing.Size(16, 13);
             this.lb_AlignmentDark.TabIndex = 4;
@@ -3232,7 +3251,7 @@
             // lb_Alignment
             // 
             this.lb_Alignment.AutoSize = true;
-            this.lb_Alignment.Location = new System.Drawing.Point(27, 45);
+            this.lb_Alignment.Location = new System.Drawing.Point(35, 45);
             this.lb_Alignment.Name = "lb_Alignment";
             this.lb_Alignment.Size = new System.Drawing.Size(70, 13);
             this.lb_Alignment.TabIndex = 3;
@@ -3240,11 +3259,13 @@
             // 
             // trackb_Alignment
             // 
-            this.trackb_Alignment.Location = new System.Drawing.Point(9, 61);
-            this.trackb_Alignment.Maximum = 100;
-            this.trackb_Alignment.Minimum = -100;
+            this.trackb_Alignment.LargeChange = 1000;
+            this.trackb_Alignment.Location = new System.Drawing.Point(17, 61);
+            this.trackb_Alignment.Maximum = 1000000;
+            this.trackb_Alignment.Minimum = -1000000;
             this.trackb_Alignment.Name = "trackb_Alignment";
             this.trackb_Alignment.Size = new System.Drawing.Size(104, 45);
+            this.trackb_Alignment.SmallChange = 100;
             this.trackb_Alignment.TabIndex = 2;
             this.trackb_Alignment.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_Alignment.Scroll += new System.EventHandler(this.Trackb_Alignment_Scroll);
@@ -4163,7 +4184,116 @@
             "Metal 1",
             "Metal 2",
             "Glass",
-            "Moon"});
+            "Moon",
+            "Shiny Black",
+            "Pink",
+            "Red Bottom, White Top",
+            "Black Middle, White Outside",
+            "Toothy Grin 1",
+            "Toothy Grin 2",
+            "White Left, Pink Right",
+            "White Middle, Turqoise Outside",
+            "Devil Chaos Tail/Top Horns/Feet",
+            "Devil Chaos Hands/Bottom Horns",
+            "Devil Chaos Chest",
+            "Yellow 1",
+            "Black Left, Purple Right",
+            "Dark/Fly Chao Texture",
+            "Dark/Fly Wings",
+            "Black Bottom to White Top",
+            "Dark/Run Blue Chest Curve",
+            "White Left to Purple Right",
+            "Brown Bottom to White Top",
+            "Dark and Light Brown Horizontal Stripes",
+            "White Left to Pink Middle to Black Right 1",
+            "Dark Blue with White/Blue Curve",
+            "Yellow Middle, Blue Outside",
+            "White Left to Pink Middle to Black Right 2",
+            "Turqoise Bottom, Black Top",
+            "Black Bottom, Blue Top",
+            "White Left/Mid, Black Outside/Right",
+            "Normal Egg",
+            "Black Middle, Clear Outside",
+            "White Middle, Black Outside",
+            "Transparent Pink Bottom to White Top",
+            "Peach Middle, White Outside",
+            "White, Pink Spots",
+            "Knuckles Chao Chest",
+            "Yellow Bottom to Red Top",
+            "Glossy Red Bottom to Yellow Top",
+            "Leaf Texture, Clear Outside",
+            "Wooden Log",
+            "Black Middle, Clear Outside",
+            "Stone",
+            "Grey Vertical Stripes",
+            "Grey Horizontal Stripes",
+            "Grey Curved Stripes, Clear Bottom Right",
+            "Metalic Brown Bottom, Light Brown Top",
+            "Wooden Plank 1",
+            "Light Rust",
+            "Dark Rust",
+            "Beige",
+            "Yellow 2",
+            "Wooden Log Grain",
+            "Watermelon",
+            "Watermelon Slice",
+            "Red Wool Hat",
+            "Black Middle, Yellow to Clear Outside",
+            "Red",
+            "Blue Wool Hat",
+            "Black Middle, White to Clear Outside",
+            "Blue",
+            "Black Wool Hat",
+            "Black Middle, Grey to Clear Outside",
+            "Dark Grey",
+            "Pink Middle, Yellow Outside",
+            "Neutral Chaos 1",
+            "Neutral Chaos 2",
+            "Neutral Chaos 3",
+            "Angel Chaos 1",
+            "Angel Chaos 2",
+            "Light Green",
+            "White Bottom to Yellow Top",
+            "Yellow Middle to White Outside",
+            "White/Light Blue",
+            "Yellow Left to White Right",
+            "White and Blue Horizontal Stripes",
+            "White and Pink Horizontal Stripes, Blue Top",
+            "White Left to Pink Right",
+            "Hot Pink Middle to Orange Outside",
+            "White Left to Orange Right",
+            "Neutral/Power Spikes",
+            "Neutral/Power Hands",
+            "Light Blue Middle, White Outside",
+            "Yellow Middle, White Outside",
+            "Yellow Bottom to White Top",
+            "White Bottom to Pink Top",
+            "Cyan Left, White Right",
+            "White Bottom, Green Top 1",
+            "White Bottom, Green Top 2",
+            "Light Blue Bottom, Green Top",
+            "White and Yellow Horizontal Stripes",
+            "Brown Bottom, Yellow Top with Studs",
+            "Dark and Light Blue Horizontal Stripes",
+            "White Bottom, Blue Top with Studs",
+            "Burnt and Rust Orange",
+            "Blue with Yellow Grills, Clear Outside",
+            "Yellow Hypnotic Rings",
+            "Wooden Plank 2",
+            "Black Middle, Clear Outside 1",
+            "Black Zig-Zag, Clear Outside",
+            "Black Middle, Clear Outside 2",
+            "White",
+            "Grey, Thin Black Vertical Stripes",
+            "White Bottom, Orange Top",
+            "White Middle, Orange Outside",
+            "White Bottom, Yellow Top",
+            "Purple Middle, Black Outside",
+            "Grey",
+            "Pink Checkerboard",
+            "Chao Face Image, Red Outside",
+            "Skeleton",
+            "Green Checkerboard"});
             this.cb_Texture2.Location = new System.Drawing.Point(470, 67);
             this.cb_Texture2.Name = "cb_Texture2";
             this.cb_Texture2.Size = new System.Drawing.Size(80, 21);
@@ -4200,7 +4330,116 @@
             "Metal 1",
             "Metal 2",
             "Glass",
-            "Moon"});
+            "Moon",
+            "Shiny Black",
+            "Pink",
+            "Red Bottom, White Top",
+            "Black Middle, White Outside",
+            "Toothy Grin 1",
+            "Toothy Grin 2",
+            "White Left, Pink Right",
+            "White Middle, Turqoise Outside",
+            "Devil Chaos Tail/Top Horns/Feet",
+            "Devil Chaos Hands/Bottom Horns",
+            "Devil Chaos Chest",
+            "Yellow 1",
+            "Black Left, Purple Right",
+            "Dark/Fly Chao Texture",
+            "Dark/Fly Wings",
+            "Black Bottom to White Top",
+            "Dark/Run Blue Chest Curve",
+            "White Left to Purple Right",
+            "Brown Bottom to White Top",
+            "Dark and Light Brown Horizontal Stripes",
+            "White Left to Pink Middle to Black Right 1",
+            "Dark Blue with White/Blue Curve",
+            "Yellow Middle, Blue Outside",
+            "White Left to Pink Middle to Black Right 2",
+            "Turqoise Bottom, Black Top",
+            "Black Bottom, Blue Top",
+            "White Left/Mid, Black Outside/Right",
+            "Normal Egg",
+            "Black Middle, Clear Outside",
+            "White Middle, Black Outside",
+            "Transparent Pink Bottom to White Top",
+            "Peach Middle, White Outside",
+            "White, Pink Spots",
+            "Knuckles Chao Chest",
+            "Yellow Bottom to Red Top",
+            "Glossy Red Bottom to Yellow Top",
+            "Leaf Texture, Clear Outside",
+            "Wooden Log",
+            "Black Middle, Clear Outside",
+            "Stone",
+            "Grey Vertical Stripes",
+            "Grey Horizontal Stripes",
+            "Grey Curved Stripes, Clear Bottom Right",
+            "Metalic Brown Bottom, Light Brown Top",
+            "Wooden Plank 1",
+            "Light Rust",
+            "Dark Rust",
+            "Beige",
+            "Yellow 2",
+            "Wooden Log Grain",
+            "Watermelon",
+            "Watermelon Slice",
+            "Red Wool Hat",
+            "Black Middle, Yellow to Clear Outside",
+            "Red",
+            "Blue Wool Hat",
+            "Black Middle, White to Clear Outside",
+            "Blue",
+            "Black Wool Hat",
+            "Black Middle, Grey to Clear Outside",
+            "Dark Grey",
+            "Pink Middle, Yellow Outside",
+            "Neutral Chaos 1",
+            "Neutral Chaos 2",
+            "Neutral Chaos 3",
+            "Angel Chaos 1",
+            "Angel Chaos 2",
+            "Light Green",
+            "White Bottom to Yellow Top",
+            "Yellow Middle to White Outside",
+            "White/Light Blue",
+            "Yellow Left to White Right",
+            "White and Blue Horizontal Stripes",
+            "White and Pink Horizontal Stripes, Blue Top",
+            "White Left to Pink Right",
+            "Hot Pink Middle to Orange Outside",
+            "White Left to Orange Right",
+            "Neutral/Power Spikes",
+            "Neutral/Power Hands",
+            "Light Blue Middle, White Outside",
+            "Yellow Middle, White Outside",
+            "Yellow Bottom to White Top",
+            "White Bottom to Pink Top",
+            "Cyan Left, White Right",
+            "White Bottom, Green Top 1",
+            "White Bottom, Green Top 2",
+            "Light Blue Bottom, Green Top",
+            "White and Yellow Horizontal Stripes",
+            "Brown Bottom, Yellow Top with Studs",
+            "Dark and Light Blue Horizontal Stripes",
+            "White Bottom, Blue Top with Studs",
+            "Burnt and Rust Orange",
+            "Blue with Yellow Grills, Clear Outside",
+            "Yellow Hypnotic Rings",
+            "Wooden Plank 2",
+            "Black Middle, Clear Outside 1",
+            "Black Zig-Zag, Clear Outside",
+            "Black Middle, Clear Outside 2",
+            "White",
+            "Grey, Thin Black Vertical Stripes",
+            "White Bottom, Orange Top",
+            "White Middle, Orange Outside",
+            "White Bottom, Yellow Top",
+            "Purple Middle, Black Outside",
+            "Grey",
+            "Pink Checkerboard",
+            "Chao Face Image, Red Outside",
+            "Skeleton",
+            "Green Checkerboard"});
             this.cb_Texture1.Location = new System.Drawing.Point(470, 21);
             this.cb_Texture1.Name = "cb_Texture1";
             this.cb_Texture1.Size = new System.Drawing.Size(80, 21);
@@ -5587,5 +5826,6 @@
         private System.Windows.Forms.NumericUpDown nud_Luck1;
         private System.Windows.Forms.NumericUpDown nud_Reincarnations;
         private System.Windows.Forms.Label lb_Reincarnations;
+        private System.Windows.Forms.CheckBox checkb_RealisticValues;
     }
 }

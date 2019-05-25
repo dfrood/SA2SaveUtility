@@ -19,7 +19,7 @@ namespace SA2SaveUtility
         private void Tb_Name_TextChanged(object sender, EventArgs e)
         {
             byte[] name = ChaoSave.SetName(tb_Name.Text);
-            Main.tc_Main.TabPages[(int)chaoNumber].Text = tb_Name.Text;
+            Main.tc_Main.TabPages[Main.tc_Main.TabPages.IndexOf(ChaoSave.activeChao.Where(x => x.Key == chaoNumber).First().Value)].Text = tb_Name.Text;
             for (int i = 0; i < name.Length; i++)
             {
                 Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Name + i)] = name[i];
@@ -236,7 +236,7 @@ namespace SA2SaveUtility
 
         private void Trackb_Alignment_Scroll(object sender, EventArgs e)
         {
-            float alignment = (float)(trackb_Alignment.Value * 0.01);
+            float alignment = (float)(trackb_Alignment.Value * 0.0000001);
             byte[] alignmentBytes = BitConverter.GetBytes(alignment);
             if (!Main.saveIsPC) { Array.Reverse(alignmentBytes); }
             for (int i = 0; i < alignmentBytes.Length; i++)
@@ -247,7 +247,7 @@ namespace SA2SaveUtility
 
         private void Trackb_Run2Power_Scroll(object sender, EventArgs e)
         {
-            float run2Power = (float)(trackb_Run2Power.Value * 0.01);
+            float run2Power = (float)(trackb_Run2Power.Value * 0.0000001);
             byte[] run2PowerBytes = BitConverter.GetBytes(run2Power);
             if (!Main.saveIsPC) { Array.Reverse(run2PowerBytes); }
             for (int i = 0; i < run2PowerBytes.Length; i++)
@@ -258,7 +258,7 @@ namespace SA2SaveUtility
 
         private void Trackb_Swim2Fly_Scroll(object sender, EventArgs e)
         {
-            float swim2Fly = (float)(trackb_Swim2Fly.Value * 0.01);
+            float swim2Fly = (float)(trackb_Swim2Fly.Value * 0.0000001);
             byte[] swim2FlyBytes = BitConverter.GetBytes(swim2Fly);
             if (!Main.saveIsPC) { Array.Reverse(swim2FlyBytes); }
             for (int i = 0; i < swim2FlyBytes.Length; i++)
@@ -269,7 +269,7 @@ namespace SA2SaveUtility
 
         private void Trackb_TransformationMagnitude_Scroll(object sender, EventArgs e)
         {
-            float transformationMagnitude = (float)(trackb_TransformationMagnitude.Value * 0.01);
+            float transformationMagnitude = (float)(trackb_TransformationMagnitude.Value * 0.0000001);
             byte[] transformationMagnitudeBytes = BitConverter.GetBytes(transformationMagnitude);
             if (!Main.saveIsPC) { Array.Reverse(transformationMagnitudeBytes); }
             for (int i = 0; i < transformationMagnitudeBytes.Length; i++)
@@ -1142,6 +1142,69 @@ namespace SA2SaveUtility
         private void Nud_Intelligence2_ValueChanged(object sender, EventArgs e)
         {
             Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade2)] = (byte)nud_Intelligence2.Value;
+        }
+
+        private void Checkb_RealisticValues_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckRealistic();
+        }
+
+        public void CheckRealistic()
+        {
+            if (checkb_RealisticValues.Checked)
+            {
+                if (trackb_Alignment.Value > 10000000) { trackb_Alignment.Value = 10000000; }
+                if (trackb_Alignment.Value < -10000000) { trackb_Alignment.Value = -10000000; }
+                if (trackb_Run2Power.Value > 10000000) { trackb_Run2Power.Value = 10000000; }
+                if (trackb_Run2Power.Value < -10000000) { trackb_Run2Power.Value = -10000000; }
+                if (trackb_Swim2Fly.Value > 10000000) { trackb_Run2Power.Value = 10000000; }
+                if (trackb_Swim2Fly.Value < -10000000) { trackb_Swim2Fly.Value = -10000000; }
+                lb_Run.Text = "-1";
+                lb_Power.Text = "1";
+                trackb_Run2Power.Maximum = 10000000;
+                trackb_Run2Power.Minimum = -10000000;
+                trackb_Run2Power.SmallChange = 1000;
+                trackb_Run2Power.LargeChange = 10000;
+                lb_Swim.Text = "-1";
+                lb_Fly.Text = "-1";
+                trackb_Swim2Fly.Maximum = 10000000;
+                trackb_Swim2Fly.Minimum = -10000000;
+                trackb_Swim2Fly.SmallChange = 1000;
+                trackb_Swim2Fly.LargeChange = 10000;
+                lb_AlignmentDark.Text = "-1";
+                lb_AlignmentHero.Text = "1";
+                trackb_Alignment.Maximum = 10000000;
+                trackb_Alignment.Minimum = -10000000;
+                trackb_Alignment.SmallChange = 1000;
+                trackb_Alignment.LargeChange = 10000;
+                trackb_TransformationMagnitude.Maximum = 12000000;
+                trackb_TransformationMagnitude.SmallChange = 1000;
+                trackb_TransformationMagnitude.LargeChange = 10000;
+            }
+            else
+            {
+                lb_Run.Text = "-30";
+                lb_Power.Text = "30";
+                trackb_Run2Power.Maximum = 300000000;
+                trackb_Run2Power.Minimum = -300000000;
+                trackb_Run2Power.SmallChange = 30000;
+                trackb_Run2Power.LargeChange = 300000;
+                lb_Swim.Text = "-30";
+                lb_Fly.Text = "-30";
+                trackb_Swim2Fly.Maximum = 300000000;
+                trackb_Swim2Fly.Minimum = -300000000;
+                trackb_Swim2Fly.SmallChange = 30000;
+                trackb_Swim2Fly.LargeChange = 300000;
+                lb_AlignmentDark.Text = "-30";
+                lb_AlignmentHero.Text = "30";
+                trackb_Alignment.Maximum = 300000000;
+                trackb_Alignment.Minimum = -300000000;
+                trackb_Alignment.SmallChange = 30000;
+                trackb_Alignment.LargeChange = 300000;
+                trackb_TransformationMagnitude.Maximum = 12000000;
+                trackb_TransformationMagnitude.SmallChange = 1000;
+                trackb_TransformationMagnitude.LargeChange = 10000;
+            }
         }
     }
 }

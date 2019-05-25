@@ -87,6 +87,12 @@
     <Compile Include="uc_Chao.designer.cs">
       <DependentUpon>uc_Chao.cs</DependentUpon>
     </Compile>
+    <Compile Include="uc_ChaoSave.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="uc_ChaoSave.Designer.cs">
+      <DependentUpon>uc_ChaoSave.cs</DependentUpon>
+    </Compile>
     <Compile Include="uc_Kart.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -129,6 +135,9 @@
     <EmbeddedResource Include="uc_Chao.resx">
       <DependentUpon>uc_Chao.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="uc_ChaoSave.resx">
+      <DependentUpon>uc_ChaoSave.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="uc_Kart.resx">
       <DependentUpon>uc_Kart.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,6 +164,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DefaultConfig.xml" />
     <Content Include="edit.ico" />
   </ItemGroup>
   <ItemGroup>

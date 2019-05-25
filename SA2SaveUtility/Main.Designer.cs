@@ -44,7 +44,8 @@
             this.tsmi_DupeChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_About = new System.Windows.Forms.ToolStripMenuItem();
             tc_Main = new System.Windows.Forms.TabControl();
-            this.lb_UpdateAvailable = new System.Windows.Forms.Label();
+            this.btn_AutoUpdate = new System.Windows.Forms.Button();
+            this.checkb_AutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkb_CheckForUpdates = new System.Windows.Forms.CheckBox();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
@@ -176,25 +177,36 @@
             tc_Main.Size = new System.Drawing.Size(572, 235);
             tc_Main.TabIndex = 1;
             // 
-            // lb_UpdateAvailable
+            // btn_AutoUpdate
             // 
-            this.lb_UpdateAvailable.AutoSize = true;
-            this.lb_UpdateAvailable.ForeColor = System.Drawing.Color.ForestGreen;
-            this.lb_UpdateAvailable.Location = new System.Drawing.Point(322, 7);
-            this.lb_UpdateAvailable.Name = "lb_UpdateAvailable";
-            this.lb_UpdateAvailable.Size = new System.Drawing.Size(114, 13);
-            this.lb_UpdateAvailable.TabIndex = 2;
-            this.lb_UpdateAvailable.Text = "An update is available!";
-            this.lb_UpdateAvailable.Visible = false;
-            this.lb_UpdateAvailable.Click += new System.EventHandler(this.Lb_UpdateAvailable_Click);
+            this.btn_AutoUpdate.ForeColor = System.Drawing.Color.ForestGreen;
+            this.btn_AutoUpdate.Location = new System.Drawing.Point(231, 1);
+            this.btn_AutoUpdate.Name = "btn_AutoUpdate";
+            this.btn_AutoUpdate.Size = new System.Drawing.Size(122, 23);
+            this.btn_AutoUpdate.TabIndex = 4;
+            this.btn_AutoUpdate.Text = "An update is available!";
+            this.btn_AutoUpdate.UseVisualStyleBackColor = true;
+            this.btn_AutoUpdate.Visible = false;
+            this.btn_AutoUpdate.Click += new System.EventHandler(this.Btn_AutoUpdate_Click);
+            // 
+            // checkb_AutoUpdate
+            // 
+            this.checkb_AutoUpdate.AutoSize = true;
+            this.checkb_AutoUpdate.Location = new System.Drawing.Point(479, 5);
+            this.checkb_AutoUpdate.Name = "checkb_AutoUpdate";
+            this.checkb_AutoUpdate.Size = new System.Drawing.Size(86, 17);
+            this.checkb_AutoUpdate.TabIndex = 5;
+            this.checkb_AutoUpdate.Text = "Auto Update";
+            this.checkb_AutoUpdate.UseVisualStyleBackColor = true;
+            this.checkb_AutoUpdate.CheckedChanged += new System.EventHandler(this.Checkb_AutoUpdate_CheckedChanged);
             // 
             // checkb_CheckForUpdates
             // 
             this.checkb_CheckForUpdates.AutoSize = true;
-            this.checkb_CheckForUpdates.Location = new System.Drawing.Point(442, 5);
+            this.checkb_CheckForUpdates.Location = new System.Drawing.Point(359, 5);
             this.checkb_CheckForUpdates.Name = "checkb_CheckForUpdates";
             this.checkb_CheckForUpdates.Size = new System.Drawing.Size(115, 17);
-            this.checkb_CheckForUpdates.TabIndex = 3;
+            this.checkb_CheckForUpdates.TabIndex = 6;
             this.checkb_CheckForUpdates.Text = "Check for Updates";
             this.checkb_CheckForUpdates.UseVisualStyleBackColor = true;
             this.checkb_CheckForUpdates.CheckedChanged += new System.EventHandler(this.Checkb_CheckForUpdates_CheckedChanged);
@@ -205,7 +217,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(569, 258);
             this.Controls.Add(this.checkb_CheckForUpdates);
-            this.Controls.Add(this.lb_UpdateAvailable);
+            this.Controls.Add(this.checkb_AutoUpdate);
+            this.Controls.Add(this.btn_AutoUpdate);
             this.Controls.Add(tc_Main);
             this.Controls.Add(this.ms_Main);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -236,10 +249,11 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_About;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3New;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360PS3Append;
-        private System.Windows.Forms.Label lb_UpdateAvailable;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsGC;
-        public static System.Windows.Forms.TabControl tc_Main;
+        private System.Windows.Forms.Button btn_AutoUpdate;
+        private System.Windows.Forms.CheckBox checkb_AutoUpdate;
         private System.Windows.Forms.CheckBox checkb_CheckForUpdates;
+        public static System.Windows.Forms.TabControl tc_Main;
     }
 }
 

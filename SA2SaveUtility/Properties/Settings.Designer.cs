@@ -22,17 +22,5 @@ namespace SA2SaveUtility.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool checkForUpdates {
-            get {
-                return ((bool)(this["checkForUpdates"]));
-            }
-            set {
-                this["checkForUpdates"] = value;
-            }
-        }
     }
 }
