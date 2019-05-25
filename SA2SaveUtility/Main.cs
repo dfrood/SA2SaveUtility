@@ -1209,6 +1209,7 @@ namespace SA2SaveUtility
             root.FirstChild.InnerText = checkb_CheckForUpdates.Checked.ToString();
             xml.Save(configFile);
             checkForUpdates = checkb_CheckForUpdates.Checked;
+            if (!checkForUpdates && autoUpdate) { checkb_AutoUpdate.Checked = false; }
             if (checkForUpdates)
             {
                 Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
