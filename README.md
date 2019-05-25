@@ -28,6 +28,7 @@ Editing PC, Gamecube Xbox 360 & PS3 main save files, also allows saving of files
 ![Main Boss Tab](https://dev.froody.tech/SA2SaveUtility/img/Main_Boss.png)
 ![Main Chao Tab](https://dev.froody.tech/SA2SaveUtility/img/Main_Chao.png)
 #### Chao
+![Chao World Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_ChaoWorld.png)
 ![Chao General Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_General.png)
 ![Chao Stats Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Stats.png)
 ![Chao Appearance Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Appearance.png)
