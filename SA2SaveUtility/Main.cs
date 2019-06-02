@@ -18,6 +18,7 @@ namespace SA2SaveUtility
     {
         public static bool saveIsPC;
         public static bool saveIsGC;
+        //public static bool saveIsDC;
         public static bool saveIsMain;
         public static bool isLatest = true;
         public static string latestVersionString;
@@ -175,6 +176,7 @@ namespace SA2SaveUtility
             //Setup dialog OpenFileDialog for loading save file
             OpenFileDialog loadSave = new OpenFileDialog();
             loadSave.Filter = "PC Main/Chao Save|*SONIC2B__*|360/PS3 Main/Chao Save|*.bin|Gamecube Main/Chao Save|*.gci";
+            //loadSave.Filter = "PC Main/Chao Save|*SONIC2B__*|360/PS3 Main/Chao Save|*.bin|Gamecube Main/Chao Save|*.gci|Dreamcast Main/Chao Save|*.VMS";
             loadSave.Title = "Load a Save";
 
             if (loadSave.ShowDialog() == DialogResult.OK)
@@ -191,6 +193,7 @@ namespace SA2SaveUtility
                         {
                             saveIsPC = true;
                             saveIsGC = false;
+                            //saveIsDC = false;
                             if (loadedSave.Length == 0x6000)
                             {
                                 saveIsMain = true;
@@ -211,6 +214,7 @@ namespace SA2SaveUtility
                         {
                             saveIsPC = false;
                             saveIsGC = false;
+                            //saveIsDC = false;
                             if (loadedSave.Length == 0x3C028)
                             {
                                 validSave = true;
@@ -229,6 +233,7 @@ namespace SA2SaveUtility
                         {
                             saveIsPC = false;
                             saveIsGC = true;
+                            //saveIsDC = false;
                             if (loadedSave.Length == 0x6040)
                             {
                                 gcFileBytes = loadedSave.Skip(0x12).Take(0x02).ToArray();
@@ -248,6 +253,27 @@ namespace SA2SaveUtility
                             }
                             break;
                         }
+                    //case 4:
+                    //    {
+                    //        saveIsPC = false;
+                    //        saveIsGC = true;
+                    //        saveIsDC = true;
+                    //        if (loadedSave.Length == 0x6820)
+                    //        {
+                    //            loadedSave = loadedSave.Skip(0x800).ToArray();
+                    //            validSave = true;
+                    //            SaveIsMain();
+                    //            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Dreamcast Main Save]";
+                    //        }
+                    //        if (loadedSave.Length == 0x6800)
+                    //        {
+                    //            loadedSave = loadedSave.Skip(0x800).ToArray();
+                    //            validSave = true;
+                    //            SaveIsChao();
+                    //            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Dreamcast Chao Save]";
+                    //        }
+                    //        break;
+                    //    }
                 }
 
                 if (validSave)
