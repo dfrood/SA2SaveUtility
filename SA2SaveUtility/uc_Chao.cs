@@ -198,7 +198,11 @@ namespace SA2SaveUtility
 
         private void Cb_Colour_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Colour)] = (byte)cb_Colour.SelectedIndex;
+            if (cb_Colour.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.chaoColours.Where(x => x.Key == cb_Colour.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.Colour)] = (byte)(flag);
+            }
         }
 
         private void Cb_Texture_SelectedIndexChanged(object sender, EventArgs e)
@@ -1011,12 +1015,20 @@ namespace SA2SaveUtility
 
         private void Cb_Colour1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.DNAColour1)] = (byte)cb_Colour1.SelectedIndex;
+            if (cb_Colour1.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.chaoColours.Where(x => x.Key == cb_Colour1.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.DNAColour1)] = (byte)(flag);
+            }
         }
 
         private void Cb_Colour2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.DNAColour2)] = (byte)cb_Colour2.SelectedIndex;
+            if (cb_Colour2.SelectedItem.ToString() != "")
+            {
+                int flag = ChaoSave.chaoColours.Where(x => x.Key == cb_Colour2.SelectedItem.ToString()).First().Value;
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.DNAColour2)] = (byte)(flag);
+            }
         }
 
         private void Cb_EggColour1_SelectedIndexChanged(object sender, EventArgs e)
