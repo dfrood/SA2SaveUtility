@@ -16,6 +16,7 @@ namespace SA2SaveUtility
 {
     public partial class Main : Form
     {
+        public static bool saveisSA;
         public static bool saveIsPC;
         public static bool saveIsGC;
         //public static bool saveIsDC;
@@ -186,8 +187,31 @@ namespace SA2SaveUtility
                 ChaoSave.activeChao = new Dictionary<uint, TabPage>();
                 MainSave.activeMain = new Dictionary<int, TabPage>();
 
+                //if (loadedSave.Length == 0xC820)
+                //{
+                //    DialogResult result = MessageBox.Show("Is the save you're loading an SA PC Chao Save?", "PC or 360/PS3 SA Chao Save?", MessageBoxButtons.YesNo);
+                //    if (result == DialogResult.Yes)
+                //    {
+                //        saveisSA = true;
+                //        saveIsPC = true;
+                //        saveIsGC = false;
+                //        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA PC Chao Save]";
+                //    }
+                //    if (result == DialogResult.No)
+                //    {
+                //        saveisSA = true;
+                //        saveIsPC = false;
+                //        saveIsGC = false;
+                //        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA 360/PS3 Chao Save]";
+                //    }
+                //    saveIsMain = false;
+                //    validSave = true;
+                //    SaveIsChao();
+                //}
+
                 if (loadedSave.Length == 0x6000)
                 {
+                    saveisSA = false;
                     saveIsPC = true;
                     saveIsGC = false;
                     saveIsMain = true;
@@ -200,12 +224,14 @@ namespace SA2SaveUtility
                     DialogResult result = MessageBox.Show("Is the save you're loading a PC Chao Save?", "PC or 360/PS3 Chao Save?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
+                        saveisSA = false;
                         saveIsPC = true;
                         saveIsGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Chao Save]";
                     }
                     if (result == DialogResult.No)
                     {
+                        saveisSA = false;
                         saveIsPC = false;
                         saveIsGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Chao Save]";
@@ -216,6 +242,7 @@ namespace SA2SaveUtility
                 }
                 if (loadedSave.Length == 0x3C028)
                 {
+                    saveisSA = false;
                     saveIsPC = false;
                     saveIsGC = false;
                     validSave = true;
@@ -224,6 +251,7 @@ namespace SA2SaveUtility
                 }
                 if (loadedSave.Length == 0x6040)
                 {
+                    saveisSA = false;
                     saveIsPC = false;
                     saveIsGC = true;
                     gcFileBytes = loadedSave.Skip(0x12).Take(0x02).ToArray();
@@ -235,6 +263,7 @@ namespace SA2SaveUtility
                 }
                 if (loadedSave.Length == 0x10040)
                 {
+                    saveisSA = false;
                     saveIsPC = false;
                     saveIsGC = true;
                     gcBytes = loadedSave.Take(0x40).ToArray();
@@ -262,7 +291,10 @@ namespace SA2SaveUtility
         private void SaveIsChao()
         {
             saveIsMain = false;
-            ChaoSave.GetChaoWorld();
+            if (!saveisSA)
+            {
+                ChaoSave.GetChaoWorld();
+            }
             ChaoSave.GetChao();
             tsmi_SaveCurrentChao.Enabled = true;
             tsmi_Chao.Enabled = true;
@@ -281,71 +313,101 @@ namespace SA2SaveUtility
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
         {
-            uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-            OpenFileDialog loadChao = new OpenFileDialog();
-            loadChao.InitialDirectory = chaoDirectory;
-            loadChao.Filter = "Chao File|*.chao";
-            loadChao.Title = "Load a Chao";
-            loadChao.ShowDialog();
-            if (loadChao.FileName != "")
+            if (tc_Main.SelectedIndex != 0)
             {
-                byte[] chao = File.ReadAllBytes(loadChao.FileName);
-                if (chao.Length == 2048)
+                uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                OpenFileDialog loadChao = new OpenFileDialog();
+                loadChao.InitialDirectory = chaoDirectory;
+                loadChao.Filter = "Chao File|*.chao";
+                loadChao.Title = "Load a Chao";
+                loadChao.ShowDialog();
+                if (loadChao.FileName != "")
                 {
-                    List<byte> byteList = new List<byte>();
-                    byteList.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * uc.chaoNumber))).ToArray());
-                    if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
-                    else { byteList.AddRange(chao); }
-                    byteList.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (uc.chaoNumber + 1)))).ToArray());
-                    loadedSave = byteList.ToArray();
-                    ChaoSave.GetChao();
-                }
-                else
-                {
-                    MessageBox.Show("That doesn't appear to be a chao file.", "Error loading chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    byte[] chao = File.ReadAllBytes(loadChao.FileName);
+                    if (chao.Length == 2112) { chao = chao.Skip(0x40).ToArray(); }
+                    Console.WriteLine(chao.Length);
+                    if (chao.Length == 2048)
+                    {
+                        List<byte> byteList = new List<byte>();
+                        byteList.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * uc.chaoNumber))).ToArray());
+                        if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                        else { byteList.AddRange(chao); }
+                        byteList.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (uc.chaoNumber + 1)))).ToArray());
+                        loadedSave = byteList.ToArray();
+                        ChaoSave.GetChao();
+                    }
+                    else
+                    {
+                        MessageBox.Show("That doesn't appear to be a chao file.", "Error loading chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
 
         private void Tsmi_SaveCurrentChao_Click(object sender, EventArgs e)
         {
-            uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-            byte[] chao = new byte[2048];
-            if (!saveIsPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
-            else { chao = loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
-            SaveFileDialog saveChao = new SaveFileDialog();
-            saveChao.InitialDirectory = chaoDirectory;
-            saveChao.Filter = "Chao File| *.chao";
-            saveChao.Title = "Save a Chao";
-            saveChao.ShowDialog();
+            if (tc_Main.SelectedIndex != 0)
+            {
+                uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                byte[] chao = new byte[2048];
+                if (!saveIsPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
+                else { chao = loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
+                SaveFileDialog saveChao = new SaveFileDialog();
+                saveChao.InitialDirectory = chaoDirectory;
+                saveChao.Filter = "Chao File|*.chao|FCE Chao File|*.chao";
+                saveChao.Title = "Save a Chao";
+                saveChao.ShowDialog();
 
-            if (saveChao.FileName != "") { File.WriteAllBytes(saveChao.FileName, chao); }
+                if (saveChao.FileName != "")
+                {
+                    List<byte> chaoToSave = new List<byte>(chao);
+                    switch (saveChao.FilterIndex)
+                    {
+                        case 1:
+                            break;
+
+                        case 2:
+                            chaoToSave.InsertRange(0, new byte[]
+                            {
+                                0x14, 0x28, 0xB7, 0x52, 0xAD, 0x34, 0xF3, 0xC4, 0xC4, 0xFA, 0x25, 0x49, 0x04, 0xFF, 0x1B, 0x24, 0x13, 0x0C, 0x26, 0x4F, 0x6F,
+                                0xB5, 0x29, 0xA5, 0x7C, 0x87, 0x78, 0x89, 0x08, 0xBC, 0x2E, 0xE6, 0xAB, 0x3E, 0x55, 0x4F, 0xDD, 0x35, 0x68, 0x75, 0xF5, 0xF7,
+                                0xA8, 0x2B, 0x27, 0x67, 0xCA, 0x74, 0x4F, 0x28, 0xE1, 0x56, 0x1F, 0x69, 0xDB, 0xBE, 0xF3, 0x4D, 0xA6, 0xD3, 0xB1, 0xE7, 0x21,
+                                0x00
+                            });
+                            break;
+                    }
+                    File.WriteAllBytes(saveChao.FileName, chaoToSave.ToArray());
+                }
+            }
         }
 
         private void Tsmi_DupeCurrentChao_Click(object sender, EventArgs e)
         {
-            uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-            byte[] chaoToDupe = loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
-            byte[] array = loadedSave.Skip(0x3AA4).Take(0x12000).ToArray();
-            uint chaoIndex = 0;
-            foreach (byte[] chao in SplitByteArray(array, 0x800))
+            if (tc_Main.SelectedIndex != 0)
             {
-                if ((chao[offsets.chao.Garden] == 0 || chao[offsets.chao.Garden] == 255) && chaoIndex != 24)
+                uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                byte[] chaoToDupe = loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
+                byte[] array = loadedSave.Skip(0x3AA4).Take(0x12000).ToArray();
+                uint chaoIndex = 0;
+                foreach (byte[] chao in SplitByteArray(array, 0x800))
                 {
-                    List<byte> byteArray = new List<byte>();
-                    byteArray.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * chaoIndex))).ToArray());
-                    byteArray.AddRange(chaoToDupe);
-                    byteArray.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (chaoIndex + 1)))).ToArray());
-                    loadedSave = byteArray.ToArray();
-                    MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
-                    ChaoSave.GetChao();
-                    break;
+                    if ((chao[offsets.chao.Garden] == 0 || chao[offsets.chao.Garden] == 255) && chaoIndex != 24)
+                    {
+                        List<byte> byteArray = new List<byte>();
+                        byteArray.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * chaoIndex))).ToArray());
+                        byteArray.AddRange(chaoToDupe);
+                        byteArray.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (chaoIndex + 1)))).ToArray());
+                        loadedSave = byteArray.ToArray();
+                        MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
+                        ChaoSave.GetChao();
+                        break;
+                    }
+                    else if (chaoIndex == 24)
+                    {
+                        MessageBox.Show("Failed to find a slot for the chao, you'll have to make room.", "Error duping chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    chaoIndex++;
                 }
-                else if (chaoIndex == 24)
-                {
-                    MessageBox.Show("Failed to find a slot for the chao, you'll have to make room.", "Error duping chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                chaoIndex++;
             }
         }
 
