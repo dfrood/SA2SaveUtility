@@ -1965,7 +1965,7 @@
             // cb_EggColour
             // 
             this.cb_EggColour.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_EggColour.DropDownWidth = 80;
+            this.cb_EggColour.DropDownWidth = 158;
             this.cb_EggColour.FormattingEnabled = true;
             this.cb_EggColour.Items.AddRange(new object[] {
             "Normal",
@@ -4472,6 +4472,7 @@
             // cb_EggColour2
             // 
             this.cb_EggColour2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_EggColour2.DropDownWidth = 158;
             this.cb_EggColour2.FormattingEnabled = true;
             this.cb_EggColour2.Items.AddRange(new object[] {
             "Normal",
@@ -4561,6 +4562,7 @@
             // cb_EggColour1
             // 
             this.cb_EggColour1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_EggColour1.DropDownWidth = 158;
             this.cb_EggColour1.FormattingEnabled = true;
             this.cb_EggColour1.Items.AddRange(new object[] {
             "Normal",
