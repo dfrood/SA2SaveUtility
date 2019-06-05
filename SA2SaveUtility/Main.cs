@@ -101,7 +101,7 @@ namespace SA2SaveUtility
                     isLatest = false;
                     btn_AutoUpdate.BeginInvoke(new MethodInvoker(() =>
                     {
-                       btn_AutoUpdate.Visible = true;
+                        btn_AutoUpdate.Visible = true;
                     }));
                     if (!isLatest && autoUpdate) { UpdateApplication(); }
                 }
@@ -175,8 +175,7 @@ namespace SA2SaveUtility
         {
             //Setup dialog OpenFileDialog for loading save file
             OpenFileDialog loadSave = new OpenFileDialog();
-            loadSave.Filter = "PC Main/Chao Save|*SONIC2B__*|360/PS3 Main/Chao Save|*.bin|Gamecube Main/Chao Save|*.gci";
-            //loadSave.Filter = "PC Main/Chao Save|*SONIC2B__*|360/PS3 Main/Chao Save|*.bin|Gamecube Main/Chao Save|*.gci|Dreamcast Main/Chao Save|*.VMS";
+            loadSave.Filter = "Sonic Adventure 2 Main/Chao Save|*.*";
             loadSave.Title = "Load a Save";
 
             if (loadSave.ShowDialog() == DialogResult.OK)
@@ -187,93 +186,62 @@ namespace SA2SaveUtility
                 ChaoSave.activeChao = new Dictionary<uint, TabPage>();
                 MainSave.activeMain = new Dictionary<int, TabPage>();
 
-                switch (loadSave.FilterIndex)
+                if (loadedSave.Length == 0x6000)
                 {
-                    case 1:
-                        {
-                            saveIsPC = true;
-                            saveIsGC = false;
-                            //saveIsDC = false;
-                            if (loadedSave.Length == 0x6000)
-                            {
-                                saveIsMain = true;
-                                validSave = true;
-                                SaveIsMain();
-                                ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Main Save]";
-                            }
-                            if (loadedSave.Length == 0x10000)
-                            {
-                                saveIsMain = false;
-                                validSave = true;
-                                SaveIsChao();
-                                ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Chao Save]";
-                            }
-                            break;
-                        }
-                    case 2:
-                        {
-                            saveIsPC = false;
-                            saveIsGC = false;
-                            //saveIsDC = false;
-                            if (loadedSave.Length == 0x3C028)
-                            {
-                                validSave = true;
-                                SaveIsMain();
-                                ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Main Save]";
-                            }
-                            if (loadedSave.Length == 0x10000)
-                            {
-                                validSave = true;
-                                SaveIsChao();
-                                ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Chao Save]";
-                            }
-                            break;
-                        }
-                    case 3:
-                        {
-                            saveIsPC = false;
-                            saveIsGC = true;
-                            //saveIsDC = false;
-                            if (loadedSave.Length == 0x6040)
-                            {
-                                gcFileBytes = loadedSave.Skip(0x12).Take(0x02).ToArray();
-                                gcBytes = loadedSave.Take(0x40).ToArray();
-                                loadedSave = loadedSave.Skip(0x40).ToArray();
-                                validSave = true;
-                                SaveIsMain();
-                                ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Main Save]";
-                            }
-                            if (loadedSave.Length == 0x10040)
-                            {
-                                gcBytes = loadedSave.Take(0x40).ToArray();
-                                loadedSave = loadedSave.Skip(0x40).ToArray();
-                                validSave = true;
-                                SaveIsChao();
-                                ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Chao Save]";
-                            }
-                            break;
-                        }
-                    //case 4:
-                    //    {
-                    //        saveIsPC = false;
-                    //        saveIsGC = true;
-                    //        saveIsDC = true;
-                    //        if (loadedSave.Length == 0x6820)
-                    //        {
-                    //            loadedSave = loadedSave.Skip(0x800).ToArray();
-                    //            validSave = true;
-                    //            SaveIsMain();
-                    //            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Dreamcast Main Save]";
-                    //        }
-                    //        if (loadedSave.Length == 0x6800)
-                    //        {
-                    //            loadedSave = loadedSave.Skip(0x800).ToArray();
-                    //            validSave = true;
-                    //            SaveIsChao();
-                    //            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Dreamcast Chao Save]";
-                    //        }
-                    //        break;
-                    //    }
+                    saveIsPC = true;
+                    saveIsGC = false;
+                    saveIsMain = true;
+                    validSave = true;
+                    SaveIsMain();
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Main Save]";
+                }
+                if (loadedSave.Length == 0x10000)
+                {
+                    DialogResult result = MessageBox.Show("Is the save you're loading a PC Chao Save?", "PC or 360/PS3 Chao Save?", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        saveIsPC = true;
+                        saveIsGC = false;
+                        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Chao Save]";
+                    }
+                    if (result == DialogResult.No)
+                    {
+                        saveIsPC = false;
+                        saveIsGC = false;
+                        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Chao Save]";
+                    }
+                    saveIsMain = false;
+                    validSave = true;
+                    SaveIsChao();
+                }
+                if (loadedSave.Length == 0x3C028)
+                {
+                    saveIsPC = false;
+                    saveIsGC = false;
+                    validSave = true;
+                    SaveIsMain();
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Main Save]";
+                }
+                if (loadedSave.Length == 0x6040)
+                {
+                    saveIsPC = false;
+                    saveIsGC = true;
+                    gcFileBytes = loadedSave.Skip(0x12).Take(0x02).ToArray();
+                    gcBytes = loadedSave.Take(0x40).ToArray();
+                    loadedSave = loadedSave.Skip(0x40).ToArray();
+                    validSave = true;
+                    SaveIsMain();
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Main Save]";
+                }
+                if (loadedSave.Length == 0x10040)
+                {
+                    saveIsPC = false;
+                    saveIsGC = true;
+                    gcBytes = loadedSave.Take(0x40).ToArray();
+                    loadedSave = loadedSave.Skip(0x40).ToArray();
+                    validSave = true;
+                    SaveIsChao();
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Chao Save]";
                 }
 
                 if (validSave)
