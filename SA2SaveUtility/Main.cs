@@ -426,6 +426,7 @@ namespace SA2SaveUtility
                     }
                     byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
 
+                    if (!saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
                     byte[] chaoToSave = byteList.ToArray();
 
                     byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
@@ -693,6 +694,8 @@ namespace SA2SaveUtility
                     }
 
                     byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
+
+                    if (saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
 
                     byte[] splitForChecksum = byteList.Skip(0x3040).ToArray();
                     ChaoSave.WriteChecksum(splitForChecksum, true);
@@ -1058,6 +1061,8 @@ namespace SA2SaveUtility
                         else { byteList.AddRange(chao); }
                     }
                     byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
+
+                    if (saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
 
                     byte[] chaoToSave = byteList.ToArray();
 

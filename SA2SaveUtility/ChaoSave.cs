@@ -858,6 +858,14 @@ namespace SA2SaveUtility
             return byteArray.ToArray();
         }
 
+        public static byte[] ByteSwapChaoWorld(byte[] save)
+        {
+            List<byte> byteArray = save.ToList();
+            byteArray.Reverse(0x3A50, 4);
+            byteArray.Reverse(0x3A54, 4);
+            return byteArray.ToArray();
+        }
+
         public static byte[] SetName(string nameString)
         {
             List<byte> byteList = new List<byte>();

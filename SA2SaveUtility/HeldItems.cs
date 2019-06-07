@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SA2SaveUtility
@@ -13,6 +9,7 @@ namespace SA2SaveUtility
     public partial class HeldItems : Form
     {
         public int itemCount { get; set; }
+        bool loaded = false;
 
         public List<string> Eggs = new List<string>(new string[]{
             "Normal",
@@ -199,7 +196,8 @@ namespace SA2SaveUtility
         public HeldItems()
         {
             InitializeComponent();
-            itemCount = Main.loadedSave[0x3A54];
+            if (Main.saveIsPC) { itemCount = Main.loadedSave[0x3A54]; }
+            else { itemCount = Main.loadedSave[0x3A57]; }
             switch (Main.loadedSave[0x3A98])
             {
                 case 255:
@@ -316,21 +314,7 @@ namespace SA2SaveUtility
                     break;
             }
             SetSize();
-            if (cb_Category1.SelectedIndex == 1) { cb_Item1.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A99]).First().Value; }
-            if (cb_Category1.SelectedIndex == 3) { cb_Item1.SelectedIndex = (Main.loadedSave[0x3A99] - 1); }
-            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3) { cb_Item1.SelectedIndex = Main.loadedSave[0x3A99]; }
-            if (cb_Category2.SelectedIndex == 1) { cb_Item2.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A9B]).First().Value; }
-            if (cb_Category2.SelectedIndex == 3) { cb_Item2.SelectedIndex = (Main.loadedSave[0x3A9B] - 1); }
-            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3) { cb_Item2.SelectedIndex = Main.loadedSave[0x3A9B]; }
-            if (cb_Category3.SelectedIndex == 1) { cb_Item3.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A9D]).First().Value; }
-            if (cb_Category3.SelectedIndex == 3) { cb_Item3.SelectedIndex = (Main.loadedSave[0x3A9D] - 1); }
-            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3) { cb_Item3.SelectedIndex = Main.loadedSave[0x3A9D]; }
-            if (cb_Category4.SelectedIndex == 1) { cb_Item4.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A9F]).First().Value; }
-            if (cb_Category4.SelectedIndex == 3) { cb_Item4.SelectedIndex = (Main.loadedSave[0x3A9F] - 1); }
-            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3) { cb_Item4.SelectedIndex = Main.loadedSave[0x3A9F]; }
-            if (cb_Category5.SelectedIndex == 1) { cb_Item5.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3AA1]).First().Value; }
-            if (cb_Category5.SelectedIndex == 3) { cb_Item5.SelectedIndex = (Main.loadedSave[0x3AA1] - 1); }
-            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3) { cb_Item5.SelectedIndex = Main.loadedSave[0x3AA1]; }
+            loaded = true;
         }
 
 
@@ -358,6 +342,8 @@ namespace SA2SaveUtility
                     cb_Item5.Visible = false;
                     cb_Category5.Visible = false;
                     lb_Item5.Visible = false;
+                    btn_RemoveItem.Enabled = false;
+                    btn_AddItem.Enabled = true;
                     break;
                 case 1:
                     Height = 138;
@@ -379,6 +365,8 @@ namespace SA2SaveUtility
                     cb_Item5.Visible = false;
                     cb_Category5.Visible = false;
                     lb_Item5.Visible = false;
+                    btn_RemoveItem.Enabled = true;
+                    btn_AddItem.Enabled = true;
                     break;
                 case 2:
                     Height = 138;
@@ -400,6 +388,8 @@ namespace SA2SaveUtility
                     cb_Item5.Visible = false;
                     cb_Category5.Visible = false;
                     lb_Item5.Visible = false;
+                    btn_RemoveItem.Enabled = true;
+                    btn_AddItem.Enabled = true;
                     break;
                 case 3:
                     Height = 138;
@@ -421,6 +411,8 @@ namespace SA2SaveUtility
                     cb_Item5.Visible = false;
                     cb_Category5.Visible = false;
                     lb_Item5.Visible = false;
+                    btn_RemoveItem.Enabled = true;
+                    btn_AddItem.Enabled = true;
                     break;
                 case 4:
                     Height = 168;
@@ -442,6 +434,8 @@ namespace SA2SaveUtility
                     cb_Item5.Visible = false;
                     cb_Category5.Visible = false;
                     lb_Item5.Visible = false;
+                    btn_RemoveItem.Enabled = true;
+                    btn_AddItem.Enabled = true;
                     break;
                 case 5:
                     Height = 196;
@@ -463,6 +457,8 @@ namespace SA2SaveUtility
                     cb_Item5.Visible = true;
                     cb_Category5.Visible = true;
                     lb_Item5.Visible = true;
+                    btn_RemoveItem.Enabled = true;
+                    btn_AddItem.Enabled = false;
                     break;
             }
         }
@@ -489,7 +485,17 @@ namespace SA2SaveUtility
                     Main.loadedSave[0x3A98] = 9;
                     break;
             }
-            if (cb_Item1.SelectedItem == null) { cb_Item1.SelectedIndex = 0; }
+            if (loaded) { Main.loadedSave[0x3A99] = 0; }
+            if (cb_Category1.SelectedIndex == 1) { cb_Item1.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A99]).First().Value; }
+            if (cb_Category1.SelectedIndex == 3)
+            {
+                cb_Item1.SelectedIndex = (Main.loadedSave[0x3A99] - 1);
+                if (cb_Item1.SelectedItem == null)
+                {
+                    cb_Item1.SelectedIndex = 0;
+                }
+            }
+            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3) { cb_Item1.SelectedIndex = Main.loadedSave[0x3A99]; }
         }
 
         private void Cb_Category2_SelectedIndexChanged(object sender, EventArgs e)
@@ -514,7 +520,17 @@ namespace SA2SaveUtility
                     Main.loadedSave[0x3A9A] = 9;
                     break;
             }
-            if (cb_Item2.SelectedItem == null) { cb_Item2.SelectedIndex = 0; }
+            if (loaded) { Main.loadedSave[0x3A9B] = 0; }
+            if (cb_Category2.SelectedIndex == 1) { cb_Item2.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A9B]).First().Value; }
+            if (cb_Category2.SelectedIndex == 3)
+            {
+                cb_Item2.SelectedIndex = (Main.loadedSave[0x3A9B] - 1);
+                if (cb_Item2.SelectedItem == null)
+                {
+                    cb_Item2.SelectedIndex = 0;
+                }
+            }
+            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3) { cb_Item2.SelectedIndex = Main.loadedSave[0x3A9B]; }
         }
 
         private void Cb_Category3_SelectedIndexChanged(object sender, EventArgs e)
@@ -539,7 +555,17 @@ namespace SA2SaveUtility
                     Main.loadedSave[0x3A9C] = 9;
                     break;
             }
-            if (cb_Item3.SelectedItem == null) { cb_Item3.SelectedIndex = 0; }
+            if (loaded) { Main.loadedSave[0x3A9D] = 0; }
+            if (cb_Category3.SelectedIndex == 1) { cb_Item3.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A9D]).First().Value; }
+            if (cb_Category3.SelectedIndex == 3)
+            {
+                cb_Item3.SelectedIndex = (Main.loadedSave[0x3A9D] - 1);
+                if (cb_Item3.SelectedItem == null)
+                {
+                    cb_Item3.SelectedIndex = 0;
+                }
+            }
+            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3) { cb_Item3.SelectedIndex = Main.loadedSave[0x3A9D]; }
         }
 
         private void Cb_Category4_SelectedIndexChanged(object sender, EventArgs e)
@@ -564,7 +590,19 @@ namespace SA2SaveUtility
                     Main.loadedSave[0x3A9E] = 9;
                     break;
             }
-            if (cb_Item4.SelectedItem == null) { cb_Item4.SelectedIndex = 0; }
+            if (loaded) { Main.loadedSave[0x3A9F] = 0; }
+            if (cb_Category4.SelectedIndex == 1) { cb_Item4.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3A9F]).First().Value; }
+            if (cb_Category4.SelectedIndex == 3)
+            {
+                cb_Item4.SelectedIndex = (Main.loadedSave[0x3A9F] - 1);
+                {
+                    if (cb_Item4.SelectedItem == null)
+                    {
+                        cb_Item4.SelectedIndex = 0;
+                    }
+                }
+            }
+            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3) { cb_Item4.SelectedIndex = Main.loadedSave[0x3A9F]; }
         }
 
         private void Cb_Category5_SelectedIndexChanged(object sender, EventArgs e)
@@ -589,7 +627,17 @@ namespace SA2SaveUtility
                     Main.loadedSave[0x3AA0] = 9;
                     break;
             }
-            if (cb_Item5.SelectedItem == null) { cb_Item5.SelectedIndex = 0; }
+            if (loaded) { Main.loadedSave[0x3AA1] = 0; }
+            if (cb_Category5.SelectedIndex == 1) { cb_Item5.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[0x3AA1]).First().Value; }
+            if (cb_Category5.SelectedIndex == 3)
+            {
+                cb_Item5.SelectedIndex = (Main.loadedSave[0x3AA1] - 1);
+                if (cb_Item5.SelectedItem == null)
+                {
+                    cb_Item5.SelectedIndex = 0;
+                }
+            }
+            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3) { cb_Item5.SelectedIndex = Main.loadedSave[0x3AA1]; }
         }
 
         private void Btn_AddItem_Click(object sender, EventArgs e)
@@ -598,7 +646,8 @@ namespace SA2SaveUtility
             if (itemCount == 5) { btn_AddItem.Enabled = false; }
             if (itemCount > 0) { btn_RemoveItem.Enabled = true; }
             SetSize();
-            Main.loadedSave[0x3A54] = (byte)itemCount;
+            if (Main.saveIsPC) { Main.loadedSave[0x3A54] = (byte)itemCount; }
+            else { Main.loadedSave[0x3A57] = (byte)itemCount; }
         }
 
         private void Btn_RemoveItem_Click(object sender, EventArgs e)
@@ -607,7 +656,8 @@ namespace SA2SaveUtility
             if (itemCount == 0) { btn_RemoveItem.Enabled = false; }
             if (itemCount < 5) { btn_AddItem.Enabled = true; }
             SetSize();
-            Main.loadedSave[0x3A54] = (byte)itemCount;
+            if (Main.saveIsPC) { Main.loadedSave[0x3A54] = (byte)itemCount; }
+            else { Main.loadedSave[0x3A57] = (byte)itemCount; }
         }
 
         private void Cb_Item1_SelectedIndexChanged(object sender, EventArgs e)
