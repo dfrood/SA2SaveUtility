@@ -6,6 +6,7 @@ namespace SA2SaveUtility
     public partial class uc_ChaoSave : UserControl
     {
         Offsets offsets = new Offsets();
+        public HeldItems heldItems = new HeldItems();
 
         public uc_ChaoSave()
         {
@@ -29,6 +30,11 @@ namespace SA2SaveUtility
         private void Checkb_HeroGarden_CheckedChanged(object sender, EventArgs e)
         {
             SetGardens();
+        }
+
+        private void Btn_HeldItems_Click(object sender, EventArgs e)
+        {
+            heldItems.ShowDialog();
         }
     }
 }

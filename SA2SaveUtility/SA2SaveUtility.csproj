@@ -65,6 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChaoSave.cs" />
+    <Compile Include="HeldItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HeldItems.Designer.cs">
+      <DependentUpon>HeldItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     <Compile Include="uc_Mission.designer.cs">
       <DependentUpon>uc_Mission.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="HeldItems.resx">
+      <DependentUpon>HeldItems.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
