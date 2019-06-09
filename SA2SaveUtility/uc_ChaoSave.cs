@@ -7,6 +7,7 @@ namespace SA2SaveUtility
     {
         Offsets offsets = new Offsets();
         public HeldItems heldItems = new HeldItems();
+        public MarketItems marketItems = new MarketItems();
 
         public uc_ChaoSave()
         {
@@ -35,6 +36,11 @@ namespace SA2SaveUtility
         private void Btn_HeldItems_Click(object sender, EventArgs e)
         {
             heldItems.ShowDialog();
+        }
+
+        private void Btn_MarketItems_Click(object sender, EventArgs e)
+        {
+            marketItems.ShowDialog();
         }
     }
 }

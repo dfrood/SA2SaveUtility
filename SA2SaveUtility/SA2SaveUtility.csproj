@@ -78,6 +78,12 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="MainSave.cs" />
+    <Compile Include="MarketItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MarketItems.Designer.cs">
+      <DependentUpon>MarketItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Offsets.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MarketItems.resx">
+      <DependentUpon>MarketItems.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -2554,7 +2554,21 @@
             "Purple Shiny Two-Tone Egg Shell",
             "Orange Shiny Two-Tone Egg Shell",
             "Black Shiny Two-Tone Egg Shell",
-            "Glitchy Normal Egg Shell"});
+            "Gold Egg Shell",
+            "Silver Egg Shell",
+            "Ruby Egg Shell",
+            "Sapphire Egg Shell",
+            "Emerald Egg Shell",
+            "Amethyst Egg Shell",
+            "Aquamarine Egg Shell",
+            "Garnet Egg Shell",
+            "Onyx Egg Shell",
+            "Peridot Egg Shell",
+            "Topaz Egg Shell",
+            "Pearl Egg Shell",
+            "Metal 1 Egg Shell",
+            "Metal 2 Egg Shell",
+            "Glass Egg Shell"});
             this.cb_Hat.Location = new System.Drawing.Point(105, 19);
             this.cb_Hat.Name = "cb_Hat";
             this.cb_Hat.Size = new System.Drawing.Size(80, 21);

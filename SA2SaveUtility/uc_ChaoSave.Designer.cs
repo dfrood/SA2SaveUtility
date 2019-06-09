@@ -87,7 +87,7 @@
             this.btn_MarketItems.TabIndex = 2;
             this.btn_MarketItems.Text = "Black Market Items";
             this.btn_MarketItems.UseVisualStyleBackColor = true;
-            this.btn_MarketItems.Visible = false;
+            this.btn_MarketItems.Click += new System.EventHandler(this.Btn_MarketItems_Click);
             // 
             // uc_ChaoSave
             // 

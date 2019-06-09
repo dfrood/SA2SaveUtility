@@ -69,7 +69,7 @@
             // 
             this.cb_Item5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Item5.FormattingEnabled = true;
-            this.cb_Item5.Location = new System.Drawing.Point(124, 131);
+            this.cb_Item5.Location = new System.Drawing.Point(124, 120);
             this.cb_Item5.Name = "cb_Item5";
             this.cb_Item5.Size = new System.Drawing.Size(121, 21);
             this.cb_Item5.TabIndex = 9;
@@ -79,7 +79,7 @@
             // 
             this.cb_Item4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Item4.FormattingEnabled = true;
-            this.cb_Item4.Location = new System.Drawing.Point(124, 103);
+            this.cb_Item4.Location = new System.Drawing.Point(124, 95);
             this.cb_Item4.Name = "cb_Item4";
             this.cb_Item4.Size = new System.Drawing.Size(121, 21);
             this.cb_Item4.TabIndex = 8;
@@ -89,7 +89,7 @@
             // 
             this.cb_Item3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Item3.FormattingEnabled = true;
-            this.cb_Item3.Location = new System.Drawing.Point(124, 75);
+            this.cb_Item3.Location = new System.Drawing.Point(124, 70);
             this.cb_Item3.Name = "cb_Item3";
             this.cb_Item3.Size = new System.Drawing.Size(121, 21);
             this.cb_Item3.TabIndex = 7;
@@ -99,7 +99,7 @@
             // 
             this.cb_Item2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Item2.FormattingEnabled = true;
-            this.cb_Item2.Location = new System.Drawing.Point(124, 47);
+            this.cb_Item2.Location = new System.Drawing.Point(124, 45);
             this.cb_Item2.Name = "cb_Item2";
             this.cb_Item2.Size = new System.Drawing.Size(121, 21);
             this.cb_Item2.TabIndex = 6;
@@ -127,9 +127,9 @@
             // 
             // btn_RemoveItem
             // 
-            this.btn_RemoveItem.Location = new System.Drawing.Point(251, 46);
+            this.btn_RemoveItem.Location = new System.Drawing.Point(251, 44);
             this.btn_RemoveItem.Name = "btn_RemoveItem";
-            this.btn_RemoveItem.Size = new System.Drawing.Size(75, 50);
+            this.btn_RemoveItem.Size = new System.Drawing.Size(75, 47);
             this.btn_RemoveItem.TabIndex = 11;
             this.btn_RemoveItem.Text = "Remove Item";
             this.btn_RemoveItem.UseVisualStyleBackColor = true;
@@ -144,7 +144,7 @@
             "Fruit",
             "Seed",
             "Hat"});
-            this.cb_Category2.Location = new System.Drawing.Point(45, 47);
+            this.cb_Category2.Location = new System.Drawing.Point(45, 45);
             this.cb_Category2.Name = "cb_Category2";
             this.cb_Category2.Size = new System.Drawing.Size(73, 21);
             this.cb_Category2.TabIndex = 12;
@@ -159,7 +159,7 @@
             "Fruit",
             "Seed",
             "Hat"});
-            this.cb_Category4.Location = new System.Drawing.Point(46, 103);
+            this.cb_Category4.Location = new System.Drawing.Point(46, 95);
             this.cb_Category4.Name = "cb_Category4";
             this.cb_Category4.Size = new System.Drawing.Size(73, 21);
             this.cb_Category4.TabIndex = 14;
@@ -174,7 +174,7 @@
             "Fruit",
             "Seed",
             "Hat"});
-            this.cb_Category3.Location = new System.Drawing.Point(45, 75);
+            this.cb_Category3.Location = new System.Drawing.Point(45, 70);
             this.cb_Category3.Name = "cb_Category3";
             this.cb_Category3.Size = new System.Drawing.Size(73, 21);
             this.cb_Category3.TabIndex = 13;
@@ -189,7 +189,7 @@
             "Fruit",
             "Seed",
             "Hat"});
-            this.cb_Category5.Location = new System.Drawing.Point(46, 131);
+            this.cb_Category5.Location = new System.Drawing.Point(46, 120);
             this.cb_Category5.Name = "cb_Category5";
             this.cb_Category5.Size = new System.Drawing.Size(73, 21);
             this.cb_Category5.TabIndex = 15;
@@ -216,7 +216,7 @@
             // lb_Item1
             // 
             this.lb_Item1.AutoSize = true;
-            this.lb_Item1.Location = new System.Drawing.Point(4, 23);
+            this.lb_Item1.Location = new System.Drawing.Point(3, 23);
             this.lb_Item1.Name = "lb_Item1";
             this.lb_Item1.Size = new System.Drawing.Size(36, 13);
             this.lb_Item1.TabIndex = 18;
@@ -225,7 +225,7 @@
             // lb_Item2
             // 
             this.lb_Item2.AutoSize = true;
-            this.lb_Item2.Location = new System.Drawing.Point(4, 50);
+            this.lb_Item2.Location = new System.Drawing.Point(3, 48);
             this.lb_Item2.Name = "lb_Item2";
             this.lb_Item2.Size = new System.Drawing.Size(36, 13);
             this.lb_Item2.TabIndex = 19;
@@ -234,7 +234,7 @@
             // lb_Item3
             // 
             this.lb_Item3.AutoSize = true;
-            this.lb_Item3.Location = new System.Drawing.Point(4, 78);
+            this.lb_Item3.Location = new System.Drawing.Point(3, 73);
             this.lb_Item3.Name = "lb_Item3";
             this.lb_Item3.Size = new System.Drawing.Size(36, 13);
             this.lb_Item3.TabIndex = 20;
@@ -243,7 +243,7 @@
             // lb_Item4
             // 
             this.lb_Item4.AutoSize = true;
-            this.lb_Item4.Location = new System.Drawing.Point(4, 106);
+            this.lb_Item4.Location = new System.Drawing.Point(3, 98);
             this.lb_Item4.Name = "lb_Item4";
             this.lb_Item4.Size = new System.Drawing.Size(36, 13);
             this.lb_Item4.TabIndex = 21;
@@ -252,7 +252,7 @@
             // lb_Item5
             // 
             this.lb_Item5.AutoSize = true;
-            this.lb_Item5.Location = new System.Drawing.Point(4, 134);
+            this.lb_Item5.Location = new System.Drawing.Point(3, 123);
             this.lb_Item5.Name = "lb_Item5";
             this.lb_Item5.Size = new System.Drawing.Size(36, 13);
             this.lb_Item5.TabIndex = 22;
@@ -262,7 +262,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(330, 157);
+            this.ClientSize = new System.Drawing.Size(330, 146);
             this.Controls.Add(this.lb_Item5);
             this.Controls.Add(this.lb_Item4);
             this.Controls.Add(this.lb_Item3);

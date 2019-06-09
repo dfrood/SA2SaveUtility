@@ -861,8 +861,8 @@ namespace SA2SaveUtility
         public static byte[] ByteSwapChaoWorld(byte[] save)
         {
             List<byte> byteArray = save.ToList();
-            byteArray.Reverse(0x3A50, 4);
-            byteArray.Reverse(0x3A54, 4);
+            byteArray.Reverse((int)offsets.chaoSave.MarketCount, 4);
+            byteArray.Reverse((int)offsets.chaoSave.HeldCount, 4);
             return byteArray.ToArray();
         }
 
