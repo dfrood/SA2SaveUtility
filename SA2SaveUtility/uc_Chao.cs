@@ -581,6 +581,33 @@ namespace SA2SaveUtility
             }
         }
 
+        private void SetSAAnimalBehaviours()
+        {
+            uint animalBehaviours = 0x00;
+            if (checkb_SASeal.Checked) { animalBehaviours += 0x01; }
+            if (checkb_SAPenguin.Checked) { animalBehaviours += (1 << 1); }
+            if (checkb_SAOtter.Checked) { animalBehaviours += (1 << 2); }
+            if (checkb_SAPeacock.Checked) { animalBehaviours += (1 << 3); }
+            if (checkb_SASwallow.Checked) { animalBehaviours += (1 << 4); }
+            if (checkb_SAParrot.Checked) { animalBehaviours += (1 << 5); }
+            if (checkb_SADeer.Checked) { animalBehaviours += (1 << 6); }
+            if (checkb_SARabbit.Checked) { animalBehaviours += (1 << 7); }
+            if (checkb_SAKangaroo.Checked) { animalBehaviours += (1 << 8); }
+            if (checkb_SAGorilla.Checked) { animalBehaviours += (1 << 9); }
+            if (checkb_SALion.Checked) { animalBehaviours += (1 << 10); }
+            if (checkb_SAElephant.Checked) { animalBehaviours += (1 << 11); }
+            if (checkb_SAMole.Checked) { animalBehaviours += (1 << 12); }
+            if (checkb_SAKoala.Checked) { animalBehaviours += (1 << 13); }
+            if (checkb_SASkunk.Checked) { animalBehaviours += (1 << 14); }
+
+            byte[] animalBehavioursBytes = BitConverter.GetBytes((UInt32)animalBehaviours);
+            if (!Main.saveIsPC) { Array.Reverse(animalBehavioursBytes); }
+            for (int i = 0; i < animalBehavioursBytes.Length; i++)
+            {
+                Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.SAAnimalBehaviours + i)] = animalBehavioursBytes[i];
+            }
+        }
+
         private void SetAnimalBehaviours()
         {
             uint animalBehaviours = 0x00;
@@ -679,7 +706,7 @@ namespace SA2SaveUtility
             SetAnimalBehaviours();
         }
 
-        private void Check_Unicorn_CheckedChanged(object sender, EventArgs e)
+        private void Checkb_Unicorn_CheckedChanged(object sender, EventArgs e)
         {
             SetAnimalBehaviours();
         }
@@ -1217,6 +1244,81 @@ namespace SA2SaveUtility
                 trackb_TransformationMagnitude.SmallChange = 1000;
                 trackb_TransformationMagnitude.LargeChange = 10000;
             }
+        }
+
+        private void Checkb_SASkunk_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAKoala_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAMole_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAElephant_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SALion_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAGorilla_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAKangaroo_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SARabbit_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SADeer_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAParrot_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SASwallow_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAPeacock_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAOtter_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SAPenguin_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
+        }
+
+        private void Checkb_SASeal_CheckedChanged(object sender, EventArgs e)
+        {
+            SetSAAnimalBehaviours();
         }
     }
 }

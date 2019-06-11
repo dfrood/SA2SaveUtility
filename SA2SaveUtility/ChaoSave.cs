@@ -316,6 +316,25 @@ namespace SA2SaveUtility
             WateringCan = 1 << 11
         }
 
+        public enum SAAnimalBehaviours
+        {
+            Seal = 0x01,
+            Penguin = 1 << 1,
+            Otter = 1 << 2,
+            Peacock = 1 << 3,
+            Swallow = 1 << 4,
+            Parrot = 1 << 5,
+            Deer = 1 << 6,
+            Rabbit = 1 << 7,
+            Kangaroo = 1 << 8,
+            Gorilla = 1 << 9,
+            Lion = 1 << 10,
+            Elephant = 1 << 11,
+            Mole = 1 << 12,
+            Koala = 1 << 13,
+            Skunk = 1 << 14
+        }
+
         public enum AnimalBehaviours
         {
             Penguin = 0x01,
@@ -407,6 +426,9 @@ namespace SA2SaveUtility
                 if (Main.saveIsPC) { toys = (Toys)Enum.Parse(typeof(Toys), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2Toys)).Take(4).ToArray(), 0).ToString()); }
                 else { toys = (Toys)Enum.Parse(typeof(Toys), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2Toys)).Take(4).Reverse().ToArray(), 0).ToString()); }
             }
+            SAAnimalBehaviours saAnimalBehaviours = 0;
+            if (Main.saveIsPC) { saAnimalBehaviours = (SAAnimalBehaviours)Enum.Parse(typeof(SAAnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SAAnimalBehaviours)).Take(4).ToArray(), 0).ToString()); }
+            else { saAnimalBehaviours = (SAAnimalBehaviours)Enum.Parse(typeof(SAAnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SAAnimalBehaviours)).Take(4).Reverse().ToArray(), 0).ToString()); }
             AnimalBehaviours animalBehaviours = 0;
             if (Main.saveIsPC) { animalBehaviours = (AnimalBehaviours)Enum.Parse(typeof(AnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2AnimalBehaviours)).Take(4).ToArray(), 0).ToString()); }
             else { animalBehaviours = (AnimalBehaviours)Enum.Parse(typeof(AnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2AnimalBehaviours)).Take(4).Reverse().ToArray(), 0).ToString()); }
@@ -592,28 +614,45 @@ namespace SA2SaveUtility
             gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_BubbleWand").First().Checked = (toys & Toys.BubbleWand) == Toys.BubbleWand;
             gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shovel").First().Checked = (toys & Toys.Shovel) == Toys.Shovel;
             gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_WateringCan").First().Checked = (toys & Toys.WateringCan) == Toys.WateringCan;
-            GroupBox gb_AnimalBehaviours = controls[0].Controls.OfType<GroupBox>().Where(x => x.Name == "gb_AnimalBehaviours").First();
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Penguin").First().Checked = (animalBehaviours & AnimalBehaviours.Penguin) == AnimalBehaviours.Penguin;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Seal").First().Checked = (animalBehaviours & AnimalBehaviours.Seal) == AnimalBehaviours.Seal;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Otter").First().Checked = (animalBehaviours & AnimalBehaviours.Otter) == AnimalBehaviours.Otter;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Rabbit").First().Checked = (animalBehaviours & AnimalBehaviours.Rabbit) == AnimalBehaviours.Rabbit;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Cheetah").First().Checked = (animalBehaviours & AnimalBehaviours.Cheetah) == AnimalBehaviours.Cheetah;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Warthog").First().Checked = (animalBehaviours & AnimalBehaviours.Warthog) == AnimalBehaviours.Warthog;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bear").First().Checked = (animalBehaviours & AnimalBehaviours.Bear) == AnimalBehaviours.Bear;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Tiger").First().Checked = (animalBehaviours & AnimalBehaviours.Tiger) == AnimalBehaviours.Tiger;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Gorilla").First().Checked = (animalBehaviours & AnimalBehaviours.Gorilla) == AnimalBehaviours.Gorilla;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Peacock").First().Checked = (animalBehaviours & AnimalBehaviours.Peacock) == AnimalBehaviours.Peacock;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Parrot").First().Checked = (animalBehaviours & AnimalBehaviours.Parrot) == AnimalBehaviours.Parrot;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Condor").First().Checked = (animalBehaviours & AnimalBehaviours.Condor) == AnimalBehaviours.Condor;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Skunk").First().Checked = (animalBehaviours & AnimalBehaviours.Skunk) == AnimalBehaviours.Skunk;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Sheep").First().Checked = (animalBehaviours & AnimalBehaviours.Sheep) == AnimalBehaviours.Sheep;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Raccoon").First().Checked = (animalBehaviours & AnimalBehaviours.Raccoon) == AnimalBehaviours.Raccoon;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_HalfFish").First().Checked = (animalBehaviours & AnimalBehaviours.HalfFish) == AnimalBehaviours.HalfFish;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SkeletonDog").First().Checked = (animalBehaviours & AnimalBehaviours.SkeletonDog) == AnimalBehaviours.SkeletonDog;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bat").First().Checked = (animalBehaviours & AnimalBehaviours.Bat) == AnimalBehaviours.Bat;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Dragon").First().Checked = (animalBehaviours & AnimalBehaviours.Dragon) == AnimalBehaviours.Dragon;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Unicorn").First().Checked = (animalBehaviours & AnimalBehaviours.Unicorn) == AnimalBehaviours.Unicorn;
-            gb_AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Phoenix").First().Checked = (animalBehaviours & AnimalBehaviours.Phoenix) == AnimalBehaviours.Phoenix;
+            TabControl tc_AnimalBehaviours = controls[0].Controls.OfType<TabControl>().Where(x => x.Name == "tc_AnimalBehaviours").First();
+            TabPage tp_SAAnimalBehaviours = tc_AnimalBehaviours.TabPages[tc_AnimalBehaviours.TabPages.IndexOfKey("tp_SAAnimalBehaviours")];
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASeal").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Seal) == SAAnimalBehaviours.Seal;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAPenguin").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Penguin) == SAAnimalBehaviours.Penguin;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAOtter").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Otter) == SAAnimalBehaviours.Otter;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAPeacock").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Peacock) == SAAnimalBehaviours.Peacock;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASwallow").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Swallow) == SAAnimalBehaviours.Swallow;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAParrot").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Parrot) == SAAnimalBehaviours.Parrot;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SADeer").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Deer) == SAAnimalBehaviours.Deer;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SARabbit").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Rabbit) == SAAnimalBehaviours.Rabbit;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAKangaroo").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Kangaroo) == SAAnimalBehaviours.Kangaroo;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAGorilla").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Gorilla) == SAAnimalBehaviours.Gorilla;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SALion").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Lion) == SAAnimalBehaviours.Lion;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAElephant").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Elephant) == SAAnimalBehaviours.Elephant;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAMole").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Mole) == SAAnimalBehaviours.Mole;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAKoala").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Koala) == SAAnimalBehaviours.Koala;
+            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASkunk").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Skunk) == SAAnimalBehaviours.Skunk;
+            TabPage tp_SA2AnimalBehaviours = tc_AnimalBehaviours.TabPages[tc_AnimalBehaviours.TabPages.IndexOfKey("tp_SA2AnimalBehaviours")];
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Penguin").First().Checked = (animalBehaviours & AnimalBehaviours.Penguin) == AnimalBehaviours.Penguin;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Seal").First().Checked = (animalBehaviours & AnimalBehaviours.Seal) == AnimalBehaviours.Seal;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Otter").First().Checked = (animalBehaviours & AnimalBehaviours.Otter) == AnimalBehaviours.Otter;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Rabbit").First().Checked = (animalBehaviours & AnimalBehaviours.Rabbit) == AnimalBehaviours.Rabbit;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Cheetah").First().Checked = (animalBehaviours & AnimalBehaviours.Cheetah) == AnimalBehaviours.Cheetah;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Warthog").First().Checked = (animalBehaviours & AnimalBehaviours.Warthog) == AnimalBehaviours.Warthog;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bear").First().Checked = (animalBehaviours & AnimalBehaviours.Bear) == AnimalBehaviours.Bear;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Tiger").First().Checked = (animalBehaviours & AnimalBehaviours.Tiger) == AnimalBehaviours.Tiger;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Gorilla").First().Checked = (animalBehaviours & AnimalBehaviours.Gorilla) == AnimalBehaviours.Gorilla;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Peacock").First().Checked = (animalBehaviours & AnimalBehaviours.Peacock) == AnimalBehaviours.Peacock;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Parrot").First().Checked = (animalBehaviours & AnimalBehaviours.Parrot) == AnimalBehaviours.Parrot;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Condor").First().Checked = (animalBehaviours & AnimalBehaviours.Condor) == AnimalBehaviours.Condor;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Skunk").First().Checked = (animalBehaviours & AnimalBehaviours.Skunk) == AnimalBehaviours.Skunk;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Sheep").First().Checked = (animalBehaviours & AnimalBehaviours.Sheep) == AnimalBehaviours.Sheep;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Raccoon").First().Checked = (animalBehaviours & AnimalBehaviours.Raccoon) == AnimalBehaviours.Raccoon;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_HalfFish").First().Checked = (animalBehaviours & AnimalBehaviours.HalfFish) == AnimalBehaviours.HalfFish;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SkeletonDog").First().Checked = (animalBehaviours & AnimalBehaviours.SkeletonDog) == AnimalBehaviours.SkeletonDog;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bat").First().Checked = (animalBehaviours & AnimalBehaviours.Bat) == AnimalBehaviours.Bat;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Dragon").First().Checked = (animalBehaviours & AnimalBehaviours.Dragon) == AnimalBehaviours.Dragon;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Unicorn").First().Checked = (animalBehaviours & AnimalBehaviours.Unicorn) == AnimalBehaviours.Unicorn;
+            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Phoenix").First().Checked = (animalBehaviours & AnimalBehaviours.Phoenix) == AnimalBehaviours.Phoenix;
             GroupBox gb_ClassroomSkills = controls[0].Controls.OfType<GroupBox>().Where(x => x.Name == "gb_ClassroomSkills").First();
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing1").First().Checked = (classroomSkills & ClassroomSkills.Drawing1) == ClassroomSkills.Drawing1;
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing2").First().Checked = (classroomSkills & ClassroomSkills.Drawing2) == ClassroomSkills.Drawing2;
@@ -845,6 +884,7 @@ namespace SA2SaveUtility
             byteArray.Reverse((int)offsets.chao.Reincarnations, 2);
             byteArray.Reverse((int)offsets.chao.SA2Toys, 4);
             byteArray.Reverse((int)offsets.chao.SA2AnimalBehaviours, 4);
+            byteArray.Reverse((int)offsets.chao.SAAnimalBehaviours, 4);
             byteArray.Reverse((int)offsets.chao.Alignment, 4);
             byteArray.Reverse((int)offsets.chao.Run2PowerTranformation, 4);
             byteArray.Reverse((int)offsets.chao.Swim2FlyTransformation, 4);

@@ -30,6 +30,45 @@
         {
             this.tc_Chao = new System.Windows.Forms.TabControl();
             this.tp_General = new System.Windows.Forms.TabPage();
+            this.tc_AnimalBehaviours = new System.Windows.Forms.TabControl();
+            this.tp_SAAnimalBehaviours = new System.Windows.Forms.TabPage();
+            this.checkb_SASkunk = new System.Windows.Forms.CheckBox();
+            this.checkb_SAKoala = new System.Windows.Forms.CheckBox();
+            this.checkb_SAMole = new System.Windows.Forms.CheckBox();
+            this.checkb_SAElephant = new System.Windows.Forms.CheckBox();
+            this.checkb_SALion = new System.Windows.Forms.CheckBox();
+            this.checkb_SAGorilla = new System.Windows.Forms.CheckBox();
+            this.checkb_SAKangaroo = new System.Windows.Forms.CheckBox();
+            this.checkb_SARabbit = new System.Windows.Forms.CheckBox();
+            this.checkb_SADeer = new System.Windows.Forms.CheckBox();
+            this.checkb_SAParrot = new System.Windows.Forms.CheckBox();
+            this.checkb_SASwallow = new System.Windows.Forms.CheckBox();
+            this.checkb_SAPeacock = new System.Windows.Forms.CheckBox();
+            this.checkb_SAOtter = new System.Windows.Forms.CheckBox();
+            this.checkb_SAPenguin = new System.Windows.Forms.CheckBox();
+            this.checkb_SASeal = new System.Windows.Forms.CheckBox();
+            this.tp_SA2AnimalBehaviours = new System.Windows.Forms.TabPage();
+            this.checkb_Phoenix = new System.Windows.Forms.CheckBox();
+            this.checkb_Unicorn = new System.Windows.Forms.CheckBox();
+            this.checkb_Dragon = new System.Windows.Forms.CheckBox();
+            this.checkb_Bat = new System.Windows.Forms.CheckBox();
+            this.checkb_SkeletonDog = new System.Windows.Forms.CheckBox();
+            this.checkb_HalfFish = new System.Windows.Forms.CheckBox();
+            this.checkb_Raccoon = new System.Windows.Forms.CheckBox();
+            this.checkb_Sheep = new System.Windows.Forms.CheckBox();
+            this.checkb_Skunk = new System.Windows.Forms.CheckBox();
+            this.checkb_Condor = new System.Windows.Forms.CheckBox();
+            this.checkb_Parrot = new System.Windows.Forms.CheckBox();
+            this.checkb_Peacock = new System.Windows.Forms.CheckBox();
+            this.checkb_Gorilla = new System.Windows.Forms.CheckBox();
+            this.checkb_Tiger = new System.Windows.Forms.CheckBox();
+            this.checkb_Bear = new System.Windows.Forms.CheckBox();
+            this.checkb_Warthog = new System.Windows.Forms.CheckBox();
+            this.checkb_Cheetah = new System.Windows.Forms.CheckBox();
+            this.checkb_Rabbit = new System.Windows.Forms.CheckBox();
+            this.checkb_Otter = new System.Windows.Forms.CheckBox();
+            this.checkb_Seal = new System.Windows.Forms.CheckBox();
+            this.checkb_Penguin = new System.Windows.Forms.CheckBox();
             this.nud_Reincarnations = new System.Windows.Forms.NumericUpDown();
             this.lb_Reincarnations = new System.Windows.Forms.Label();
             this.nud_Happiness = new System.Windows.Forms.NumericUpDown();
@@ -70,28 +109,6 @@
             this.checkb_Song3 = new System.Windows.Forms.CheckBox();
             this.checkb_Song2 = new System.Windows.Forms.CheckBox();
             this.checkb_Song1 = new System.Windows.Forms.CheckBox();
-            this.gb_AnimalBehaviours = new System.Windows.Forms.GroupBox();
-            this.checkb_Phoenix = new System.Windows.Forms.CheckBox();
-            this.checkb_Unicorn = new System.Windows.Forms.CheckBox();
-            this.checkb_Dragon = new System.Windows.Forms.CheckBox();
-            this.checkb_Bat = new System.Windows.Forms.CheckBox();
-            this.checkb_SkeletonDog = new System.Windows.Forms.CheckBox();
-            this.checkb_HalfFish = new System.Windows.Forms.CheckBox();
-            this.checkb_Raccoon = new System.Windows.Forms.CheckBox();
-            this.checkb_Sheep = new System.Windows.Forms.CheckBox();
-            this.checkb_Skunk = new System.Windows.Forms.CheckBox();
-            this.checkb_Condor = new System.Windows.Forms.CheckBox();
-            this.checkb_Parrot = new System.Windows.Forms.CheckBox();
-            this.checkb_Peacock = new System.Windows.Forms.CheckBox();
-            this.checkb_Gorilla = new System.Windows.Forms.CheckBox();
-            this.checkb_Tiger = new System.Windows.Forms.CheckBox();
-            this.checkb_Bear = new System.Windows.Forms.CheckBox();
-            this.checkb_Warthog = new System.Windows.Forms.CheckBox();
-            this.checkb_Cheetah = new System.Windows.Forms.CheckBox();
-            this.checkb_Rabbit = new System.Windows.Forms.CheckBox();
-            this.checkb_Otter = new System.Windows.Forms.CheckBox();
-            this.checkb_Seal = new System.Windows.Forms.CheckBox();
-            this.checkb_Penguin = new System.Windows.Forms.CheckBox();
             this.cb_Garden = new System.Windows.Forms.ComboBox();
             this.lb_Garden = new System.Windows.Forms.Label();
             this.lb_Name = new System.Windows.Forms.Label();
@@ -328,11 +345,13 @@
             this.cb_Swim1 = new System.Windows.Forms.ComboBox();
             this.tc_Chao.SuspendLayout();
             this.tp_General.SuspendLayout();
+            this.tc_AnimalBehaviours.SuspendLayout();
+            this.tp_SAAnimalBehaviours.SuspendLayout();
+            this.tp_SA2AnimalBehaviours.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_Reincarnations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_Happiness)).BeginInit();
             this.gb_Toys.SuspendLayout();
             this.gb_ClassroomSkills.SuspendLayout();
-            this.gb_AnimalBehaviours.SuspendLayout();
             this.tp_Stats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_IntelligenceGrade)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_LuckGrade)).BeginInit();
@@ -423,13 +442,13 @@
             // tp_General
             // 
             this.tp_General.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_General.Controls.Add(this.tc_AnimalBehaviours);
             this.tp_General.Controls.Add(this.nud_Reincarnations);
             this.tp_General.Controls.Add(this.lb_Reincarnations);
             this.tp_General.Controls.Add(this.nud_Happiness);
             this.tp_General.Controls.Add(this.lb_Happiness);
             this.tp_General.Controls.Add(this.gb_Toys);
             this.tp_General.Controls.Add(this.gb_ClassroomSkills);
-            this.tp_General.Controls.Add(this.gb_AnimalBehaviours);
             this.tp_General.Controls.Add(this.cb_Garden);
             this.tp_General.Controls.Add(this.lb_Garden);
             this.tp_General.Controls.Add(this.lb_Name);
@@ -440,6 +459,468 @@
             this.tp_General.Size = new System.Drawing.Size(560, 190);
             this.tp_General.TabIndex = 0;
             this.tp_General.Text = "General";
+            // 
+            // tc_AnimalBehaviours
+            // 
+            this.tc_AnimalBehaviours.Controls.Add(this.tp_SAAnimalBehaviours);
+            this.tc_AnimalBehaviours.Controls.Add(this.tp_SA2AnimalBehaviours);
+            this.tc_AnimalBehaviours.Location = new System.Drawing.Point(102, 2);
+            this.tc_AnimalBehaviours.Name = "tc_AnimalBehaviours";
+            this.tc_AnimalBehaviours.SelectedIndex = 0;
+            this.tc_AnimalBehaviours.Size = new System.Drawing.Size(154, 185);
+            this.tc_AnimalBehaviours.TabIndex = 28;
+            // 
+            // tp_SAAnimalBehaviours
+            // 
+            this.tp_SAAnimalBehaviours.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SASkunk);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAKoala);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAMole);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAElephant);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SALion);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAGorilla);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAKangaroo);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SARabbit);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SADeer);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAParrot);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SASwallow);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAPeacock);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAOtter);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SAPenguin);
+            this.tp_SAAnimalBehaviours.Controls.Add(this.checkb_SASeal);
+            this.tp_SAAnimalBehaviours.Location = new System.Drawing.Point(4, 22);
+            this.tp_SAAnimalBehaviours.Name = "tp_SAAnimalBehaviours";
+            this.tp_SAAnimalBehaviours.Padding = new System.Windows.Forms.Padding(3);
+            this.tp_SAAnimalBehaviours.Size = new System.Drawing.Size(146, 159);
+            this.tp_SAAnimalBehaviours.TabIndex = 0;
+            this.tp_SAAnimalBehaviours.Text = "SA Animal Behaviours";
+            // 
+            // checkb_SASkunk
+            // 
+            this.checkb_SASkunk.AutoSize = true;
+            this.checkb_SASkunk.Location = new System.Drawing.Point(73, 43);
+            this.checkb_SASkunk.Name = "checkb_SASkunk";
+            this.checkb_SASkunk.Size = new System.Drawing.Size(57, 17);
+            this.checkb_SASkunk.TabIndex = 51;
+            this.checkb_SASkunk.Text = "Skunk";
+            this.checkb_SASkunk.UseVisualStyleBackColor = true;
+            this.checkb_SASkunk.CheckedChanged += new System.EventHandler(this.Checkb_SASkunk_CheckedChanged);
+            // 
+            // checkb_SAKoala
+            // 
+            this.checkb_SAKoala.AutoSize = true;
+            this.checkb_SAKoala.Location = new System.Drawing.Point(73, 29);
+            this.checkb_SAKoala.Name = "checkb_SAKoala";
+            this.checkb_SAKoala.Size = new System.Drawing.Size(53, 17);
+            this.checkb_SAKoala.TabIndex = 50;
+            this.checkb_SAKoala.Text = "Koala";
+            this.checkb_SAKoala.UseVisualStyleBackColor = true;
+            this.checkb_SAKoala.CheckedChanged += new System.EventHandler(this.Checkb_SAKoala_CheckedChanged);
+            // 
+            // checkb_SAMole
+            // 
+            this.checkb_SAMole.AutoSize = true;
+            this.checkb_SAMole.Location = new System.Drawing.Point(73, 15);
+            this.checkb_SAMole.Name = "checkb_SAMole";
+            this.checkb_SAMole.Size = new System.Drawing.Size(49, 17);
+            this.checkb_SAMole.TabIndex = 49;
+            this.checkb_SAMole.Text = "Mole";
+            this.checkb_SAMole.UseVisualStyleBackColor = true;
+            this.checkb_SAMole.CheckedChanged += new System.EventHandler(this.Checkb_SAMole_CheckedChanged);
+            // 
+            // checkb_SAElephant
+            // 
+            this.checkb_SAElephant.AutoSize = true;
+            this.checkb_SAElephant.Location = new System.Drawing.Point(73, 1);
+            this.checkb_SAElephant.Name = "checkb_SAElephant";
+            this.checkb_SAElephant.Size = new System.Drawing.Size(68, 17);
+            this.checkb_SAElephant.TabIndex = 48;
+            this.checkb_SAElephant.Text = "Elephant";
+            this.checkb_SAElephant.UseVisualStyleBackColor = true;
+            this.checkb_SAElephant.CheckedChanged += new System.EventHandler(this.Checkb_SAElephant_CheckedChanged);
+            // 
+            // checkb_SALion
+            // 
+            this.checkb_SALion.AutoSize = true;
+            this.checkb_SALion.Location = new System.Drawing.Point(2, 141);
+            this.checkb_SALion.Name = "checkb_SALion";
+            this.checkb_SALion.Size = new System.Drawing.Size(46, 17);
+            this.checkb_SALion.TabIndex = 47;
+            this.checkb_SALion.Text = "Lion";
+            this.checkb_SALion.UseVisualStyleBackColor = true;
+            this.checkb_SALion.CheckedChanged += new System.EventHandler(this.Checkb_SALion_CheckedChanged);
+            // 
+            // checkb_SAGorilla
+            // 
+            this.checkb_SAGorilla.AutoSize = true;
+            this.checkb_SAGorilla.Location = new System.Drawing.Point(2, 127);
+            this.checkb_SAGorilla.Name = "checkb_SAGorilla";
+            this.checkb_SAGorilla.Size = new System.Drawing.Size(55, 17);
+            this.checkb_SAGorilla.TabIndex = 46;
+            this.checkb_SAGorilla.Text = "Gorilla";
+            this.checkb_SAGorilla.UseVisualStyleBackColor = true;
+            this.checkb_SAGorilla.CheckedChanged += new System.EventHandler(this.Checkb_SAGorilla_CheckedChanged);
+            // 
+            // checkb_SAKangaroo
+            // 
+            this.checkb_SAKangaroo.AutoSize = true;
+            this.checkb_SAKangaroo.Location = new System.Drawing.Point(2, 113);
+            this.checkb_SAKangaroo.Name = "checkb_SAKangaroo";
+            this.checkb_SAKangaroo.Size = new System.Drawing.Size(72, 17);
+            this.checkb_SAKangaroo.TabIndex = 45;
+            this.checkb_SAKangaroo.Text = "Kangaroo";
+            this.checkb_SAKangaroo.UseVisualStyleBackColor = true;
+            this.checkb_SAKangaroo.CheckedChanged += new System.EventHandler(this.Checkb_SAKangaroo_CheckedChanged);
+            // 
+            // checkb_SARabbit
+            // 
+            this.checkb_SARabbit.AutoSize = true;
+            this.checkb_SARabbit.Location = new System.Drawing.Point(2, 99);
+            this.checkb_SARabbit.Name = "checkb_SARabbit";
+            this.checkb_SARabbit.Size = new System.Drawing.Size(57, 17);
+            this.checkb_SARabbit.TabIndex = 44;
+            this.checkb_SARabbit.Text = "Rabbit";
+            this.checkb_SARabbit.UseVisualStyleBackColor = true;
+            this.checkb_SARabbit.CheckedChanged += new System.EventHandler(this.Checkb_SARabbit_CheckedChanged);
+            // 
+            // checkb_SADeer
+            // 
+            this.checkb_SADeer.AutoSize = true;
+            this.checkb_SADeer.Location = new System.Drawing.Point(2, 85);
+            this.checkb_SADeer.Name = "checkb_SADeer";
+            this.checkb_SADeer.Size = new System.Drawing.Size(49, 17);
+            this.checkb_SADeer.TabIndex = 43;
+            this.checkb_SADeer.Text = "Deer";
+            this.checkb_SADeer.UseVisualStyleBackColor = true;
+            this.checkb_SADeer.CheckedChanged += new System.EventHandler(this.Checkb_SADeer_CheckedChanged);
+            // 
+            // checkb_SAParrot
+            // 
+            this.checkb_SAParrot.AutoSize = true;
+            this.checkb_SAParrot.Location = new System.Drawing.Point(2, 71);
+            this.checkb_SAParrot.Name = "checkb_SAParrot";
+            this.checkb_SAParrot.Size = new System.Drawing.Size(54, 17);
+            this.checkb_SAParrot.TabIndex = 42;
+            this.checkb_SAParrot.Text = "Parrot";
+            this.checkb_SAParrot.UseVisualStyleBackColor = true;
+            this.checkb_SAParrot.CheckedChanged += new System.EventHandler(this.Checkb_SAParrot_CheckedChanged);
+            // 
+            // checkb_SASwallow
+            // 
+            this.checkb_SASwallow.AutoSize = true;
+            this.checkb_SASwallow.Location = new System.Drawing.Point(2, 57);
+            this.checkb_SASwallow.Name = "checkb_SASwallow";
+            this.checkb_SASwallow.Size = new System.Drawing.Size(65, 17);
+            this.checkb_SASwallow.TabIndex = 41;
+            this.checkb_SASwallow.Text = "Swallow";
+            this.checkb_SASwallow.UseVisualStyleBackColor = true;
+            this.checkb_SASwallow.CheckedChanged += new System.EventHandler(this.Checkb_SASwallow_CheckedChanged);
+            // 
+            // checkb_SAPeacock
+            // 
+            this.checkb_SAPeacock.AutoSize = true;
+            this.checkb_SAPeacock.Location = new System.Drawing.Point(2, 43);
+            this.checkb_SAPeacock.Name = "checkb_SAPeacock";
+            this.checkb_SAPeacock.Size = new System.Drawing.Size(69, 17);
+            this.checkb_SAPeacock.TabIndex = 40;
+            this.checkb_SAPeacock.Text = "Peacock";
+            this.checkb_SAPeacock.UseVisualStyleBackColor = true;
+            this.checkb_SAPeacock.CheckedChanged += new System.EventHandler(this.Checkb_SAPeacock_CheckedChanged);
+            // 
+            // checkb_SAOtter
+            // 
+            this.checkb_SAOtter.AutoSize = true;
+            this.checkb_SAOtter.Location = new System.Drawing.Point(2, 29);
+            this.checkb_SAOtter.Name = "checkb_SAOtter";
+            this.checkb_SAOtter.Size = new System.Drawing.Size(49, 17);
+            this.checkb_SAOtter.TabIndex = 39;
+            this.checkb_SAOtter.Text = "Otter";
+            this.checkb_SAOtter.UseVisualStyleBackColor = true;
+            this.checkb_SAOtter.CheckedChanged += new System.EventHandler(this.Checkb_SAOtter_CheckedChanged);
+            // 
+            // checkb_SAPenguin
+            // 
+            this.checkb_SAPenguin.AutoSize = true;
+            this.checkb_SAPenguin.Location = new System.Drawing.Point(2, 15);
+            this.checkb_SAPenguin.Name = "checkb_SAPenguin";
+            this.checkb_SAPenguin.Size = new System.Drawing.Size(65, 17);
+            this.checkb_SAPenguin.TabIndex = 38;
+            this.checkb_SAPenguin.Text = "Penguin";
+            this.checkb_SAPenguin.UseVisualStyleBackColor = true;
+            this.checkb_SAPenguin.CheckedChanged += new System.EventHandler(this.Checkb_SAPenguin_CheckedChanged);
+            // 
+            // checkb_SASeal
+            // 
+            this.checkb_SASeal.AutoSize = true;
+            this.checkb_SASeal.Location = new System.Drawing.Point(2, 1);
+            this.checkb_SASeal.Name = "checkb_SASeal";
+            this.checkb_SASeal.Size = new System.Drawing.Size(47, 17);
+            this.checkb_SASeal.TabIndex = 37;
+            this.checkb_SASeal.Text = "Seal";
+            this.checkb_SASeal.UseVisualStyleBackColor = true;
+            this.checkb_SASeal.CheckedChanged += new System.EventHandler(this.Checkb_SASeal_CheckedChanged);
+            // 
+            // tp_SA2AnimalBehaviours
+            // 
+            this.tp_SA2AnimalBehaviours.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Phoenix);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Unicorn);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Dragon);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Bat);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_SkeletonDog);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_HalfFish);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Raccoon);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Sheep);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Skunk);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Condor);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Parrot);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Peacock);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Gorilla);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Tiger);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Bear);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Warthog);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Cheetah);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Rabbit);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Otter);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Seal);
+            this.tp_SA2AnimalBehaviours.Controls.Add(this.checkb_Penguin);
+            this.tp_SA2AnimalBehaviours.Location = new System.Drawing.Point(4, 22);
+            this.tp_SA2AnimalBehaviours.Name = "tp_SA2AnimalBehaviours";
+            this.tp_SA2AnimalBehaviours.Padding = new System.Windows.Forms.Padding(3);
+            this.tp_SA2AnimalBehaviours.Size = new System.Drawing.Size(146, 159);
+            this.tp_SA2AnimalBehaviours.TabIndex = 1;
+            this.tp_SA2AnimalBehaviours.Text = "SA2 Animal Behaviours";
+            // 
+            // checkb_Phoenix
+            // 
+            this.checkb_Phoenix.AutoSize = true;
+            this.checkb_Phoenix.Location = new System.Drawing.Point(73, 127);
+            this.checkb_Phoenix.Name = "checkb_Phoenix";
+            this.checkb_Phoenix.Size = new System.Drawing.Size(64, 17);
+            this.checkb_Phoenix.TabIndex = 41;
+            this.checkb_Phoenix.Text = "Phoenix";
+            this.checkb_Phoenix.UseVisualStyleBackColor = true;
+            this.checkb_Phoenix.CheckedChanged += new System.EventHandler(this.Checkb_Phoenix_CheckedChanged);
+            // 
+            // checkb_Unicorn
+            // 
+            this.checkb_Unicorn.AutoSize = true;
+            this.checkb_Unicorn.Location = new System.Drawing.Point(73, 113);
+            this.checkb_Unicorn.Name = "checkb_Unicorn";
+            this.checkb_Unicorn.Size = new System.Drawing.Size(63, 17);
+            this.checkb_Unicorn.TabIndex = 40;
+            this.checkb_Unicorn.Text = "Unicorn";
+            this.checkb_Unicorn.UseVisualStyleBackColor = true;
+            this.checkb_Unicorn.CheckedChanged += new System.EventHandler(this.Checkb_Unicorn_CheckedChanged);
+            // 
+            // checkb_Dragon
+            // 
+            this.checkb_Dragon.AutoSize = true;
+            this.checkb_Dragon.Location = new System.Drawing.Point(73, 99);
+            this.checkb_Dragon.Name = "checkb_Dragon";
+            this.checkb_Dragon.Size = new System.Drawing.Size(61, 17);
+            this.checkb_Dragon.TabIndex = 39;
+            this.checkb_Dragon.Text = "Dragon";
+            this.checkb_Dragon.UseVisualStyleBackColor = true;
+            this.checkb_Dragon.CheckedChanged += new System.EventHandler(this.Checkb_Dragon_CheckedChanged);
+            // 
+            // checkb_Bat
+            // 
+            this.checkb_Bat.AutoSize = true;
+            this.checkb_Bat.Location = new System.Drawing.Point(73, 85);
+            this.checkb_Bat.Name = "checkb_Bat";
+            this.checkb_Bat.Size = new System.Drawing.Size(42, 17);
+            this.checkb_Bat.TabIndex = 38;
+            this.checkb_Bat.Text = "Bat";
+            this.checkb_Bat.UseVisualStyleBackColor = true;
+            this.checkb_Bat.CheckedChanged += new System.EventHandler(this.Checkb_Bat_CheckedChanged);
+            // 
+            // checkb_SkeletonDog
+            // 
+            this.checkb_SkeletonDog.AutoSize = true;
+            this.checkb_SkeletonDog.Location = new System.Drawing.Point(2, 141);
+            this.checkb_SkeletonDog.Name = "checkb_SkeletonDog";
+            this.checkb_SkeletonDog.Size = new System.Drawing.Size(91, 17);
+            this.checkb_SkeletonDog.TabIndex = 37;
+            this.checkb_SkeletonDog.Text = "Skeleton Dog";
+            this.checkb_SkeletonDog.UseVisualStyleBackColor = true;
+            this.checkb_SkeletonDog.CheckedChanged += new System.EventHandler(this.Checkb_SkeletonDog_CheckedChanged);
+            // 
+            // checkb_HalfFish
+            // 
+            this.checkb_HalfFish.AutoSize = true;
+            this.checkb_HalfFish.Location = new System.Drawing.Point(73, 71);
+            this.checkb_HalfFish.Name = "checkb_HalfFish";
+            this.checkb_HalfFish.Size = new System.Drawing.Size(67, 17);
+            this.checkb_HalfFish.TabIndex = 36;
+            this.checkb_HalfFish.Text = "Half Fish";
+            this.checkb_HalfFish.UseVisualStyleBackColor = true;
+            this.checkb_HalfFish.CheckedChanged += new System.EventHandler(this.Checkb_HalfFish_CheckedChanged);
+            // 
+            // checkb_Raccoon
+            // 
+            this.checkb_Raccoon.AutoSize = true;
+            this.checkb_Raccoon.Location = new System.Drawing.Point(73, 57);
+            this.checkb_Raccoon.Name = "checkb_Raccoon";
+            this.checkb_Raccoon.Size = new System.Drawing.Size(70, 17);
+            this.checkb_Raccoon.TabIndex = 35;
+            this.checkb_Raccoon.Text = "Raccoon";
+            this.checkb_Raccoon.UseVisualStyleBackColor = true;
+            this.checkb_Raccoon.CheckedChanged += new System.EventHandler(this.Checkb_Raccoon_CheckedChanged);
+            // 
+            // checkb_Sheep
+            // 
+            this.checkb_Sheep.AutoSize = true;
+            this.checkb_Sheep.Location = new System.Drawing.Point(73, 43);
+            this.checkb_Sheep.Name = "checkb_Sheep";
+            this.checkb_Sheep.Size = new System.Drawing.Size(57, 17);
+            this.checkb_Sheep.TabIndex = 34;
+            this.checkb_Sheep.Text = "Sheep";
+            this.checkb_Sheep.UseVisualStyleBackColor = true;
+            this.checkb_Sheep.CheckedChanged += new System.EventHandler(this.Checkb_Sheep_CheckedChanged);
+            // 
+            // checkb_Skunk
+            // 
+            this.checkb_Skunk.AutoSize = true;
+            this.checkb_Skunk.Location = new System.Drawing.Point(73, 29);
+            this.checkb_Skunk.Name = "checkb_Skunk";
+            this.checkb_Skunk.Size = new System.Drawing.Size(57, 17);
+            this.checkb_Skunk.TabIndex = 33;
+            this.checkb_Skunk.Text = "Skunk";
+            this.checkb_Skunk.UseVisualStyleBackColor = true;
+            this.checkb_Skunk.CheckedChanged += new System.EventHandler(this.Checkb_Skunk_CheckedChanged);
+            // 
+            // checkb_Condor
+            // 
+            this.checkb_Condor.AutoSize = true;
+            this.checkb_Condor.Location = new System.Drawing.Point(73, 15);
+            this.checkb_Condor.Name = "checkb_Condor";
+            this.checkb_Condor.Size = new System.Drawing.Size(60, 17);
+            this.checkb_Condor.TabIndex = 32;
+            this.checkb_Condor.Text = "Condor";
+            this.checkb_Condor.UseVisualStyleBackColor = true;
+            this.checkb_Condor.CheckedChanged += new System.EventHandler(this.Checkb_Condor_CheckedChanged);
+            // 
+            // checkb_Parrot
+            // 
+            this.checkb_Parrot.AutoSize = true;
+            this.checkb_Parrot.Location = new System.Drawing.Point(73, 1);
+            this.checkb_Parrot.Name = "checkb_Parrot";
+            this.checkb_Parrot.Size = new System.Drawing.Size(54, 17);
+            this.checkb_Parrot.TabIndex = 31;
+            this.checkb_Parrot.Text = "Parrot";
+            this.checkb_Parrot.UseVisualStyleBackColor = true;
+            this.checkb_Parrot.CheckedChanged += new System.EventHandler(this.Checkb_Parrot_CheckedChanged);
+            // 
+            // checkb_Peacock
+            // 
+            this.checkb_Peacock.AutoSize = true;
+            this.checkb_Peacock.Location = new System.Drawing.Point(2, 127);
+            this.checkb_Peacock.Name = "checkb_Peacock";
+            this.checkb_Peacock.Size = new System.Drawing.Size(69, 17);
+            this.checkb_Peacock.TabIndex = 30;
+            this.checkb_Peacock.Text = "Peacock";
+            this.checkb_Peacock.UseVisualStyleBackColor = true;
+            this.checkb_Peacock.CheckedChanged += new System.EventHandler(this.Checkb_Peacock_CheckedChanged);
+            // 
+            // checkb_Gorilla
+            // 
+            this.checkb_Gorilla.AutoSize = true;
+            this.checkb_Gorilla.Location = new System.Drawing.Point(2, 113);
+            this.checkb_Gorilla.Name = "checkb_Gorilla";
+            this.checkb_Gorilla.Size = new System.Drawing.Size(55, 17);
+            this.checkb_Gorilla.TabIndex = 29;
+            this.checkb_Gorilla.Text = "Gorilla";
+            this.checkb_Gorilla.UseVisualStyleBackColor = true;
+            this.checkb_Gorilla.CheckedChanged += new System.EventHandler(this.Checkb_Gorilla_CheckedChanged);
+            // 
+            // checkb_Tiger
+            // 
+            this.checkb_Tiger.AutoSize = true;
+            this.checkb_Tiger.Location = new System.Drawing.Point(2, 99);
+            this.checkb_Tiger.Name = "checkb_Tiger";
+            this.checkb_Tiger.Size = new System.Drawing.Size(50, 17);
+            this.checkb_Tiger.TabIndex = 28;
+            this.checkb_Tiger.Text = "Tiger";
+            this.checkb_Tiger.UseVisualStyleBackColor = true;
+            this.checkb_Tiger.CheckedChanged += new System.EventHandler(this.Checkb_Tiger_CheckedChanged);
+            // 
+            // checkb_Bear
+            // 
+            this.checkb_Bear.AutoSize = true;
+            this.checkb_Bear.Location = new System.Drawing.Point(2, 85);
+            this.checkb_Bear.Name = "checkb_Bear";
+            this.checkb_Bear.Size = new System.Drawing.Size(48, 17);
+            this.checkb_Bear.TabIndex = 27;
+            this.checkb_Bear.Text = "Bear";
+            this.checkb_Bear.UseVisualStyleBackColor = true;
+            this.checkb_Bear.CheckedChanged += new System.EventHandler(this.Checkb_Bear_CheckedChanged);
+            // 
+            // checkb_Warthog
+            // 
+            this.checkb_Warthog.AutoSize = true;
+            this.checkb_Warthog.Location = new System.Drawing.Point(2, 71);
+            this.checkb_Warthog.Name = "checkb_Warthog";
+            this.checkb_Warthog.Size = new System.Drawing.Size(67, 17);
+            this.checkb_Warthog.TabIndex = 26;
+            this.checkb_Warthog.Text = "Warthog";
+            this.checkb_Warthog.UseVisualStyleBackColor = true;
+            this.checkb_Warthog.CheckedChanged += new System.EventHandler(this.Checkb_Warthog_CheckedChanged);
+            // 
+            // checkb_Cheetah
+            // 
+            this.checkb_Cheetah.AutoSize = true;
+            this.checkb_Cheetah.Location = new System.Drawing.Point(2, 57);
+            this.checkb_Cheetah.Name = "checkb_Cheetah";
+            this.checkb_Cheetah.Size = new System.Drawing.Size(66, 17);
+            this.checkb_Cheetah.TabIndex = 25;
+            this.checkb_Cheetah.Text = "Cheetah";
+            this.checkb_Cheetah.UseVisualStyleBackColor = true;
+            this.checkb_Cheetah.CheckedChanged += new System.EventHandler(this.Checkb_Cheetah_CheckedChanged);
+            // 
+            // checkb_Rabbit
+            // 
+            this.checkb_Rabbit.AutoSize = true;
+            this.checkb_Rabbit.Location = new System.Drawing.Point(2, 43);
+            this.checkb_Rabbit.Name = "checkb_Rabbit";
+            this.checkb_Rabbit.Size = new System.Drawing.Size(57, 17);
+            this.checkb_Rabbit.TabIndex = 24;
+            this.checkb_Rabbit.Text = "Rabbit";
+            this.checkb_Rabbit.UseVisualStyleBackColor = true;
+            this.checkb_Rabbit.CheckedChanged += new System.EventHandler(this.Checkb_Rabbit_CheckedChanged);
+            // 
+            // checkb_Otter
+            // 
+            this.checkb_Otter.AutoSize = true;
+            this.checkb_Otter.Location = new System.Drawing.Point(2, 29);
+            this.checkb_Otter.Name = "checkb_Otter";
+            this.checkb_Otter.Size = new System.Drawing.Size(49, 17);
+            this.checkb_Otter.TabIndex = 23;
+            this.checkb_Otter.Text = "Otter";
+            this.checkb_Otter.UseVisualStyleBackColor = true;
+            this.checkb_Otter.CheckedChanged += new System.EventHandler(this.Checkb_Otter_CheckedChanged);
+            // 
+            // checkb_Seal
+            // 
+            this.checkb_Seal.AutoSize = true;
+            this.checkb_Seal.Location = new System.Drawing.Point(2, 15);
+            this.checkb_Seal.Name = "checkb_Seal";
+            this.checkb_Seal.Size = new System.Drawing.Size(47, 17);
+            this.checkb_Seal.TabIndex = 22;
+            this.checkb_Seal.Text = "Seal";
+            this.checkb_Seal.UseVisualStyleBackColor = true;
+            this.checkb_Seal.CheckedChanged += new System.EventHandler(this.Checkb_Seal_CheckedChanged);
+            // 
+            // checkb_Penguin
+            // 
+            this.checkb_Penguin.AutoSize = true;
+            this.checkb_Penguin.Location = new System.Drawing.Point(2, 1);
+            this.checkb_Penguin.Name = "checkb_Penguin";
+            this.checkb_Penguin.Size = new System.Drawing.Size(65, 17);
+            this.checkb_Penguin.TabIndex = 21;
+            this.checkb_Penguin.Text = "Penguin";
+            this.checkb_Penguin.UseVisualStyleBackColor = true;
+            this.checkb_Penguin.CheckedChanged += new System.EventHandler(this.Checkb_Penguin_CheckedChanged);
             // 
             // nud_Reincarnations
             // 
@@ -496,7 +977,7 @@
             this.gb_Toys.Controls.Add(this.checkb_PogoStick);
             this.gb_Toys.Controls.Add(this.checkb_Shovel);
             this.gb_Toys.Controls.Add(this.checkb_Glitch);
-            this.gb_Toys.Location = new System.Drawing.Point(103, 1);
+            this.gb_Toys.Location = new System.Drawing.Point(257, 1);
             this.gb_Toys.Name = "gb_Toys";
             this.gb_Toys.Size = new System.Drawing.Size(130, 151);
             this.gb_Toys.TabIndex = 23;
@@ -908,267 +1389,6 @@
             this.checkb_Song1.Text = "Song 1";
             this.checkb_Song1.UseVisualStyleBackColor = true;
             this.checkb_Song1.CheckedChanged += new System.EventHandler(this.Checkb_Song1_CheckedChanged);
-            // 
-            // gb_AnimalBehaviours
-            // 
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Phoenix);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Unicorn);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Dragon);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Bat);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_SkeletonDog);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_HalfFish);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Raccoon);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Sheep);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Skunk);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Condor);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Parrot);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Peacock);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Gorilla);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Tiger);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Bear);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Warthog);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Cheetah);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Rabbit);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Otter);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Seal);
-            this.gb_AnimalBehaviours.Controls.Add(this.checkb_Penguin);
-            this.gb_AnimalBehaviours.Location = new System.Drawing.Point(237, 1);
-            this.gb_AnimalBehaviours.Name = "gb_AnimalBehaviours";
-            this.gb_AnimalBehaviours.Size = new System.Drawing.Size(149, 186);
-            this.gb_AnimalBehaviours.TabIndex = 18;
-            this.gb_AnimalBehaviours.TabStop = false;
-            this.gb_AnimalBehaviours.Text = "Animal Behaviours";
-            // 
-            // checkb_Phoenix
-            // 
-            this.checkb_Phoenix.AutoSize = true;
-            this.checkb_Phoenix.Location = new System.Drawing.Point(77, 139);
-            this.checkb_Phoenix.Name = "checkb_Phoenix";
-            this.checkb_Phoenix.Size = new System.Drawing.Size(64, 17);
-            this.checkb_Phoenix.TabIndex = 20;
-            this.checkb_Phoenix.Text = "Phoenix";
-            this.checkb_Phoenix.UseVisualStyleBackColor = true;
-            this.checkb_Phoenix.CheckedChanged += new System.EventHandler(this.Checkb_Phoenix_CheckedChanged);
-            // 
-            // checkb_Unicorn
-            // 
-            this.checkb_Unicorn.AutoSize = true;
-            this.checkb_Unicorn.Location = new System.Drawing.Point(77, 125);
-            this.checkb_Unicorn.Name = "checkb_Unicorn";
-            this.checkb_Unicorn.Size = new System.Drawing.Size(63, 17);
-            this.checkb_Unicorn.TabIndex = 19;
-            this.checkb_Unicorn.Text = "Unicorn";
-            this.checkb_Unicorn.UseVisualStyleBackColor = true;
-            this.checkb_Unicorn.CheckedChanged += new System.EventHandler(this.Check_Unicorn_CheckedChanged);
-            // 
-            // checkb_Dragon
-            // 
-            this.checkb_Dragon.AutoSize = true;
-            this.checkb_Dragon.Location = new System.Drawing.Point(77, 111);
-            this.checkb_Dragon.Name = "checkb_Dragon";
-            this.checkb_Dragon.Size = new System.Drawing.Size(61, 17);
-            this.checkb_Dragon.TabIndex = 18;
-            this.checkb_Dragon.Text = "Dragon";
-            this.checkb_Dragon.UseVisualStyleBackColor = true;
-            this.checkb_Dragon.CheckedChanged += new System.EventHandler(this.Checkb_Dragon_CheckedChanged);
-            // 
-            // checkb_Bat
-            // 
-            this.checkb_Bat.AutoSize = true;
-            this.checkb_Bat.Location = new System.Drawing.Point(77, 97);
-            this.checkb_Bat.Name = "checkb_Bat";
-            this.checkb_Bat.Size = new System.Drawing.Size(42, 17);
-            this.checkb_Bat.TabIndex = 17;
-            this.checkb_Bat.Text = "Bat";
-            this.checkb_Bat.UseVisualStyleBackColor = true;
-            this.checkb_Bat.CheckedChanged += new System.EventHandler(this.Checkb_Bat_CheckedChanged);
-            // 
-            // checkb_SkeletonDog
-            // 
-            this.checkb_SkeletonDog.AutoSize = true;
-            this.checkb_SkeletonDog.Location = new System.Drawing.Point(6, 153);
-            this.checkb_SkeletonDog.Name = "checkb_SkeletonDog";
-            this.checkb_SkeletonDog.Size = new System.Drawing.Size(91, 17);
-            this.checkb_SkeletonDog.TabIndex = 16;
-            this.checkb_SkeletonDog.Text = "Skeleton Dog";
-            this.checkb_SkeletonDog.UseVisualStyleBackColor = true;
-            this.checkb_SkeletonDog.CheckedChanged += new System.EventHandler(this.Checkb_SkeletonDog_CheckedChanged);
-            // 
-            // checkb_HalfFish
-            // 
-            this.checkb_HalfFish.AutoSize = true;
-            this.checkb_HalfFish.Location = new System.Drawing.Point(77, 83);
-            this.checkb_HalfFish.Name = "checkb_HalfFish";
-            this.checkb_HalfFish.Size = new System.Drawing.Size(67, 17);
-            this.checkb_HalfFish.TabIndex = 15;
-            this.checkb_HalfFish.Text = "Half Fish";
-            this.checkb_HalfFish.UseVisualStyleBackColor = true;
-            this.checkb_HalfFish.CheckedChanged += new System.EventHandler(this.Checkb_HalfFish_CheckedChanged);
-            // 
-            // checkb_Raccoon
-            // 
-            this.checkb_Raccoon.AutoSize = true;
-            this.checkb_Raccoon.Location = new System.Drawing.Point(77, 69);
-            this.checkb_Raccoon.Name = "checkb_Raccoon";
-            this.checkb_Raccoon.Size = new System.Drawing.Size(70, 17);
-            this.checkb_Raccoon.TabIndex = 14;
-            this.checkb_Raccoon.Text = "Raccoon";
-            this.checkb_Raccoon.UseVisualStyleBackColor = true;
-            this.checkb_Raccoon.CheckedChanged += new System.EventHandler(this.Checkb_Raccoon_CheckedChanged);
-            // 
-            // checkb_Sheep
-            // 
-            this.checkb_Sheep.AutoSize = true;
-            this.checkb_Sheep.Location = new System.Drawing.Point(77, 55);
-            this.checkb_Sheep.Name = "checkb_Sheep";
-            this.checkb_Sheep.Size = new System.Drawing.Size(57, 17);
-            this.checkb_Sheep.TabIndex = 13;
-            this.checkb_Sheep.Text = "Sheep";
-            this.checkb_Sheep.UseVisualStyleBackColor = true;
-            this.checkb_Sheep.CheckedChanged += new System.EventHandler(this.Checkb_Sheep_CheckedChanged);
-            // 
-            // checkb_Skunk
-            // 
-            this.checkb_Skunk.AutoSize = true;
-            this.checkb_Skunk.Location = new System.Drawing.Point(77, 41);
-            this.checkb_Skunk.Name = "checkb_Skunk";
-            this.checkb_Skunk.Size = new System.Drawing.Size(57, 17);
-            this.checkb_Skunk.TabIndex = 12;
-            this.checkb_Skunk.Text = "Skunk";
-            this.checkb_Skunk.UseVisualStyleBackColor = true;
-            this.checkb_Skunk.CheckedChanged += new System.EventHandler(this.Checkb_Skunk_CheckedChanged);
-            // 
-            // checkb_Condor
-            // 
-            this.checkb_Condor.AutoSize = true;
-            this.checkb_Condor.Location = new System.Drawing.Point(77, 27);
-            this.checkb_Condor.Name = "checkb_Condor";
-            this.checkb_Condor.Size = new System.Drawing.Size(60, 17);
-            this.checkb_Condor.TabIndex = 11;
-            this.checkb_Condor.Text = "Condor";
-            this.checkb_Condor.UseVisualStyleBackColor = true;
-            this.checkb_Condor.CheckedChanged += new System.EventHandler(this.Checkb_Condor_CheckedChanged);
-            // 
-            // checkb_Parrot
-            // 
-            this.checkb_Parrot.AutoSize = true;
-            this.checkb_Parrot.Location = new System.Drawing.Point(77, 13);
-            this.checkb_Parrot.Name = "checkb_Parrot";
-            this.checkb_Parrot.Size = new System.Drawing.Size(54, 17);
-            this.checkb_Parrot.TabIndex = 10;
-            this.checkb_Parrot.Text = "Parrot";
-            this.checkb_Parrot.UseVisualStyleBackColor = true;
-            this.checkb_Parrot.CheckedChanged += new System.EventHandler(this.Checkb_Parrot_CheckedChanged);
-            // 
-            // checkb_Peacock
-            // 
-            this.checkb_Peacock.AutoSize = true;
-            this.checkb_Peacock.Location = new System.Drawing.Point(6, 139);
-            this.checkb_Peacock.Name = "checkb_Peacock";
-            this.checkb_Peacock.Size = new System.Drawing.Size(69, 17);
-            this.checkb_Peacock.TabIndex = 9;
-            this.checkb_Peacock.Text = "Peacock";
-            this.checkb_Peacock.UseVisualStyleBackColor = true;
-            this.checkb_Peacock.CheckedChanged += new System.EventHandler(this.Checkb_Peacock_CheckedChanged);
-            // 
-            // checkb_Gorilla
-            // 
-            this.checkb_Gorilla.AutoSize = true;
-            this.checkb_Gorilla.Location = new System.Drawing.Point(6, 125);
-            this.checkb_Gorilla.Name = "checkb_Gorilla";
-            this.checkb_Gorilla.Size = new System.Drawing.Size(55, 17);
-            this.checkb_Gorilla.TabIndex = 8;
-            this.checkb_Gorilla.Text = "Gorilla";
-            this.checkb_Gorilla.UseVisualStyleBackColor = true;
-            this.checkb_Gorilla.CheckedChanged += new System.EventHandler(this.Checkb_Gorilla_CheckedChanged);
-            // 
-            // checkb_Tiger
-            // 
-            this.checkb_Tiger.AutoSize = true;
-            this.checkb_Tiger.Location = new System.Drawing.Point(6, 111);
-            this.checkb_Tiger.Name = "checkb_Tiger";
-            this.checkb_Tiger.Size = new System.Drawing.Size(50, 17);
-            this.checkb_Tiger.TabIndex = 7;
-            this.checkb_Tiger.Text = "Tiger";
-            this.checkb_Tiger.UseVisualStyleBackColor = true;
-            this.checkb_Tiger.CheckedChanged += new System.EventHandler(this.Checkb_Tiger_CheckedChanged);
-            // 
-            // checkb_Bear
-            // 
-            this.checkb_Bear.AutoSize = true;
-            this.checkb_Bear.Location = new System.Drawing.Point(6, 97);
-            this.checkb_Bear.Name = "checkb_Bear";
-            this.checkb_Bear.Size = new System.Drawing.Size(48, 17);
-            this.checkb_Bear.TabIndex = 6;
-            this.checkb_Bear.Text = "Bear";
-            this.checkb_Bear.UseVisualStyleBackColor = true;
-            this.checkb_Bear.CheckedChanged += new System.EventHandler(this.Checkb_Bear_CheckedChanged);
-            // 
-            // checkb_Warthog
-            // 
-            this.checkb_Warthog.AutoSize = true;
-            this.checkb_Warthog.Location = new System.Drawing.Point(6, 83);
-            this.checkb_Warthog.Name = "checkb_Warthog";
-            this.checkb_Warthog.Size = new System.Drawing.Size(67, 17);
-            this.checkb_Warthog.TabIndex = 5;
-            this.checkb_Warthog.Text = "Warthog";
-            this.checkb_Warthog.UseVisualStyleBackColor = true;
-            this.checkb_Warthog.CheckedChanged += new System.EventHandler(this.Checkb_Warthog_CheckedChanged);
-            // 
-            // checkb_Cheetah
-            // 
-            this.checkb_Cheetah.AutoSize = true;
-            this.checkb_Cheetah.Location = new System.Drawing.Point(6, 69);
-            this.checkb_Cheetah.Name = "checkb_Cheetah";
-            this.checkb_Cheetah.Size = new System.Drawing.Size(66, 17);
-            this.checkb_Cheetah.TabIndex = 4;
-            this.checkb_Cheetah.Text = "Cheetah";
-            this.checkb_Cheetah.UseVisualStyleBackColor = true;
-            this.checkb_Cheetah.CheckedChanged += new System.EventHandler(this.Checkb_Cheetah_CheckedChanged);
-            // 
-            // checkb_Rabbit
-            // 
-            this.checkb_Rabbit.AutoSize = true;
-            this.checkb_Rabbit.Location = new System.Drawing.Point(6, 55);
-            this.checkb_Rabbit.Name = "checkb_Rabbit";
-            this.checkb_Rabbit.Size = new System.Drawing.Size(57, 17);
-            this.checkb_Rabbit.TabIndex = 3;
-            this.checkb_Rabbit.Text = "Rabbit";
-            this.checkb_Rabbit.UseVisualStyleBackColor = true;
-            this.checkb_Rabbit.CheckedChanged += new System.EventHandler(this.Checkb_Rabbit_CheckedChanged);
-            // 
-            // checkb_Otter
-            // 
-            this.checkb_Otter.AutoSize = true;
-            this.checkb_Otter.Location = new System.Drawing.Point(6, 41);
-            this.checkb_Otter.Name = "checkb_Otter";
-            this.checkb_Otter.Size = new System.Drawing.Size(49, 17);
-            this.checkb_Otter.TabIndex = 2;
-            this.checkb_Otter.Text = "Otter";
-            this.checkb_Otter.UseVisualStyleBackColor = true;
-            this.checkb_Otter.CheckedChanged += new System.EventHandler(this.Checkb_Otter_CheckedChanged);
-            // 
-            // checkb_Seal
-            // 
-            this.checkb_Seal.AutoSize = true;
-            this.checkb_Seal.Location = new System.Drawing.Point(6, 27);
-            this.checkb_Seal.Name = "checkb_Seal";
-            this.checkb_Seal.Size = new System.Drawing.Size(47, 17);
-            this.checkb_Seal.TabIndex = 1;
-            this.checkb_Seal.Text = "Seal";
-            this.checkb_Seal.UseVisualStyleBackColor = true;
-            this.checkb_Seal.CheckedChanged += new System.EventHandler(this.Checkb_Seal_CheckedChanged);
-            // 
-            // checkb_Penguin
-            // 
-            this.checkb_Penguin.AutoSize = true;
-            this.checkb_Penguin.Location = new System.Drawing.Point(6, 13);
-            this.checkb_Penguin.Name = "checkb_Penguin";
-            this.checkb_Penguin.Size = new System.Drawing.Size(65, 17);
-            this.checkb_Penguin.TabIndex = 0;
-            this.checkb_Penguin.Text = "Penguin";
-            this.checkb_Penguin.UseVisualStyleBackColor = true;
-            this.checkb_Penguin.CheckedChanged += new System.EventHandler(this.Checkb_Penguin_CheckedChanged);
             // 
             // cb_Garden
             // 
@@ -5579,14 +5799,17 @@
             this.tc_Chao.ResumeLayout(false);
             this.tp_General.ResumeLayout(false);
             this.tp_General.PerformLayout();
+            this.tc_AnimalBehaviours.ResumeLayout(false);
+            this.tp_SAAnimalBehaviours.ResumeLayout(false);
+            this.tp_SAAnimalBehaviours.PerformLayout();
+            this.tp_SA2AnimalBehaviours.ResumeLayout(false);
+            this.tp_SA2AnimalBehaviours.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_Reincarnations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_Happiness)).EndInit();
             this.gb_Toys.ResumeLayout(false);
             this.gb_Toys.PerformLayout();
             this.gb_ClassroomSkills.ResumeLayout(false);
             this.gb_ClassroomSkills.PerformLayout();
-            this.gb_AnimalBehaviours.ResumeLayout(false);
-            this.gb_AnimalBehaviours.PerformLayout();
             this.tp_Stats.ResumeLayout(false);
             this.tp_Stats.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_IntelligenceGrade)).EndInit();
@@ -5823,28 +6046,6 @@
         private System.Windows.Forms.TrackBar trackb_KnucklesBond;
         private System.Windows.Forms.TrackBar trackb_TailsBond;
         private System.Windows.Forms.TrackBar trackb_SonicBond;
-        private System.Windows.Forms.GroupBox gb_AnimalBehaviours;
-        private System.Windows.Forms.CheckBox checkb_Phoenix;
-        private System.Windows.Forms.CheckBox checkb_Unicorn;
-        private System.Windows.Forms.CheckBox checkb_Dragon;
-        private System.Windows.Forms.CheckBox checkb_Bat;
-        private System.Windows.Forms.CheckBox checkb_SkeletonDog;
-        private System.Windows.Forms.CheckBox checkb_HalfFish;
-        private System.Windows.Forms.CheckBox checkb_Raccoon;
-        private System.Windows.Forms.CheckBox checkb_Sheep;
-        private System.Windows.Forms.CheckBox checkb_Skunk;
-        private System.Windows.Forms.CheckBox checkb_Condor;
-        private System.Windows.Forms.CheckBox checkb_Parrot;
-        private System.Windows.Forms.CheckBox checkb_Peacock;
-        private System.Windows.Forms.CheckBox checkb_Gorilla;
-        private System.Windows.Forms.CheckBox checkb_Tiger;
-        private System.Windows.Forms.CheckBox checkb_Bear;
-        private System.Windows.Forms.CheckBox checkb_Warthog;
-        private System.Windows.Forms.CheckBox checkb_Cheetah;
-        private System.Windows.Forms.CheckBox checkb_Rabbit;
-        private System.Windows.Forms.CheckBox checkb_Otter;
-        private System.Windows.Forms.CheckBox checkb_Seal;
-        private System.Windows.Forms.CheckBox checkb_Penguin;
         private System.Windows.Forms.TabPage tp_Personality;
         private System.Windows.Forms.TrackBar trackb_Normal2Carefree;
         private System.Windows.Forms.TrackBar trackb_Normal2BigEater;
@@ -5967,5 +6168,44 @@
         private System.Windows.Forms.NumericUpDown nud_Reincarnations;
         private System.Windows.Forms.Label lb_Reincarnations;
         private System.Windows.Forms.CheckBox checkb_RealisticValues;
+        private System.Windows.Forms.TabControl tc_AnimalBehaviours;
+        private System.Windows.Forms.TabPage tp_SAAnimalBehaviours;
+        private System.Windows.Forms.TabPage tp_SA2AnimalBehaviours;
+        private System.Windows.Forms.CheckBox checkb_Phoenix;
+        private System.Windows.Forms.CheckBox checkb_Unicorn;
+        private System.Windows.Forms.CheckBox checkb_Dragon;
+        private System.Windows.Forms.CheckBox checkb_Bat;
+        private System.Windows.Forms.CheckBox checkb_SkeletonDog;
+        private System.Windows.Forms.CheckBox checkb_HalfFish;
+        private System.Windows.Forms.CheckBox checkb_Raccoon;
+        private System.Windows.Forms.CheckBox checkb_Sheep;
+        private System.Windows.Forms.CheckBox checkb_Skunk;
+        private System.Windows.Forms.CheckBox checkb_Condor;
+        private System.Windows.Forms.CheckBox checkb_Parrot;
+        private System.Windows.Forms.CheckBox checkb_Peacock;
+        private System.Windows.Forms.CheckBox checkb_Gorilla;
+        private System.Windows.Forms.CheckBox checkb_Tiger;
+        private System.Windows.Forms.CheckBox checkb_Bear;
+        private System.Windows.Forms.CheckBox checkb_Warthog;
+        private System.Windows.Forms.CheckBox checkb_Cheetah;
+        private System.Windows.Forms.CheckBox checkb_Rabbit;
+        private System.Windows.Forms.CheckBox checkb_Otter;
+        private System.Windows.Forms.CheckBox checkb_Seal;
+        private System.Windows.Forms.CheckBox checkb_Penguin;
+        private System.Windows.Forms.CheckBox checkb_SASkunk;
+        private System.Windows.Forms.CheckBox checkb_SAKoala;
+        private System.Windows.Forms.CheckBox checkb_SAMole;
+        private System.Windows.Forms.CheckBox checkb_SAElephant;
+        private System.Windows.Forms.CheckBox checkb_SALion;
+        private System.Windows.Forms.CheckBox checkb_SAGorilla;
+        private System.Windows.Forms.CheckBox checkb_SAKangaroo;
+        private System.Windows.Forms.CheckBox checkb_SARabbit;
+        private System.Windows.Forms.CheckBox checkb_SADeer;
+        private System.Windows.Forms.CheckBox checkb_SAParrot;
+        private System.Windows.Forms.CheckBox checkb_SASwallow;
+        private System.Windows.Forms.CheckBox checkb_SAPeacock;
+        private System.Windows.Forms.CheckBox checkb_SAOtter;
+        private System.Windows.Forms.CheckBox checkb_SAPenguin;
+        private System.Windows.Forms.CheckBox checkb_SASeal;
     }
 }
