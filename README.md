@@ -15,7 +15,6 @@ Editing PC, Gamecube Xbox 360 & PS3 main save files, also allows saving of files
 ## To Do
 * More things to edit on Main Saves.
 * Chao garden items.
-* Black market items.
 * Current Drives/Animals.
 * Toggle between realistic and unrealistic chao values, currently mainly supports realistic values.
 * SADX Support(Unsure on this, once SA2 support is fully complete I may explore adding SADX althought this may have to be a seperate application).
@@ -30,6 +29,7 @@ Editing PC, Gamecube Xbox 360 & PS3 main save files, also allows saving of files
 #### Chao
 ![Chao World Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_ChaoWorld.png)
 ![Chao Held Items](https://dev.froody.tech/SA2SaveUtility/img/Chao_HeldItems.png)
+![Chao Market Items](https://dev.froody.tech/SA2SaveUtility/img/Chao_MarketItems.png)
 ![Chao General Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_General.png)
 ![Chao Stats Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Stats.png)
 ![Chao Appearance Tab](https://dev.froody.tech/SA2SaveUtility/img/Chao_Appearance.png)
