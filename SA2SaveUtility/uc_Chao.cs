@@ -832,7 +832,8 @@ namespace SA2SaveUtility
         }
         private void Cb_FavouriteFruit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = (byte)cb_FavouriteFruit.SelectedIndex;
+            if (cb_FavouriteFruit.SelectedIndex == 8) { Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = 0x10; }
+            else { Main.loadedSave[(int)(0x3AA4 + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = (byte)cb_FavouriteFruit.SelectedIndex; }
         }
 
         private void Checkb_GoGoDance_CheckedChanged(object sender, EventArgs e)

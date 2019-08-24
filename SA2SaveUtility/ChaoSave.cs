@@ -664,6 +664,7 @@ namespace SA2SaveUtility
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_StepDance").First().Checked = (classroomSkills & ClassroomSkills.Step) == ClassroomSkills.Step;
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GoGoDance").First().Checked = (classroomSkills & ClassroomSkills.GoGo) == ClassroomSkills.GoGo;
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Exercise").First().Checked = (classroomSkills & ClassroomSkills.Exercise) == ClassroomSkills.Exercise;
+            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drum").First().Checked = (classroomSkills & ClassroomSkills.Drum) == ClassroomSkills.Drum;
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song1").First().Checked = (classroomSkills & ClassroomSkills.Song1) == ClassroomSkills.Song1;
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song2").First().Checked = (classroomSkills & ClassroomSkills.Song2) == ClassroomSkills.Song2;
             gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song3").First().Checked = (classroomSkills & ClassroomSkills.Song3) == ClassroomSkills.Song3;
@@ -749,7 +750,7 @@ namespace SA2SaveUtility
             controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Alignment").First().Value = (int)(alignment * 10000000);
             controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Run2Power").First().Value = (int)(run2Power * 10000000);
             controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Swim2Fly").First().Value = (int)(swim2Fly * 10000000);
-            //controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TransformationMagnitude").First().Value = (int)(transformationMagnitude * 10000000);
+            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TransformationMagnitude").First().Value = (int)(transformationMagnitude * 10000000);
             controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan1").First().Value = lifespan1;
             controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan2").First().Value = lifespan2;
             if (lifespan1 > lifespan2) { controls[0].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan2").First().Value = lifespan1; }
@@ -780,7 +781,8 @@ namespace SA2SaveUtility
             controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Naive2Normal").First().Value = naive2Normal;
             controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2BigEater").First().Value = normal2BigEater;
             controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2Carefree").First().Value = normal2Carefree;
-            controls[6].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FavouriteFruit").First().SelectedIndex = favouriteFruit;
+            if (favouriteFruit == 16) { controls[6].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FavouriteFruit").First().SelectedIndex = 8;  }
+            else { controls[6].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FavouriteFruit").First().SelectedIndex = favouriteFruit; }
 
             //Health
             controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Cough").First().Value = cough;

@@ -933,6 +933,7 @@
             this.nud_Reincarnations.Name = "nud_Reincarnations";
             this.nud_Reincarnations.Size = new System.Drawing.Size(54, 20);
             this.nud_Reincarnations.TabIndex = 27;
+            this.nud_Reincarnations.ValueChanged += new System.EventHandler(this.Nud_Reincarnations_ValueChanged);
             // 
             // lb_Reincarnations
             // 
@@ -954,6 +955,7 @@
             this.nud_Happiness.Name = "nud_Happiness";
             this.nud_Happiness.Size = new System.Drawing.Size(43, 20);
             this.nud_Happiness.TabIndex = 25;
+            this.nud_Happiness.ValueChanged += new System.EventHandler(this.Nud_Happiness_ValueChanged);
             // 
             // lb_Happiness
             // 
@@ -3992,7 +3994,8 @@
             "Square Fruit 1",
             "Square Fruit 2",
             "None 1",
-            "None 2"});
+            "None 2",
+            "None (Chaos Chao)"});
             this.cb_FavouriteFruit.Location = new System.Drawing.Point(242, 138);
             this.cb_FavouriteFruit.Name = "cb_FavouriteFruit";
             this.cb_FavouriteFruit.Size = new System.Drawing.Size(95, 21);

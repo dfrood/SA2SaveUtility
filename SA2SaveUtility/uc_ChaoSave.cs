@@ -16,7 +16,7 @@ namespace SA2SaveUtility
 
         private void SetGardens()
         {
-            byte portals = 0x00;
+            byte portals = 0x06;
 
             if (checkb_DarkGarden.Checked) { portals += 0x40; }
             if (checkb_HeroGarden.Checked) { portals += 0x10; }
