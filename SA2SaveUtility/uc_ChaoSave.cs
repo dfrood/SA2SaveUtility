@@ -16,11 +16,17 @@ namespace SA2SaveUtility
 
         private void SetGardens()
         {
-            byte portals = 0x06;
+            uint portals = 0x06;
 
             if (checkb_DarkGarden.Checked) { portals += 0x40; }
             if (checkb_HeroGarden.Checked) { portals += 0x10; }
-            Main.loadedSave[(int)offsets.chaoSave.Gardens] = portals;
+
+            byte[] portalBytes = BitConverter.GetBytes((UInt32)portals);
+            if (!Main.saveIsPC) { Array.Reverse(portalBytes); }
+            for (int i = 0; i < portalBytes.Length; i++)
+            {
+                Main.loadedSave[(int)(offsets.chaoSave.Gardens + i)] = portalBytes[i];
+            }
         }
 
         private void Checkb_DarkGarden_CheckedChanged(object sender, EventArgs e)
