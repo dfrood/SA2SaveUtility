@@ -3854,7 +3854,7 @@
             this.trackb_ShadowBond.LargeChange = 1;
             this.trackb_ShadowBond.Location = new System.Drawing.Point(6, 138);
             this.trackb_ShadowBond.Maximum = 100;
-            this.trackb_ShadowBond.Minimum = -50;
+            this.trackb_ShadowBond.Minimum = -100;
             this.trackb_ShadowBond.Name = "trackb_ShadowBond";
             this.trackb_ShadowBond.Size = new System.Drawing.Size(104, 45);
             this.trackb_ShadowBond.TabIndex = 35;
