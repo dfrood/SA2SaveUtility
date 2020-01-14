@@ -49,3 +49,5 @@ Some chao offsets obtained from Fusion's chao documentation.
 Providing me with information regarding how the Main calculates it's hashsum.
 #### Icon
 https://github.com/feathericons/feather#feather
+
+Contact me on Discord for faster help: Froody#0001
