@@ -119,7 +119,13 @@
             "Tails",
             "Eggman",
             "Knuckles",
-            "Rouge"});
+            "Rouge",
+            "Sonic [Hidden]",
+            "Shadow [Hidden]",
+            "Tails [Hidden]",
+            "Eggman [Hidden]",
+            "Knuckles [Hidden]",
+            "Rouge [Hidden]"});
             this.cb_3rdCharacter.Location = new System.Drawing.Point(30, 136);
             this.cb_3rdCharacter.Name = "cb_3rdCharacter";
             this.cb_3rdCharacter.Size = new System.Drawing.Size(70, 21);
@@ -202,7 +208,13 @@
             "Tails",
             "Eggman",
             "Knuckles",
-            "Rouge"});
+            "Rouge",
+            "Sonic [Hidden]",
+            "Shadow [Hidden]",
+            "Tails [Hidden]",
+            "Eggman [Hidden]",
+            "Knuckles [Hidden]",
+            "Rouge [Hidden]"});
             this.cb_2ndCharacter.Location = new System.Drawing.Point(30, 88);
             this.cb_2ndCharacter.Name = "cb_2ndCharacter";
             this.cb_2ndCharacter.Size = new System.Drawing.Size(70, 21);
@@ -296,7 +308,13 @@
             "Tails",
             "Eggman",
             "Knuckles",
-            "Rouge"});
+            "Rouge",
+            "Sonic [Hidden]",
+            "Shadow [Hidden]",
+            "Tails [Hidden]",
+            "Eggman [Hidden]",
+            "Knuckles [Hidden]",
+            "Rouge [Hidden]"});
             this.cb_1stCharacter.Location = new System.Drawing.Point(30, 41);
             this.cb_1stCharacter.Name = "cb_1stCharacter";
             this.cb_1stCharacter.Size = new System.Drawing.Size(70, 21);

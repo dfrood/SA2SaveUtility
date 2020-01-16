@@ -17,6 +17,7 @@ namespace SA2SaveUtility
     {
         public static bool saveisSA;
         public static bool saveIsPC;
+        public static bool saveIsPS3;
         public static bool saveIsGC;
         //public static bool saveIsDC;
         public static bool saveIsMain;
@@ -134,7 +135,11 @@ namespace SA2SaveUtility
         {
             if (saveIsPC) { loadedSave[offset] = (byte)value; }
             if (saveIsGC) { loadedSave[offset + 0x40] = (byte)value; }
-            if (!saveIsPC && !saveIsGC) { loadedSave[offset + 4 + (int)(0x6004 * mainIndex)] = (byte)value; }
+            if (!saveIsPC && !saveIsGC)
+            {
+                if (!saveIsPS3) { loadedSave[offset + 4 + (int)(0x6004 * mainIndex)] = (byte)value; }
+                else { loadedSave[offset + 8 + (int)(0x6008 * mainIndex)] = (byte)value; }
+            }
         }
         public static void WriteBytes(int offset, byte[] bytes, uint mainIndex, int length)
         {
@@ -144,7 +149,11 @@ namespace SA2SaveUtility
             {
                 if (saveIsPC) { loadedSave[offset + i] = bytes[i]; }
                 if (saveIsGC) { loadedSave[offset + 0x40 + i] = bytes[i]; }
-                if (!saveIsPC && !saveIsGC) { loadedSave[offset + i + (int)(0x6004 * mainIndex) + 4] = bytes[i]; }
+                if (!saveIsPC && !saveIsGC)
+                {
+                    if (!saveIsPS3) { loadedSave[offset + i + (int)(0x6004 * mainIndex) + 4] = bytes[i]; }
+                    else { loadedSave[offset + i + (int)(0x6008 * mainIndex) + 8] = bytes[i]; }
+                }
             }
         }
 
@@ -245,10 +254,21 @@ namespace SA2SaveUtility
                 {
                     saveisSA = false;
                     saveIsPC = false;
+                    saveIsPS3 = false;
                     saveIsGC = false;
                     validSave = true;
                     SaveIsMain();
-                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Main Save]";
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360 Main Save]";
+                }
+                if (loadedSave.Length == 0x3C050)
+                {
+                    saveisSA = false;
+                    saveIsPC = false;
+                    saveIsPS3 = true;
+                    saveIsGC = false;
+                    validSave = true;
+                    SaveIsMain();
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PS3 Main Save]";
                 }
                 if (loadedSave.Length == 0x6040)
                 {
@@ -299,8 +319,10 @@ namespace SA2SaveUtility
             ChaoSave.GetChao();
             tsmi_SaveCurrentChao.Enabled = true;
             tsmi_Chao.Enabled = true;
-            tsmi_saveAs360PS3New.Visible = false;
-            tsmi_saveAs360PS3Append.Visible = false;
+            tsmi_saveAs360New.Visible = false;
+            tsmi_saveAs360Append.Visible = false;
+            tsmi_saveAsPS3New.Visible = false;
+            tsmi_saveAsPS3Append.Visible = false;
         }
         private void SaveIsMain()
         {
@@ -308,8 +330,10 @@ namespace SA2SaveUtility
             MainSave.GetMain();
             tsmi_SaveCurrentChao.Enabled = false;
             tsmi_Chao.Enabled = false;
-            tsmi_saveAs360PS3New.Visible = true;
-            tsmi_saveAs360PS3Append.Visible = true;
+            tsmi_saveAs360New.Visible = true;
+            tsmi_saveAs360Append.Visible = true;
+            tsmi_saveAsPS3New.Visible = true;
+            tsmi_saveAsPS3Append.Visible = true;
         }
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
@@ -465,8 +489,12 @@ namespace SA2SaveUtility
                     uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                     List<byte> toSave = new List<byte>();
                     if (saveIsPC) { toSave = new List<byte>(loadedSave); }
-                    else { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList(); }
-                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, false));
+                    else {
+                        if (!saveIsPS3) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
+                        else { toSave = new List<byte>(loadedSave.Skip((0x6008 * (int)(uc.mainIndex)) + 8).Take(0x6000).ToArray()); }
+                        toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList();
+                    }
+                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, false, false));
                     string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S01";
                     int index = 1;
                     while (true)
@@ -981,7 +1009,7 @@ namespace SA2SaveUtility
                     if (saveIsPC) { toSave = new List<byte>(loadedSave); toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList(); }
                     if (saveIsGC) { toSave = new List<byte>(loadedSave); }
                     if (!saveIsPC && !saveIsGC) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
-                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, true));
+                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, true, false));
                     toSave.InsertRange(0, header);
                     toSave.RemoveRange(0x80, 0x2800);
                     toSave.InsertRange(0x80, header2);
@@ -1009,9 +1037,14 @@ namespace SA2SaveUtility
             }
         }
 
-        private void Tsmi_saveAs360PS3_Click(object sender, EventArgs e)
+        private void Tsmi_saveAs360_Click(object sender, EventArgs e)
         {
-            if (!saveIsMain) { SaveAs360PS3(); }
+            if (!saveIsMain) { SaveAs360(); }
+        }
+
+        private void Tsmi_saveAsPS3_Click(object sender, EventArgs e)
+        {
+            if (!saveIsMain) { SaveAsPS3(); }
         }
 
         private void Tsmi_About_Click(object sender, EventArgs e)
@@ -1020,12 +1053,205 @@ namespace SA2SaveUtility
             else { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at " + latestVersionDownloadURL + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
         }
 
-        private void Tsmi_saveAs360PS3New_Click(object sender, EventArgs e)
+        private void Tsmi_saveAs360New_Click(object sender, EventArgs e)
         {
-            SaveAs360PS3();
+            SaveAs360();
         }
 
-        private void SaveAs360PS3()
+        private void Tsmi_saveAsPS3New_Click(object sender, EventArgs e)
+        {
+            SaveAsPS3();
+        }
+
+        private void SaveAsPS3()
+        {
+            if (!saveIsMain)
+            {
+                try
+                {
+                    List<byte> byteList = new List<byte>();
+                    byteList.AddRange(loadedSave.Take(0x3AA4).ToArray());
+                    foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
+                    {
+                        if (saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                        else { byteList.AddRange(chao); }
+                    }
+                    byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
+
+                    if (saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+
+                    byte[] chaoToSave = byteList.ToArray();
+
+                    byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
+                    ChaoSave.WriteChecksum(splitForChecksum, true);
+                    List<byte> byteArray = new List<byte>();
+                    byteArray.AddRange(chaoToSave.Take(0x3040).ToArray());
+                    byteArray.AddRange(splitForChecksum);
+                    chaoToSave = byteArray.ToArray();
+                    string consoleFileName = Path.GetDirectoryName(loadedFile) + @"\CHAOSAVE";
+                    int index = 1;
+                    while (true)
+                    {
+                        if (!File.Exists(consoleFileName))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            consoleFileName = Path.GetDirectoryName(loadedFile) + @"\CHAOSAVE" + index;
+                            index++;
+                        }
+                    }
+                    File.WriteAllBytes(consoleFileName, chaoToSave);
+                    MessageBox.Show("Chao save file has been saved to " + consoleFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+                catch
+                {
+                    MessageBox.Show("There was a problem saving the chao save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                try
+                {
+                    uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                    List<byte> toSave = new List<byte>();
+                    if (!saveIsPC)
+                    {
+                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, false, false, true));
+                    }
+                    else
+                    {
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.Add(0x01);
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.Add(0x00);
+                        toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
+                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, true).ToList();
+                    }
+                    for (int i = toSave.Count; i < 0x3C050; i++)
+                    {
+                        toSave.Add(0x00);
+                    }
+                    string consoleFileName = Path.GetDirectoryName(loadedFile) + @"\SA2SAVE";
+                    int index = 1;
+                    while (true)
+                    {
+                        if (!File.Exists(consoleFileName))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            consoleFileName = Path.GetDirectoryName(loadedFile) + @"\SA2SAVE" + index;
+                            index++;
+                        }
+                    }
+                    File.WriteAllBytes(consoleFileName, toSave.ToArray());
+                    MessageBox.Show("Save file has been saved to " + consoleFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+                catch
+                {
+                    MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void Tsmi_saveAsPS3Append_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog loadToAppend = new OpenFileDialog();
+                loadToAppend.InitialDirectory = chaoDirectory;
+                loadToAppend.Filter = "PS3 Main Save|*.*";
+                loadToAppend.Title = "Chose a file to add this save to";
+                loadToAppend.ShowDialog();
+                if (loadToAppend.FileName != "")
+                {
+                    byte[] save = File.ReadAllBytes(loadToAppend.FileName);
+                    if (save.Length == 0x3C050)
+                    {
+                        int slotIndex = 0;
+                        int slotNotTaken = 0;
+                        List<int> takenSlots = new List<int>();
+                        foreach (byte[] saveSlot in SplitByteArray(save, 0x6008)) { takenSlots.Add(saveSlot[3]); }
+                        for (int i = 1; i < 10; i++)
+                        {
+                            if (!takenSlots.Contains(i)) { slotNotTaken = i; break; }
+                        }
+                        if (slotNotTaken != 0)
+                        {
+                            List<byte> combinedSave = new List<byte>();
+                            foreach (byte[] saveSlot in SplitByteArray(save, 0x6008))
+                            {
+                                if (saveSlot[3] == 0x00)
+                                {
+                                    uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                                    List<byte> toSave = new List<byte>();
+                                    if (!saveIsPC)
+                                    {
+                                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6008 * uc.mainIndex)).Take(0x6008).ToArray(), false, false, true));
+                                        toSave[3] = (byte)slotNotTaken;
+                                    }
+                                    else
+                                    {
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.Add((byte)slotNotTaken);
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.Add(0x00);
+                                        toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
+                                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, true).ToList();
+                                    }
+                                    combinedSave.AddRange(save.Take(0x6008 * slotIndex));
+                                    combinedSave.AddRange(toSave);
+                                    combinedSave.AddRange(save.Skip(0x6008 * (slotIndex + 1)));
+                                    break;
+                                }
+                                slotIndex++;
+                            }
+                            string consoleFileName = Path.GetDirectoryName(loadedFile) + @"\SA2SAVE";
+                            int index = 1;
+                            while (true)
+                            {
+                                if (!File.Exists(consoleFileName))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    consoleFileName = Path.GetDirectoryName(loadedFile) + @"\SA2SAVE" + index;
+                                    index++;
+                                }
+                            }
+                            File.WriteAllBytes(consoleFileName, combinedSave.ToArray());
+                            MessageBox.Show("Save file has been saved to " + consoleFileName + ", in slot " + slotNotTaken + ".", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Couldn't find a slot to save to!", "Error writing save", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("That doesn't appear to be a PS3 main save.", "Error writing save", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SaveAs360()
         {
             if (!saveIsMain)
             {
@@ -1080,7 +1306,7 @@ namespace SA2SaveUtility
                     List<byte> toSave = new List<byte>();
                     if (!saveIsPC)
                     {
-                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, true, false));
+                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, false, false, false));
                     }
                     else
                     {
@@ -1089,7 +1315,7 @@ namespace SA2SaveUtility
                         toSave.Add(0x00);
                         toSave.Add(0x01);
                         toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
-                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false).ToList();
+                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, false).ToList();
                     }
                     for (int i = toSave.Count; i < 0x3C028; i++)
                     {
@@ -1119,13 +1345,13 @@ namespace SA2SaveUtility
             }
         }
 
-        private void Tsmi_saveAs360PS3Append_Click(object sender, EventArgs e)
+        private void Tsmi_saveAs360Append_Click(object sender, EventArgs e)
         {
             try
             {
                 OpenFileDialog loadToAppend = new OpenFileDialog();
                 loadToAppend.InitialDirectory = chaoDirectory;
-                loadToAppend.Filter = "Console Main Save|*.bin";
+                loadToAppend.Filter = "360 Main Save|*.bin";
                 loadToAppend.Title = "Chose a file to add this save to";
                 loadToAppend.ShowDialog();
                 if (loadToAppend.FileName != "")
@@ -1152,7 +1378,7 @@ namespace SA2SaveUtility
                                     List<byte> toSave = new List<byte>();
                                     if (!saveIsPC)
                                     {
-                                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6004 * uc.mainIndex)).Take(0x6004).ToArray(), false, false));
+                                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6004 * uc.mainIndex)).Take(0x6004).ToArray(), false, false, false));
                                         toSave[3] = (byte)slotNotTaken;
                                     }
                                     else
@@ -1162,7 +1388,7 @@ namespace SA2SaveUtility
                                         toSave.Add(0x00);
                                         toSave.Add((byte)slotNotTaken);
                                         toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
-                                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false).ToList();
+                                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, false).ToList();
                                     }
                                     combinedSave.AddRange(save.Take(0x6004 * slotIndex));
                                     combinedSave.AddRange(toSave);
@@ -1195,7 +1421,7 @@ namespace SA2SaveUtility
                     }
                     else
                     {
-                        MessageBox.Show("That doesn't appear to be a console main save.", "Error writing save", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("That doesn't appear to be a 360 main save.", "Error writing save", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -1271,5 +1497,6 @@ namespace SA2SaveUtility
                 updateCheckThread.Start();
             }
         }
+
     }
 }

@@ -30,17 +30,44 @@ namespace SA2SaveUtility
 
         private void Cb_1stCharacter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(currentPair.Value + offsets.kart.FirstC), cb_1stCharacter.SelectedIndex, mainIndex);
+            int character = 0;
+            if (cb_1stCharacter.SelectedIndex < 5)
+            {
+                character = cb_1stCharacter.SelectedIndex;
+            }
+            else
+            {
+                character = cb_1stCharacter.SelectedIndex + 122;
+            }
+            Main.WriteByte((int)(currentPair.Value + offsets.kart.FirstC), character, mainIndex);
         }
 
         private void Cb_2ndCharacter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(currentPair.Value + offsets.kart.SecondC), cb_2ndCharacter.SelectedIndex, mainIndex);
+            int character = 0;
+            if (cb_2ndCharacter.SelectedIndex < 5)
+            {
+                character = cb_2ndCharacter.SelectedIndex;
+            }
+            else
+            {
+                character = cb_2ndCharacter.SelectedIndex + 122;
+            }
+            Main.WriteByte((int)(currentPair.Value + offsets.kart.SecondC), character, mainIndex);
         }
 
         private void Cb_3rdCharacter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(currentPair.Value + offsets.kart.ThirdC), cb_3rdCharacter.SelectedIndex, mainIndex);
+            int character = 0;
+            if (cb_3rdCharacter.SelectedIndex < 5)
+            {
+                character = cb_3rdCharacter.SelectedIndex;
+            }
+            else
+            {
+                character = cb_3rdCharacter.SelectedIndex + 122;
+            }
+            Main.WriteByte((int)(currentPair.Value + offsets.kart.ThirdC), character, mainIndex);
         }
 
         private void Nud_1TimeMM_ValueChanged(object sender, EventArgs e)

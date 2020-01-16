@@ -30,8 +30,8 @@ namespace SA2SaveUtility
         public uint EmblemResultsTime = 0x2868;
         public uint PlayTime = 0x286C;
         public uint Rings = 0x2870;
-        public uint VoiceLanguage = 0x2877;
-
+        //public uint VoiceLanguage = 0x2877;
+        public uint VoiceLanguage = 0x284A;
         public uint GreenHill = 0x4034;
 
         public uint ChaoWorldSonic = 0x5A69;

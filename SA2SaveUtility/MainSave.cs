@@ -11,7 +11,7 @@ namespace SA2SaveUtility
         public static Offsets offsets = new Offsets();
         public static Dictionary<int, TabPage> activeMain = new Dictionary<int, TabPage>();
 
-        public static byte[] WriteChecksum(byte[] save, bool PC, bool GC)
+        public static byte[] WriteChecksum(byte[] save, bool PC, bool GC, bool PS3)
         {
             byte[] checksum = new byte[4];
             List<byte> newSave = new List<byte>();
@@ -26,12 +26,25 @@ namespace SA2SaveUtility
             }
             if (!PC && !GC)
             {
-                foreach (byte[] splitSave in Main.SplitByteArray(save, 0x6004))
+                if (!PS3)
                 {
-                    checksum = BitConverter.GetBytes(splitSave.Skip(0x2848).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray();
-                    newSave.AddRange(splitSave.Take(0x2844).ToArray());
-                    newSave.AddRange(checksum);
-                    newSave.AddRange(splitSave.Skip(0x2848).ToArray());
+                    foreach (byte[] splitSave in Main.SplitByteArray(save, 0x6004))
+                    {
+                        checksum = BitConverter.GetBytes(splitSave.Skip(0x2848).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray();
+                        newSave.AddRange(splitSave.Take(0x2844).ToArray());
+                        newSave.AddRange(checksum);
+                        newSave.AddRange(splitSave.Skip(0x2848).ToArray());
+                    }
+                }
+                else
+                {
+                    foreach (byte[] splitSave in Main.SplitByteArray(save, 0x6008))
+                    {
+                        checksum = BitConverter.GetBytes(splitSave.Skip(0x284C).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray();
+                        newSave.AddRange(splitSave.Take(0x2848).ToArray());
+                        newSave.AddRange(checksum);
+                        newSave.AddRange(splitSave.Skip(0x284C).ToArray());
+                    }
                 }
             }
 
@@ -108,26 +121,53 @@ namespace SA2SaveUtility
             if (!Main.saveIsPC && !Main.saveIsGC)
             {
                 uint index = 0;
-                foreach (byte[] main in Main.SplitByteArray(Main.loadedSave.ToArray(), 0x6004))
+                if (!Main.saveIsPS3)
                 {
-                    if (BitConverter.ToString(main.Take(4).ToArray()) != "00-00-00-00")
+                    foreach (byte[] main in Main.SplitByteArray(Main.loadedSave.ToArray(), 0x6004))
                     {
-                        uc_Main uc = new uc_Main();
-                        TabPage tp = new TabPage();
-                        uc.mainIndex = index;
-                        tp.Controls.Add(uc);
-                        Main.tc_Main.TabPages.Add(tp);
-                        Main.tc_Main.SelectedTab = Main.tc_Main.TabPages[0];
+                        if (BitConverter.ToString(main.Take(4).ToArray()) != "00-00-00-00")
+                        {
+                            uc_Main uc = new uc_Main();
+                            TabPage tp = new TabPage();
+                            uc.mainIndex = index;
+                            tp.Controls.Add(uc);
+                            Main.tc_Main.TabPages.Add(tp);
+                            Main.tc_Main.SelectedTab = Main.tc_Main.TabPages[0];
 
-                        List<byte> header = new List<byte>(main.Skip(0x2B).Take(0x19));
-                        tp.Text = Encoding.UTF8.GetString(header.Take(header.IndexOf(0x00)).ToArray());
+                            List<byte> header = new List<byte>(main.Skip(0x2B).Take(0x19));
+                            tp.Text = Encoding.UTF8.GetString(header.Take(header.IndexOf(0x00)).ToArray());
 
-                        activeMain.Add(Main.tc_Main.TabPages.IndexOf(tp), tp);
+                            activeMain.Add(Main.tc_Main.TabPages.IndexOf(tp), tp);
 
-                        KeyValuePair<int, TabPage> currentMain = activeMain.Where(x => x.Key == Main.tc_Main.TabPages.IndexOf(tp)).First();
-                        UpdateSave(Main.tc_Main, currentMain, main.ToArray());
+                            KeyValuePair<int, TabPage> currentMain = activeMain.Where(x => x.Key == Main.tc_Main.TabPages.IndexOf(tp)).First();
+                            UpdateSave(Main.tc_Main, currentMain, main.ToArray());
+                        }
+                        index++;
                     }
-                    index++;
+                }
+                else
+                {
+                    foreach (byte[] main in Main.SplitByteArray(Main.loadedSave.ToArray(), 0x6008))
+                    {
+                        if (BitConverter.ToString(main.Take(4).ToArray()) != "00-00-00-00")
+                        {
+                            uc_Main uc = new uc_Main();
+                            TabPage tp = new TabPage();
+                            uc.mainIndex = index;
+                            tp.Controls.Add(uc);
+                            Main.tc_Main.TabPages.Add(tp);
+                            Main.tc_Main.SelectedTab = Main.tc_Main.TabPages[0];
+
+                            List<byte> header = new List<byte>(main.Skip(0x2F).Take(0x19));
+                            tp.Text = Encoding.UTF8.GetString(header.Take(header.IndexOf(0x00)).ToArray());
+
+                            activeMain.Add(Main.tc_Main.TabPages.IndexOf(tp), tp);
+
+                            KeyValuePair<int, TabPage> currentMain = activeMain.Where(x => x.Key == Main.tc_Main.TabPages.IndexOf(tp)).First();
+                            UpdateSave(Main.tc_Main, currentMain, main.Take(0x04).ToArray().ToList().Concat(main.Skip(0x08).ToArray().ToList()).ToArray());
+                        }
+                        index++;
+                    }
                 }
             }
         }
@@ -422,6 +462,20 @@ namespace SA2SaveUtility
                 int M1C = (int)(currentMission[(int)offsets.kart.FirstC]);
                 int M2C = (int)(currentMission[(int)offsets.kart.SecondC]);
                 int M3C = (int)(currentMission[(int)offsets.kart.ThirdC]);
+
+                //Change value to workable value for ComboBox if hidden kart
+                if (M1C > 5)
+                {
+                    M1C -= 122;
+                }
+                if (M2C > 5)
+                {
+                    M2C -= 122;
+                }
+                if (M3C > 5)
+                {
+                    M3C -= 122;
+                }
 
                 int M1MM = (int)(currentMission[(int)(offsets.kart.FirstT) + 0x00]);
                 int M1SS = (int)(currentMission[(int)(offsets.kart.FirstT) + 0x01]);
