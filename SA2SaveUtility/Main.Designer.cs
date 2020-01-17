@@ -38,6 +38,9 @@
             this.tsmi_saveAs360 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAs360New = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAs360Append = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAsPS3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAsPS3New = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_saveAsPS3Append = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Chao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_LoadChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_SaveCurrentChao = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,9 +50,6 @@
             this.btn_AutoUpdate = new System.Windows.Forms.Button();
             this.checkb_AutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkb_CheckForUpdates = new System.Windows.Forms.CheckBox();
-            this.tsmi_saveAsPS3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_saveAsPS3New = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi_saveAsPS3Append = new System.Windows.Forms.ToolStripMenuItem();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -281,9 +281,9 @@
         private System.Windows.Forms.Button btn_AutoUpdate;
         private System.Windows.Forms.CheckBox checkb_AutoUpdate;
         private System.Windows.Forms.CheckBox checkb_CheckForUpdates;
-        public static System.Windows.Forms.TabControl tc_Main;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3New;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3Append;
+        public static System.Windows.Forms.TabControl tc_Main;
     }
 }

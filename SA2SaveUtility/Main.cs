@@ -197,27 +197,27 @@ namespace SA2SaveUtility
                 ChaoSave.activeChao = new Dictionary<uint, TabPage>();
                 MainSave.activeMain = new Dictionary<int, TabPage>();
 
-                //if (loadedSave.Length == 0xC820)
-                //{
-                //    DialogResult result = MessageBox.Show("Is the save you're loading an SA PC Chao Save?", "PC or 360/PS3 SA Chao Save?", MessageBoxButtons.YesNo);
-                //    if (result == DialogResult.Yes)
-                //    {
-                //        saveisSA = true;
-                //        saveIsPC = true;
-                //        saveIsGC = false;
-                //        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA PC Chao Save]";
-                //    }
-                //    if (result == DialogResult.No)
-                //    {
-                //        saveisSA = true;
-                //        saveIsPC = false;
-                //        saveIsGC = false;
-                //        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA 360/PS3 Chao Save]";
-                //    }
-                //    saveIsMain = false;
-                //    validSave = true;
-                //    SaveIsChao();
-                //}
+                if (loadedSave.Length == 0xC820)
+                {
+                    DialogResult result = MessageBox.Show("Is the save you're loading an SA PC Chao Save?", "PC or 360/PS3 SA Chao Save?", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        saveisSA = true;
+                        saveIsPC = true;
+                        saveIsGC = false;
+                        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA PC Chao Save]";
+                    }
+                    if (result == DialogResult.No)
+                    {
+                        saveisSA = true;
+                        saveIsPC = false;
+                        saveIsGC = false;
+                        ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA 360/PS3 Chao Save]";
+                    }
+                    saveIsMain = false;
+                    validSave = true;
+                    SaveIsChao();
+                }
 
                 if (loadedSave.Length == 0x6000)
                 {
@@ -315,7 +315,17 @@ namespace SA2SaveUtility
             if (!saveisSA)
             {
                 ChaoSave.GetChaoWorld();
+                tsmi_saveAsPS3.Visible = true;
+                tsmi_saveAs360.Visible = true;
+                tsmi_saveAsGC.Visible = true;
             }
+            else
+            {
+                tsmi_saveAsPS3.Visible = false;
+                tsmi_saveAs360.Visible = false;
+                tsmi_saveAsGC.Visible = false;
+            }
+
             ChaoSave.GetChao();
             tsmi_SaveCurrentChao.Enabled = true;
             tsmi_Chao.Enabled = true;
@@ -338,8 +348,11 @@ namespace SA2SaveUtility
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
         {
-            if (tc_Main.SelectedIndex != 0)
-            {
+            //if (tc_Main.SelectedIndex != 0)
+            //{
+                uint chaoBeginning = 0x3AA4;
+                if (saveisSA) chaoBeginning = 0x818;
+
                 uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                 OpenFileDialog loadChao = new OpenFileDialog();
                 loadChao.InitialDirectory = chaoDirectory;
@@ -354,10 +367,10 @@ namespace SA2SaveUtility
                     if (chao.Length == 2048)
                     {
                         List<byte> byteList = new List<byte>();
-                        byteList.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * uc.chaoNumber))).ToArray());
+                        byteList.AddRange(loadedSave.Take((int)(chaoBeginning + (0x800 * uc.chaoNumber))).ToArray());
                         if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                         else { byteList.AddRange(chao); }
-                        byteList.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (uc.chaoNumber + 1)))).ToArray());
+                        byteList.AddRange(loadedSave.Skip((int)(chaoBeginning + (0x800 * (uc.chaoNumber + 1)))).ToArray());
                         loadedSave = byteList.ToArray();
                         ChaoSave.GetChao();
                     }
@@ -366,17 +379,20 @@ namespace SA2SaveUtility
                         MessageBox.Show("That doesn't appear to be a chao file.", "Error loading chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
+            //}
         }
 
         private void Tsmi_SaveCurrentChao_Click(object sender, EventArgs e)
         {
-            if (tc_Main.SelectedIndex != 0)
-            {
+            //if (tc_Main.SelectedIndex != 0)
+            //{
+                uint chaoBeginning = 0x3AA4;
+                if (saveisSA) chaoBeginning = 0x818;
+
                 uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                 byte[] chao = new byte[2048];
-                if (!saveIsPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
-                else { chao = loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
+                if (!saveIsPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
+                else { chao = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
                 SaveFileDialog saveChao = new SaveFileDialog();
                 saveChao.InitialDirectory = chaoDirectory;
                 saveChao.Filter = "Chao File|*.chao|FCE Chao File|*.chao";
@@ -403,25 +419,28 @@ namespace SA2SaveUtility
                     }
                     File.WriteAllBytes(saveChao.FileName, chaoToSave.ToArray());
                 }
-            }
+            //}
         }
 
         private void Tsmi_DupeCurrentChao_Click(object sender, EventArgs e)
         {
-            if (tc_Main.SelectedIndex != 0)
-            {
+            //if (tc_Main.SelectedIndex != 0)
+            //{
+                uint chaoBeginning = 0x3AA4;
+                if (saveisSA) chaoBeginning = 0x818;
+
                 uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-                byte[] chaoToDupe = loadedSave.Skip((int)(0x3AA4 + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
-                byte[] array = loadedSave.Skip(0x3AA4).Take(0x12000).ToArray();
+                byte[] chaoToDupe = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
+                byte[] array = loadedSave.Skip((int)chaoBeginning).Take(0x12000).ToArray();
                 uint chaoIndex = 0;
                 foreach (byte[] chao in SplitByteArray(array, 0x800))
                 {
                     if ((chao[offsets.chao.Garden] == 0 || chao[offsets.chao.Garden] == 255) && chaoIndex != 24)
                     {
                         List<byte> byteArray = new List<byte>();
-                        byteArray.AddRange(loadedSave.Take((int)(0x3AA4 + (0x800 * chaoIndex))).ToArray());
+                        byteArray.AddRange(loadedSave.Take((int)(chaoBeginning + (0x800 * chaoIndex))).ToArray());
                         byteArray.AddRange(chaoToDupe);
-                        byteArray.AddRange(loadedSave.Skip((int)(0x3AA4 + (0x800 * (chaoIndex + 1)))).ToArray());
+                        byteArray.AddRange(loadedSave.Skip((int)(chaoBeginning + (0x800 * (chaoIndex + 1)))).ToArray());
                         loadedSave = byteArray.ToArray();
                         MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
                         ChaoSave.GetChao();
@@ -433,88 +452,137 @@ namespace SA2SaveUtility
                     }
                     chaoIndex++;
                 }
-            }
+            //}
         }
 
         private void Tsmi_saveAsPC_Click(object sender, EventArgs e)
         {
-            if (!saveIsMain)
+            if (!saveisSA)
             {
-                try
+                if (!saveIsMain)
                 {
-                    List<byte> byteList = new List<byte>();
-                    byteList.AddRange(loadedSave.Take(0x3AA4).ToArray());
-                    foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
+                    try
                     {
-                        if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
-                        else { byteList.AddRange(chao); }
-                    }
-                    byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
-
-                    if (!saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
-                    byte[] chaoToSave = byteList.ToArray();
-
-                    byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
-                    ChaoSave.WriteChecksum(splitForChecksum, true);
-                    List<byte> byteArray = new List<byte>();
-                    byteArray.AddRange(chaoToSave.Take(0x3040).ToArray());
-                    byteArray.AddRange(splitForChecksum);
-                    chaoToSave = byteArray.ToArray();
-                    string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__ALF";
-                    int index = 1;
-                    while (true)
-                    {
-                        if (!File.Exists(pcFileName))
+                        List<byte> byteList = new List<byte>();
+                        byteList.AddRange(loadedSave.Take(0x3AA4).ToArray());
+                        foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
                         {
-                            break;
+                            if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                            else { byteList.AddRange(chao); }
                         }
+                        byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
+
+                        if (!saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                        byte[] chaoToSave = byteList.ToArray();
+
+                        byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
+                        ChaoSave.WriteChecksum(splitForChecksum, true);
+                        List<byte> byteArray = new List<byte>();
+                        byteArray.AddRange(chaoToSave.Take(0x3040).ToArray());
+                        byteArray.AddRange(splitForChecksum);
+                        chaoToSave = byteArray.ToArray();
+                        string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__ALF";
+                        int index = 1;
+                        while (true)
+                        {
+                            if (!File.Exists(pcFileName))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__ALF" + index;
+                                index++;
+                            }
+                        }
+                        File.WriteAllBytes(pcFileName, chaoToSave);
+                        MessageBox.Show("Chao save file has been saved to " + pcFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("There was a problem saving the chao save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+                        List<byte> toSave = new List<byte>();
+                        if (saveIsPC) { toSave = new List<byte>(loadedSave); }
                         else
                         {
-                            pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__ALF" + index;
-                            index++;
+                            if (!saveIsPS3) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
+                            else { toSave = new List<byte>(loadedSave.Skip((0x6008 * (int)(uc.mainIndex)) + 8).Take(0x6000).ToArray()); }
+                            toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList();
                         }
+                        toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, false, false));
+                        string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S01";
+                        int index = 1;
+                        while (true)
+                        {
+                            if (!File.Exists(pcFileName))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S" + index.ToString("00");
+                                index++;
+                            }
+                        }
+                        File.WriteAllBytes(pcFileName, toSave.ToArray());
+                        MessageBox.Show("Save file has been saved to " + pcFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
                     }
-                    File.WriteAllBytes(pcFileName, chaoToSave);
-                    MessageBox.Show("Chao save file has been saved to " + pcFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
-                }
-                catch
-                {
-                    MessageBox.Show("There was a problem saving the chao save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    catch
+                    {
+                        MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else
             {
-                try
+                if (!saveIsMain)
                 {
-                    uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-                    List<byte> toSave = new List<byte>();
-                    if (saveIsPC) { toSave = new List<byte>(loadedSave); }
-                    else {
-                        if (!saveIsPS3) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
-                        else { toSave = new List<byte>(loadedSave.Skip((0x6008 * (int)(uc.mainIndex)) + 8).Take(0x6000).ToArray()); }
-                        toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList();
-                    }
-                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, false, false));
-                    string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S01";
-                    int index = 1;
-                    while (true)
+                    try
                     {
-                        if (!File.Exists(pcFileName))
+                        List<byte> byteList = new List<byte>();
+                        byteList.AddRange(loadedSave.Take(0x818).ToArray());
+                        foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x818).Take(0xC000).ToArray(), 0x800))
                         {
-                            break;
+                            if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                            else { byteList.AddRange(chao); }
                         }
-                        else
+                        byteList.AddRange(loadedSave.Skip(0xC818).Take(0x08).ToArray());
+
+                        if (!saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                        byte[] chaoToSave = byteList.ToArray();
+                        ChaoSave.WriteChecksum(chaoToSave, false);
+                        string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SonicAdventureChaoGarden.snc";
+                        int index = 1;
+                        while (true)
                         {
-                            pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S" + index.ToString("00");
-                            index++;
+                            if (!File.Exists(pcFileName))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                pcFileName = Path.GetDirectoryName(loadedFile) + @"\SonicAdventureChaoGarden" + index + ".snc";
+                                index++;
+                            }
                         }
+                        File.WriteAllBytes(pcFileName, chaoToSave);
+                        MessageBox.Show("Chao save file has been saved to " + pcFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
                     }
-                    File.WriteAllBytes(pcFileName, toSave.ToArray());
-                    MessageBox.Show("Save file has been saved to " + pcFileName + "!", "Success", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    catch
+                    {
+                        MessageBox.Show("There was a problem saving the chao save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch
+                else
                 {
-                    MessageBox.Show("There was a problem saving the save file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("You can't save an SA2 Main Save as DX.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -1497,6 +1565,5 @@ namespace SA2SaveUtility
                 updateCheckThread.Start();
             }
         }
-
     }
 }

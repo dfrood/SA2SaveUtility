@@ -1399,7 +1399,10 @@
             this.cb_Garden.Items.AddRange(new object[] {
             "Chao Garden",
             "Hero Garden",
-            "Dark Garden"});
+            "Dark Garden",
+            "Station Square",
+            "Egg Carrier",
+            "Mystic Ruins"});
             this.cb_Garden.Location = new System.Drawing.Point(9, 61);
             this.cb_Garden.Name = "cb_Garden";
             this.cb_Garden.Size = new System.Drawing.Size(88, 21);
