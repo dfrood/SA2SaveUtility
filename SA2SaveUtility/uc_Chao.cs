@@ -14,8 +14,9 @@ namespace SA2SaveUtility
 
         public uc_Chao()
         {
-            if (Main.saveisSA) { chaoBeginning = 0x818; }
-            else { chaoBeginning = 0x3AA4; }
+            if (!Main.isSA && Main.isRTE) { chaoBeginning = 0; }
+            if (Main.isSA && !Main.isRTE) { chaoBeginning = 0x818; }
+            if (!Main.isSA && !Main.isRTE) { chaoBeginning = 0x3AA4; }
             InitializeComponent();
         }
 
@@ -25,178 +26,206 @@ namespace SA2SaveUtility
             Main.tc_Main.TabPages[Main.tc_Main.TabPages.IndexOf(ChaoSave.activeChao.Where(x => x.Key == chaoNumber).First().Value)].Text = tb_Name.Text;
             for (int i = 0; i < name.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Name + i)] = name[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Name + i)] = name[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Name + i), name[i]); }
             }
         }
 
         private void Nud_SwimLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimLevel)] = (byte)nud_SwimLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimLevel)] = (byte)nud_SwimLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SwimLevel), (byte)nud_SwimLevel.Value); }
         }
 
         private void Nud_FlyLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyLevel)] = (byte)nud_FlyLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyLevel)] = (byte)nud_FlyLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.FlyLevel), (byte)nud_FlyLevel.Value); }
         }
 
         private void Nud_RunLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunLevel)] = (byte)nud_RunLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunLevel)] = (byte)nud_RunLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.RunLevel), (byte)nud_RunLevel.Value); }
         }
 
         private void Nud_PowerLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerLevel)] = (byte)nud_PowerLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerLevel)] = (byte)nud_PowerLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.PowerLevel), (byte)nud_PowerLevel.Value); }
         }
 
         private void Nud_StaminaLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaLevel)] = (byte)nud_StaminaLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaLevel)] = (byte)nud_StaminaLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.StaminaLevel), (byte)nud_StaminaLevel.Value); }
         }
 
         private void Nud_LuckLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckLevel)] = (byte)nud_LuckLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckLevel)] = (byte)nud_LuckLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.LuckLevel), (byte)nud_LuckLevel.Value); }
         }
 
         private void Nud_IntelligenceLevel_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligenceLevel)] = (byte)nud_IntelligenceLevel.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligenceLevel)] = (byte)nud_IntelligenceLevel.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.IntelligenceLevel), (byte)nud_IntelligenceLevel.Value); }
         }
 
         private void Nud_SwimBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimBar)] = (byte)nud_SwimBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimBar)] = (byte)nud_SwimBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SwimBar), (byte)nud_SwimBar.Value); }
         }
 
         private void Nud_FlyBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyBar)] = (byte)nud_FlyBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyBar)] = (byte)nud_FlyBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.FlyBar), (byte)nud_FlyBar.Value); }
         }
 
         private void Nud_RunBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunBar)] = (byte)nud_RunBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunBar)] = (byte)nud_RunBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.RunBar), (byte)nud_RunBar.Value); }
         }
 
         private void Nud_PowerBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerBar)] = (byte)nud_PowerBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerBar)] = (byte)nud_PowerBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.PowerBar), (byte)nud_PowerBar.Value); }
         }
 
         private void Nud_StaminaBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaBar)] = (byte)nud_StaminaBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaBar)] = (byte)nud_StaminaBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.StaminaBar), (byte)nud_StaminaBar.Value); }
         }
 
         private void Nud_LuckBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckBar)] = (byte)nud_LuckBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckBar)] = (byte)nud_LuckBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.LuckBar), (byte)nud_LuckBar.Value); }
         }
 
         private void Nud_IntelligenceBar_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligenceBar)] = (byte)nud_IntelligenceBar.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligenceBar)] = (byte)nud_IntelligenceBar.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.IntelligenceBar), (byte)nud_IntelligenceBar.Value); }
         }
 
         private void Nud_SwimStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_SwimStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimPoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimPoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SwimPoints + i), stat[i]); }
             }
         }
 
         private void Nud_FlyStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_FlyStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyPoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyPoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.FlyPoints + i), stat[i]); }
             }
         }
 
         private void Nud_RunStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_RunStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunPoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunPoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.RunPoints + i), stat[i]); }
             }
         }
 
         private void Nud_PowerStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_PowerStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerPoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerPoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.PowerPoints + i), stat[i]); }
             }
         }
 
         private void Nud_StaminaStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_StaminaStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaPoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaPoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.StaminaPoints + i), stat[i]); }
             }
         }
 
         private void Nud_LuckStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_LuckStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckPoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckPoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.LuckPoints + i), stat[i]); }
             }
         }
 
         private void Nud_IntelligenceStat_ValueChanged(object sender, EventArgs e)
         {
             byte[] stat = BitConverter.GetBytes((UInt16)nud_IntelligenceStat.Value);
-            if (!Main.saveIsPC) { Array.Reverse(stat); }
+            if (!Main.isPC) { Array.Reverse(stat); }
             for (int i = 0; i < stat.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligencePoints + i)] = stat[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligencePoints + i)] = stat[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.IntelligencePoints + i), stat[i]); }
             }
         }
 
         private void Cb_SwimGrade_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimGrade)] = (byte)cb_SwimGrade.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SwimGrade)] = (byte)cb_SwimGrade.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SwimGrade), (byte)cb_SwimGrade.SelectedIndex); }
         }
 
         private void Cb_FlyGrade_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyGrade)] = (byte)cb_FlyGrade.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FlyGrade)] = (byte)cb_FlyGrade.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.FlyGrade), (byte)cb_FlyGrade.SelectedIndex); }
         }
 
         private void Cb_RunGrade_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunGrade)] = (byte)cb_RunGrade.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunGrade)] = (byte)cb_RunGrade.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.RunGrade), (byte)cb_RunGrade.SelectedIndex); }
         }
 
         private void Cb_PowerGrade_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerGrade)] = (byte)cb_PowerGrade.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.PowerGrade)] = (byte)cb_PowerGrade.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.PowerGrade), (byte)cb_PowerGrade.SelectedIndex); }
         }
 
         private void Cb_StaminaGrade_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaGrade)] = (byte)cb_StaminaGrade.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StaminaGrade)] = (byte)cb_StaminaGrade.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.StaminaGrade), (byte)cb_StaminaGrade.SelectedIndex); }
         }
 
         private void Cb_Garden_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Garden)] = (byte)(cb_Garden.SelectedIndex + 1);
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Garden)] = (byte)(cb_Garden.SelectedIndex + 1); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Garden), (byte)(cb_Garden.SelectedIndex + 1)); }
         }
 
         private void Cb_Colour_SelectedIndexChanged(object sender, EventArgs e)
@@ -204,33 +233,39 @@ namespace SA2SaveUtility
             if (cb_Colour.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.chaoColours.Where(x => x.Key == cb_Colour.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Colour)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Colour)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Colour), (byte)(flag)); }
             }
         }
 
         private void Cb_Texture_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Texture)] = (byte)cb_Texture.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Texture)] = (byte)cb_Texture.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Texture), (byte)cb_Texture.SelectedIndex); }
         }
 
         private void Cb_BodyType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.BodyType)] = (byte)cb_BodyType.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.BodyType)] = (byte)cb_BodyType.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.BodyType), (byte)cb_BodyType.SelectedIndex); }
         }
 
         private void Checkb_Shiny_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Shiny)] = (byte)(Convert.ToUInt32(checkb_Shiny.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Shiny)] = (byte)(Convert.ToUInt32(checkb_Shiny.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Shiny), (byte)(Convert.ToUInt32(checkb_Shiny.Checked))); }
         }
 
         private void Checkb_MonoTone_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.MonoTone)] = (byte)(Convert.ToUInt32(checkb_MonoTone.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.MonoTone)] = (byte)(Convert.ToUInt32(checkb_MonoTone.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.MonoTone), (byte)(Convert.ToUInt32(checkb_MonoTone.Checked))); }
         }
 
         private void Cb_Hat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Hat)] = (byte)cb_Hat.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Hat)] = (byte)cb_Hat.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Hat), (byte)cb_Hat.SelectedIndex); }
         }
 
         private void Cb_ChaoType_SelectedIndexChanged(object sender, EventArgs e)
@@ -238,17 +273,19 @@ namespace SA2SaveUtility
             int chaoType = cb_ChaoType.SelectedIndex;
             if (cb_ChaoType.SelectedIndex == 0 || cb_ChaoType.SelectedIndex == 1) { chaoType = cb_ChaoType.SelectedIndex + 1; }
             if (cb_ChaoType.SelectedIndex > 1) { chaoType = cb_ChaoType.SelectedIndex + 3; }
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.ChaoType)] = (byte)(chaoType);
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.ChaoType)] = (byte)(chaoType); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.ChaoType), (byte)(chaoType)); }
         }
 
         private void Trackb_Alignment_Scroll(object sender, EventArgs e)
         {
             float alignment = (float)(trackb_Alignment.Value * 0.0000001);
             byte[] alignmentBytes = BitConverter.GetBytes(alignment);
-            if (!Main.saveIsPC) { Array.Reverse(alignmentBytes); }
+            if (!Main.isPC) { Array.Reverse(alignmentBytes); }
             for (int i = 0; i < alignmentBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Alignment + i)] = alignmentBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Alignment + i)] = alignmentBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Alignment + i), alignmentBytes[i]); }
             }
         }
 
@@ -256,10 +293,11 @@ namespace SA2SaveUtility
         {
             float run2Power = (float)(trackb_Run2Power.Value * 0.0000001);
             byte[] run2PowerBytes = BitConverter.GetBytes(run2Power);
-            if (!Main.saveIsPC) { Array.Reverse(run2PowerBytes); }
+            if (!Main.isPC) { Array.Reverse(run2PowerBytes); }
             for (int i = 0; i < run2PowerBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Run2PowerTranformation + i)] = run2PowerBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Run2PowerTranformation + i)] = run2PowerBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Run2PowerTranformation + i), run2PowerBytes[i]); }
             }
         }
 
@@ -267,10 +305,11 @@ namespace SA2SaveUtility
         {
             float swim2Fly = (float)(trackb_Swim2Fly.Value * 0.0000001);
             byte[] swim2FlyBytes = BitConverter.GetBytes(swim2Fly);
-            if (!Main.saveIsPC) { Array.Reverse(swim2FlyBytes); }
+            if (!Main.isPC) { Array.Reverse(swim2FlyBytes); }
             for (int i = 0; i < swim2FlyBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Swim2FlyTransformation + i)] = swim2FlyBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Swim2FlyTransformation + i)] = swim2FlyBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Swim2FlyTransformation + i), swim2FlyBytes[i]); }
             }
         }
 
@@ -278,41 +317,48 @@ namespace SA2SaveUtility
         {
             float transformationMagnitude = (float)(trackb_TransformationMagnitude.Value * 0.0000001);
             byte[] transformationMagnitudeBytes = BitConverter.GetBytes(transformationMagnitude);
-            if (!Main.saveIsPC) { Array.Reverse(transformationMagnitudeBytes); }
+            if (!Main.isPC) { Array.Reverse(transformationMagnitudeBytes); }
             for (int i = 0; i < transformationMagnitudeBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.TransformationMagnitude + i)] = transformationMagnitudeBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.TransformationMagnitude + i)] = transformationMagnitudeBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.TransformationMagnitude + i), transformationMagnitudeBytes[i]); }
             }
         }
 
         private void Cb_Medal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Medal)] = (byte)cb_Medal.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Medal)] = (byte)cb_Medal.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Medal), (byte)cb_Medal.SelectedIndex); }
         }
 
         private void Cb_BodyTypeAnimal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.BodyTypeAnimal)] = (byte)cb_BodyTypeAnimal.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.BodyTypeAnimal)] = (byte)cb_BodyTypeAnimal.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.BodyTypeAnimal), (byte)cb_BodyTypeAnimal.SelectedIndex); }
         }
 
         private void Cb_Eyes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Eyes)] = (byte)cb_Eyes.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Eyes)] = (byte)cb_Eyes.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Eyes), (byte)cb_Eyes.SelectedIndex); }
         }
 
         private void Cb_Emotiball_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Emotiball)] = (byte)cb_Emotiball.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Emotiball)] = (byte)cb_Emotiball.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Emotiball), (byte)cb_Emotiball.SelectedIndex); }
         }
 
         private void Cb_Mouth_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Mouth)] = (byte)cb_Mouth.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Mouth)] = (byte)cb_Mouth.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Mouth), (byte)cb_Mouth.SelectedIndex); }
         }
 
         private void Checkb_FeetHidden_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.HiddenFeet)] = (byte)(Convert.ToUInt32(checkb_FeetHidden.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.HiddenFeet)] = (byte)(Convert.ToUInt32(checkb_FeetHidden.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.HiddenFeet), (byte)(Convert.ToUInt32(checkb_FeetHidden.Checked))); }
         }
 
         private void Cb_ArmsPart_SelectedIndexChanged(object sender, EventArgs e)
@@ -320,7 +366,8 @@ namespace SA2SaveUtility
             if (cb_ArmsPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_ArmsPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ArmsPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ArmsPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2ArmsPart), (byte)(flag)); }
             }
         }
 
@@ -329,7 +376,8 @@ namespace SA2SaveUtility
             if (cb_EarsPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_EarsPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2EarsPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2EarsPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2EarsPart), (byte)(flag)); }
             }
         }
 
@@ -338,7 +386,8 @@ namespace SA2SaveUtility
             if (cb_ForeheadPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_ForeheadPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ForeheadPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ForeheadPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2ForeheadPart), (byte)(flag)); }
             }
         }
 
@@ -347,7 +396,8 @@ namespace SA2SaveUtility
             if (cb_HornsPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_HornsPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2HornsPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2HornsPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2HornsPart), (byte)(flag)); }
             }
         }
 
@@ -356,7 +406,8 @@ namespace SA2SaveUtility
             if (cb_LegsPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_LegsPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2LegsPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2LegsPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2LegsPart), (byte)(flag)); }
             }
         }
 
@@ -365,7 +416,8 @@ namespace SA2SaveUtility
             if (cb_TailPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_TailPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2TailPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2TailPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2TailPart), (byte)(flag)); }
             }
         }
 
@@ -374,7 +426,8 @@ namespace SA2SaveUtility
             if (cb_WingsPart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_WingsPart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2WingsPart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2WingsPart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2WingsPart), (byte)(flag)); }
             }
         }
 
@@ -383,29 +436,32 @@ namespace SA2SaveUtility
             if (cb_FacePart.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.animalParts.Where(x => x.Key == cb_FacePart.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2FacePart)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2FacePart)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2FacePart), (byte)(flag)); }
             }
         }
 
         private void Cb_EggColour_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.EggColour)] = (byte)cb_EggColour.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.EggColour)] = (byte)cb_EggColour.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.EggColour), (byte)cb_EggColour.SelectedIndex); }
         }
 
         private void Nud_Happiness_ValueChanged(object sender, EventArgs e)
         {
             byte[] happiness = BitConverter.GetBytes((Int16)nud_Happiness.Value);
-            if (!Main.saveIsPC) { Array.Reverse(happiness); }
+            if (!Main.isPC) { Array.Reverse(happiness); }
             for (int i = 0; i < happiness.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Happiness + i)] = happiness[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Happiness + i)] = happiness[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Happiness + i), happiness[i]); }
             }
         }
 
         private void Btn_DupeChao_Click(object sender, EventArgs e)
         {
             byte[] chaoToDupe = Main.loadedSave.Skip((int)(chaoBeginning + (0x800 * chaoNumber))).Take(0x800).ToArray();
-            byte[] array = Main.loadedSave.Skip(0x3AA4).Take(0x12000).ToArray();
+            byte[] array = Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray();
             uint chaoIndex = 0;
             foreach (byte[] chao in Main.SplitByteArray(array, 0x800))
             {
@@ -431,110 +487,126 @@ namespace SA2SaveUtility
         private void Trackb_DesireToMate_Scroll(object sender, EventArgs e)
         {
             byte[] desire = BitConverter.GetBytes((UInt16)trackb_DesireToMate.Value);
-            if (!Main.saveIsPC) { Array.Reverse(desire); }
+            if (!Main.isPC) { Array.Reverse(desire); }
             for (int i = 0; i < desire.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DesireToMate + i)] = desire[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DesireToMate + i)] = desire[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DesireToMate + i), desire[i]); }
             }
         }
 
         private void Trackb_Hunger_Scroll(object sender, EventArgs e)
         {
             byte[] hunger = BitConverter.GetBytes((UInt16)trackb_Hunger.Value);
-            if (!Main.saveIsPC) { Array.Reverse(hunger); }
+            if (!Main.isPC) { Array.Reverse(hunger); }
             for (int i = 0; i < hunger.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Hunger + i)] = hunger[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Hunger + i)] = hunger[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Hunger + i), hunger[i]); }
             }
         }
 
         private void Trackb_Sleepiness_Scroll(object sender, EventArgs e)
         {
             byte[] sleepiness = BitConverter.GetBytes((UInt16)trackb_Sleepiness.Value);
-            if (!Main.saveIsPC) { Array.Reverse(sleepiness); }
+            if (!Main.isPC) { Array.Reverse(sleepiness); }
             for (int i = 0; i < sleepiness.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Sleepiness + i)] = sleepiness[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Sleepiness + i)] = sleepiness[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Sleepiness + i), sleepiness[i]); }
             }
         }
 
         private void Trackb_Tiredness_Scroll(object sender, EventArgs e)
         {
             byte[] tiredness = BitConverter.GetBytes((UInt16)trackb_Tiredness.Value);
-            if (!Main.saveIsPC) { Array.Reverse(tiredness); }
+            if (!Main.isPC) { Array.Reverse(tiredness); }
             for (int i = 0; i < tiredness.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Tiredness + i)] = tiredness[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Tiredness + i)] = tiredness[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Tiredness + i), tiredness[i]); }
             }
         }
 
         private void Trackb_Boredom_Scroll(object sender, EventArgs e)
         {
             byte[] boredom = BitConverter.GetBytes((UInt16)trackb_Boredom.Value);
-            if (!Main.saveIsPC) { Array.Reverse(boredom); }
+            if (!Main.isPC) { Array.Reverse(boredom); }
             for (int i = 0; i < boredom.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Boredom + i)] = boredom[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Boredom + i)] = boredom[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Boredom + i), boredom[i]); }
             }
         }
 
         private void Trackb_Energy_Scroll(object sender, EventArgs e)
         {
             byte[] energy = BitConverter.GetBytes((UInt16)trackb_Energy.Value);
-            if (!Main.saveIsPC) { Array.Reverse(energy); }
+            if (!Main.isPC) { Array.Reverse(energy); }
             for (int i = 0; i < energy.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Energy + i)] = energy[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Energy + i)] = energy[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Energy + i), energy[i]); }
             }
         }
 
         private void Trackb_Joy_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Joy)] = (byte)trackb_Joy.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Joy)] = (byte)trackb_Joy.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Joy), (byte)trackb_Joy.Value); }
         }
 
         private void Trackb_UrgeToCry_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.UrgeToCry)] = (byte)trackb_UrgeToCry.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.UrgeToCry)] = (byte)trackb_UrgeToCry.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.UrgeToCry), (byte)trackb_UrgeToCry.Value); }
         }
 
         private void Trackb_Fear_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Fear)] = (byte)trackb_Fear.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Fear)] = (byte)trackb_Fear.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Fear), (byte)trackb_Fear.Value); }
         }
 
         private void Trackb_Dizziness_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Dizziness)] = (byte)trackb_Dizziness.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Dizziness)] = (byte)trackb_Dizziness.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Dizziness), (byte)trackb_Dizziness.Value); }
         }
 
         private void Trackb_SonicBond_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2SonicBond)] = (byte)trackb_SonicBond.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2SonicBond)] = (byte)trackb_SonicBond.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2SonicBond), (byte)trackb_SonicBond.Value); }
         }
 
         private void Trackb_TailsBond_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2TailsBond)] = (byte)trackb_TailsBond.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2TailsBond)] = (byte)trackb_TailsBond.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2TailsBond), (byte)trackb_TailsBond.Value); }
         }
         private void Trackb_KnucklesBond_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2KnucklesBond)] = (byte)trackb_KnucklesBond.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2KnucklesBond)] = (byte)trackb_KnucklesBond.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2KnucklesBond), (byte)trackb_KnucklesBond.Value); }
         }
 
         private void Trackb_ShadowBond_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ShadowBond)] = (byte)trackb_ShadowBond.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ShadowBond)] = (byte)trackb_ShadowBond.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2ShadowBond), (byte)trackb_ShadowBond.Value); }
         }
 
         private void Trackb_EggmanBond_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2EggmanBond)] = (byte)trackb_EggmanBond.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2EggmanBond)] = (byte)trackb_EggmanBond.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2EggmanBond), (byte)trackb_EggmanBond.Value); }
         }
 
         private void Trackb_RougeBond_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2RougeBond)] = (byte)trackb_RougeBond.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2RougeBond)] = (byte)trackb_RougeBond.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2RougeBond), (byte)trackb_RougeBond.Value); }
         }
 
         private void Btn_ResetChao_Click(object sender, EventArgs e)
@@ -542,24 +614,27 @@ namespace SA2SaveUtility
             DialogResult result = MessageBox.Show("This will completely reset the chao, I recommend you save your chao first!" + Environment.NewLine + "Are you sure you want to reset your chao?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (result == DialogResult.Yes)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.ResetTrigger)] = (byte)0;
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.ResetTrigger)] = (byte)0; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.ResetTrigger), (byte)0); }
             }
         }
 
         private void Trackb_Lifespan1_Scroll(object sender, EventArgs e)
         {
             byte[] lifespan = BitConverter.GetBytes((Int16)trackb_Lifespan1.Value);
-            if (!Main.saveIsPC) { Array.Reverse(lifespan); }
+            if (!Main.isPC) { Array.Reverse(lifespan); }
             for (int i = 0; i < lifespan.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Lifespan1 + i)] = lifespan[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Lifespan1 + i)] = lifespan[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Lifespan1 + i), lifespan[i]); }
             }
             if (trackb_Lifespan1.Value > trackb_Lifespan2.Value)
             {
                 trackb_Lifespan2.Value = trackb_Lifespan1.Value;
                 for (int i = 0; i < lifespan.Length; i++)
                 {
-                    Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Lifespan2 + i)] = lifespan[i];
+                    if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Lifespan2 + i)] = lifespan[i]; }
+                    else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Lifespan2 + i), lifespan[i]); }
                 }
             }
         }
@@ -567,20 +642,22 @@ namespace SA2SaveUtility
         private void Trackb_Lifespan2_Scroll(object sender, EventArgs e)
         {
             byte[] lifespan = BitConverter.GetBytes((Int16)trackb_Lifespan2.Value);
-            if (!Main.saveIsPC) { Array.Reverse(lifespan); }
+            if (!Main.isPC) { Array.Reverse(lifespan); }
             for (int i = 0; i < lifespan.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Lifespan2 + i)] = lifespan[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Lifespan2 + i)] = lifespan[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Lifespan2 + i), lifespan[i]); }
             }
         }
 
         private void Nud_Reincarnations_ValueChanged(object sender, EventArgs e)
         {
             byte[] reincarnations = BitConverter.GetBytes((UInt16)nud_Reincarnations.Value);
-            if (!Main.saveIsPC) { Array.Reverse(reincarnations); }
+            if (!Main.isPC) { Array.Reverse(reincarnations); }
             for (int i = 0; i < reincarnations.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Reincarnations + i)] = reincarnations[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Reincarnations + i)] = reincarnations[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Reincarnations + i), reincarnations[i]); }
             }
         }
 
@@ -604,10 +681,11 @@ namespace SA2SaveUtility
             if (checkb_SASkunk.Checked) { animalBehaviours += (1 << 14); }
 
             byte[] animalBehavioursBytes = BitConverter.GetBytes((UInt32)animalBehaviours);
-            if (!Main.saveIsPC) { Array.Reverse(animalBehavioursBytes); }
+            if (!Main.isPC) { Array.Reverse(animalBehavioursBytes); }
             for (int i = 0; i < animalBehavioursBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SAAnimalBehaviours + i)] = animalBehavioursBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SAAnimalBehaviours + i)] = animalBehavioursBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SAAnimalBehaviours + i), animalBehavioursBytes[i]); }
             }
         }
 
@@ -638,10 +716,11 @@ namespace SA2SaveUtility
             if (checkb_Phoenix.Checked) { animalBehaviours += (1 << 20); }
 
             byte[] animalBehavioursBytes = BitConverter.GetBytes((UInt32)animalBehaviours);
-            if (!Main.saveIsPC) { Array.Reverse(animalBehavioursBytes); }
+            if (!Main.isPC) { Array.Reverse(animalBehavioursBytes); }
             for (int i = 0; i < animalBehavioursBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2AnimalBehaviours + i)] = animalBehavioursBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2AnimalBehaviours + i)] = animalBehavioursBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2AnimalBehaviours + i), animalBehavioursBytes[i]); }
             }
         }
 
@@ -662,10 +741,11 @@ namespace SA2SaveUtility
             if (checkb_WateringCan.Checked) { toys += (1 << 11); }
 
             byte[] toysBytes = BitConverter.GetBytes((UInt32)toys);
-            if (!Main.saveIsPC) { Array.Reverse(toysBytes); }
+            if (!Main.isPC) { Array.Reverse(toysBytes); }
             for (int i = 0; i < toysBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2Toys + i)] = toysBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2Toys + i)] = toysBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2Toys + i), toysBytes[i]); }
             }
         }
 
@@ -700,7 +780,8 @@ namespace SA2SaveUtility
             byte[] classroomSkillsBytes = BitConverter.GetBytes((Int32)classroomSkills);
             for (int i = 0; i < classroomSkillsBytes.Length; i++)
             {
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ClassroomSkills + i)] = classroomSkillsBytes[i];
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.SA2ClassroomSkills + i)] = classroomSkillsBytes[i]; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.SA2ClassroomSkills + i), classroomSkillsBytes[i]); }
             }
         }
 
@@ -811,32 +892,45 @@ namespace SA2SaveUtility
 
         private void Trackb_Normal2Curious_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Normal2Curious)] = (byte)(Int16)trackb_Normal2Curious.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Normal2Curious)] = (byte)(Int16)trackb_Normal2Curious.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Normal2Curious), (byte)(Int16)trackb_Normal2Curious.Value); }
         }
 
         private void Trackb_CryBaby2Energetic_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.CryBaby2Energetic)] = (byte)(Int16)trackb_CryBaby2Energetic.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.CryBaby2Energetic)] = (byte)(Int16)trackb_CryBaby2Energetic.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.CryBaby2Energetic), (byte)(Int16)trackb_CryBaby2Energetic.Value); }
         }
 
         private void Trackb_Naive2Normal_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Naive2Normal)] = (byte)(Int16)trackb_Naive2Normal.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Naive2Normal)] = (byte)(Int16)trackb_Naive2Normal.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Naive2Normal), (byte)(Int16)trackb_Naive2Normal.Value); }
         }
 
         private void Trackb_Normal2BigEater_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Normal2BigEater)] = (byte)(Int16)trackb_Normal2BigEater.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Normal2BigEater)] = (byte)(Int16)trackb_Normal2BigEater.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Normal2BigEater), (byte)(Int16)trackb_Normal2BigEater.Value); }
         }
 
         private void Trackb_Normal2Carefree_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Normal2Carefree)] = (byte)(Int16)trackb_Normal2Carefree.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Normal2Carefree)] = (byte)(Int16)trackb_Normal2Carefree.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Normal2Carefree), (byte)(Int16)trackb_Normal2Carefree.Value); }
         }
         private void Cb_FavouriteFruit_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_FavouriteFruit.SelectedIndex == 8) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = 0x10; }
-            else { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = (byte)cb_FavouriteFruit.SelectedIndex; }
+            if (cb_FavouriteFruit.SelectedIndex == 8)
+            {
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = 0x10; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.FavouriteFruit), 0x10); }
+            }
+            else
+            {
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.FavouriteFruit)] = (byte)cb_FavouriteFruit.SelectedIndex; }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.FavouriteFruit), (byte)cb_FavouriteFruit.SelectedIndex); }
+            }
         }
 
         private void Checkb_GoGoDance_CheckedChanged(object sender, EventArgs e)
@@ -956,92 +1050,110 @@ namespace SA2SaveUtility
 
         private void Trackb_Cough_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Cough)] = (byte)(sbyte)trackb_Cough.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Cough)] = (byte)(sbyte)trackb_Cough.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Cough), (byte)trackb_Cough.Value); }
         }
 
         private void Trackb_Cold_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Cold)] = (byte)(sbyte)trackb_Cold.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Cold)] = (byte)(sbyte)trackb_Cold.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Cold), (byte)trackb_Cold.Value); }
         }
 
         private void Trackb_Rash_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Rash)] = (byte)(sbyte)trackb_Rash.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Rash)] = (byte)(sbyte)trackb_Rash.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Rash), (byte)trackb_Rash.Value); }
         }
 
         private void Trackb_RunnyNose_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunnyNose)] = (byte)(sbyte)trackb_RunnyNose.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunnyNose)] = (byte)(sbyte)trackb_RunnyNose.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.RunnyNose), (byte)trackb_RunnyNose.Value); }
         }
 
         private void Trackb_Hiccups_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Hiccups)] = (byte)(sbyte)trackb_Hiccups.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.Hiccups)] = (byte)(sbyte)trackb_Hiccups.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.Hiccups), (byte)trackb_Hiccups.Value); }
         }
 
         private void Trackb_StomachAche_Scroll(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StomachAche)] = (byte)(sbyte)trackb_StomachAche.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.StomachAche)] = (byte)(sbyte)trackb_StomachAche.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.StomachAche), (byte)trackb_StomachAche.Value); }
         }
 
         private void Cb_Swim1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNASwimGrade1)] = (byte)cb_Swim1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNASwimGrade1)] = (byte)cb_Swim1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNASwimGrade1), (byte)cb_Swim1.SelectedIndex); }
         }
 
         private void Cb_Fly1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFlyGrade1)] = (byte)cb_Fly1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFlyGrade1)] = (byte)cb_Fly1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAFlyGrade1), (byte)cb_Fly1.SelectedIndex); }
         }
 
         private void Cb_Run1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade1)] = (byte)cb_Run1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade1)] = (byte)cb_Run1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNARunGrade1), (byte)cb_Run1.SelectedIndex); }
         }
 
         private void Cb_Power1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAPowerGrade1)] = (byte)cb_Power1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAPowerGrade1)] = (byte)cb_Power1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAPowerGrade1), (byte)cb_Power1.SelectedIndex); }
         }
 
         private void Cb_Stamina1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAStaminaGrade1)] = (byte)cb_Stamina1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAStaminaGrade1)] = (byte)cb_Stamina1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAStaminaGrade1), (byte)cb_Stamina1.SelectedIndex); }
         }
 
         private void Cb_Swim2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNASwimGrade2)] = (byte)cb_Swim2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNASwimGrade2)] = (byte)cb_Swim2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNASwimGrade2), (byte)cb_Swim2.SelectedIndex); }
         }
 
         private void Cb_Fly2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFlyGrade2)] = (byte)cb_Fly2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFlyGrade2)] = (byte)cb_Fly2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAFlyGrade2), (byte)cb_Fly2.SelectedIndex); }
         }
 
         private void Cb_Run2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade2)] = (byte)cb_Run2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade2)] = (byte)cb_Run2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNARunGrade2), (byte)cb_Run2.SelectedIndex); }
         }
 
         private void Cb_Power2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAPowerGrade2)] = (byte)cb_Power2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAPowerGrade2)] = (byte)cb_Power2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAPowerGrade2), (byte)cb_Power2.SelectedIndex); }
         }
 
         private void Cb_Stamina2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAStaminaGrade2)] = (byte)cb_Stamina2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAStaminaGrade2)] = (byte)cb_Stamina2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAStaminaGrade2), (byte)cb_Stamina2.SelectedIndex); }
         }
 
         private void Cb_Fruit1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFavouriteFruit1)] = (byte)cb_Fruit1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFavouriteFruit1)] = (byte)cb_Fruit1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAFavouriteFruit1), (byte)cb_Fruit1.SelectedIndex); }
         }
 
         private void Cb_Fruit2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFavouriteFruit2)] = (byte)cb_Fruit2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAFavouriteFruit2)] = (byte)cb_Fruit2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAFavouriteFruit2), (byte)cb_Fruit2.SelectedIndex); }
         }
 
         private void Cb_Colour1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1049,7 +1161,8 @@ namespace SA2SaveUtility
             if (cb_Colour1.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.chaoColours.Where(x => x.Key == cb_Colour1.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAColour1)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAColour1)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAColour1), (byte)(flag)); }
             }
         }
 
@@ -1058,48 +1171,57 @@ namespace SA2SaveUtility
             if (cb_Colour2.SelectedItem.ToString() != "")
             {
                 int flag = ChaoSave.chaoColours.Where(x => x.Key == cb_Colour2.SelectedItem.ToString()).First().Value;
-                Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAColour2)] = (byte)(flag);
+                if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAColour2)] = (byte)(flag); }
+                else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAColour2), (byte)(flag)); }
             }
         }
 
         private void Cb_EggColour1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAEggColour1)] = (byte)cb_EggColour1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAEggColour1)] = (byte)cb_EggColour1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAEggColour1), (byte)cb_EggColour1.SelectedIndex); }
         }
 
         private void Cb_EggColour2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAEggColour2)] = (byte)cb_EggColour2.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAEggColour2)] = (byte)cb_EggColour2.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAEggColour2), (byte)cb_EggColour2.SelectedIndex); }
         }
 
         private void Cb_Texture1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNATexture1)] = (byte)cb_Texture1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNATexture1)] = (byte)cb_Texture1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNATexture1), (byte)cb_Texture1.SelectedIndex); }
         }
 
         private void Cb_Texture2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNATexture1)] = (byte)cb_Texture1.SelectedIndex;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNATexture1)] = (byte)cb_Texture1.SelectedIndex; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNATexture1), (byte)cb_Texture1.SelectedIndex); }
         }
 
         private void Checkb_Shiny1_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAShiny1)] = (byte)(Convert.ToUInt32(checkb_Shiny1.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAShiny1)] = (byte)(Convert.ToUInt32(checkb_Shiny1.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAShiny1), (byte)(Convert.ToUInt32(checkb_Shiny1.Checked))); }
         }
 
         private void Checkb_Shiny2_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAShiny2)] = (byte)(Convert.ToUInt32(checkb_Shiny2.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAShiny2)] = (byte)(Convert.ToUInt32(checkb_Shiny2.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAShiny2), (byte)(Convert.ToUInt32(checkb_Shiny2.Checked))); }
         }
 
         private void Checkb_MonoTone1_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAMonoTone1)] = (byte)(Convert.ToUInt32(checkb_MonoTone1.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAMonoTone1)] = (byte)(Convert.ToUInt32(checkb_MonoTone1.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAMonoTone1), (byte)(Convert.ToUInt32(checkb_MonoTone1.Checked))); }
         }
 
         private void Checkb_MonoTone2_CheckedChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAMonoTone2)] = (byte)(Convert.ToUInt32(checkb_MonoTone2.Checked));
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAMonoTone2)] = (byte)(Convert.ToUInt32(checkb_MonoTone2.Checked)); }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAMonoTone2), (byte)(Convert.ToUInt32(checkb_MonoTone2.Checked))); }
         }
 
         private void Checkb_WateringCan_CheckedChanged(object sender, EventArgs e)
@@ -1159,32 +1281,38 @@ namespace SA2SaveUtility
 
         private void Nud_LuckGrade_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckGrade)] = (byte)nud_LuckGrade.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.LuckGrade)] = (byte)nud_LuckGrade.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.LuckGrade), (byte)nud_LuckGrade.Value); }
         }
 
         private void Nud_IntelligenceGrade_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligenceGrade)] = (byte)nud_IntelligenceGrade.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.IntelligenceGrade)] = (byte)nud_IntelligenceGrade.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.IntelligenceGrade), (byte)nud_IntelligenceGrade.Value); }
         }
 
         private void Nud_Luck1_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNALuckGrade1)] = (byte)nud_Luck1.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNALuckGrade1)] = (byte)nud_Luck1.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNALuckGrade1), (byte)nud_Luck1.Value); }
         }
 
         private void Nud_Luck2_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNALuckGrade2)] = (byte)nud_Luck2.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNALuckGrade2)] = (byte)nud_Luck2.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNALuckGrade2), (byte)nud_Luck2.Value); }
         }
 
         private void Nud_Intelligence1_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade1)] = (byte)nud_Intelligence1.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade1)] = (byte)nud_Intelligence1.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade1), (byte)nud_Intelligence1.Value); }
         }
 
         private void Nud_Intelligence2_ValueChanged(object sender, EventArgs e)
         {
-            Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade2)] = (byte)nud_Intelligence2.Value;
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade2)] = (byte)nud_Intelligence2.Value; }
+            else { ChaoSave.WriteByteAtAddress((int)((0x800 * chaoNumber) + offsets.chao.DNAIntelligenceGrade2), (byte)nud_Intelligence2.Value); }
         }
 
         private void Checkb_RealisticValues_CheckedChanged(object sender, EventArgs e)

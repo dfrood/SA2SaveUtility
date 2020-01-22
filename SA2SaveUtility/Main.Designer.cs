@@ -50,6 +50,7 @@
             this.btn_AutoUpdate = new System.Windows.Forms.Button();
             this.checkb_AutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkb_CheckForUpdates = new System.Windows.Forms.CheckBox();
+            this.tsmi_RTE = new System.Windows.Forms.ToolStripMenuItem();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +71,8 @@
             // 
             this.tsmi_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Open,
-            this.tsmi_Save});
+            this.tsmi_Save,
+            this.tsmi_RTE});
             this.tsmi_File.Name = "tsmi_File";
             this.tsmi_File.Size = new System.Drawing.Size(37, 20);
             this.tsmi_File.Text = "File";
@@ -97,14 +99,14 @@
             // tsmi_saveAsPC
             // 
             this.tsmi_saveAsPC.Name = "tsmi_saveAsPC";
-            this.tsmi_saveAsPC.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAsPC.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAsPC.Text = "as PC Save";
             this.tsmi_saveAsPC.Click += new System.EventHandler(this.Tsmi_saveAsPC_Click);
             // 
             // tsmi_saveAsGC
             // 
             this.tsmi_saveAsGC.Name = "tsmi_saveAsGC";
-            this.tsmi_saveAsGC.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAsGC.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAsGC.Text = "as Gamecube Save";
             this.tsmi_saveAsGC.Click += new System.EventHandler(this.Tsmi_saveAsGC_Click);
             // 
@@ -114,7 +116,7 @@
             this.tsmi_saveAs360New,
             this.tsmi_saveAs360Append});
             this.tsmi_saveAs360.Name = "tsmi_saveAs360";
-            this.tsmi_saveAs360.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAs360.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAs360.Text = "as 360 Save";
             this.tsmi_saveAs360.Click += new System.EventHandler(this.Tsmi_saveAs360_Click);
             // 
@@ -140,7 +142,7 @@
             this.tsmi_saveAsPS3New,
             this.tsmi_saveAsPS3Append});
             this.tsmi_saveAsPS3.Name = "tsmi_saveAsPS3";
-            this.tsmi_saveAsPS3.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_saveAsPS3.Size = new System.Drawing.Size(172, 22);
             this.tsmi_saveAsPS3.Text = "as PS3 Save";
             this.tsmi_saveAsPS3.Click += new System.EventHandler(this.Tsmi_saveAsPS3_Click);
             // 
@@ -239,6 +241,13 @@
             this.checkb_CheckForUpdates.UseVisualStyleBackColor = true;
             this.checkb_CheckForUpdates.CheckedChanged += new System.EventHandler(this.Checkb_CheckForUpdates_CheckedChanged);
             // 
+            // tsmi_RTE
+            // 
+            this.tsmi_RTE.Name = "tsmi_RTE";
+            this.tsmi_RTE.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE.Text = "Live Editor";
+            this.tsmi_RTE.Click += new System.EventHandler(this.Tsmi_RTE_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -284,6 +293,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3New;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3Append;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE;
         public static System.Windows.Forms.TabControl tc_Main;
     }
 }

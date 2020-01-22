@@ -217,7 +217,7 @@ namespace SA2SaveUtility
         public MarketItems()
         {
             InitializeComponent();
-            if (Main.saveIsPC) { itemCount = Main.loadedSave[offsets.chaoSave.MarketCount]; }
+            if (Main.isPC) { itemCount = Main.loadedSave[offsets.chaoSave.MarketCount]; }
             else { itemCount = Main.loadedSave[offsets.chaoSave.MarketCount + 3]; }
             switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart])
             {
@@ -4600,7 +4600,7 @@ namespace SA2SaveUtility
             if (itemCount == 32) { btn_AddItem.Enabled = false; }
             if (itemCount > 0) { btn_RemoveItem.Enabled = true; }
             SetSize();
-            if (Main.saveIsPC) { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
+            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
             else { Main.loadedSave[offsets.chaoSave.MarketCount + 3] = (byte)itemCount; }
         }
 
@@ -4610,7 +4610,7 @@ namespace SA2SaveUtility
             if (itemCount == 0) { btn_RemoveItem.Enabled = false; }
             if (itemCount < 32) { btn_AddItem.Enabled = true; }
             SetSize();
-            if (Main.saveIsPC) { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
+            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
             else { Main.loadedSave[offsets.chaoSave.MarketCount + 3] = (byte)itemCount; }
         }
 

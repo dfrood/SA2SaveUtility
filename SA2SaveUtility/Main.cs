@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -15,12 +17,13 @@ namespace SA2SaveUtility
 {
     public partial class Main : Form
     {
-        public static bool saveisSA;
-        public static bool saveIsPC;
-        public static bool saveIsPS3;
-        public static bool saveIsGC;
+        public static bool isRTE;
+        public static bool isSA;
+        public static bool isPC;
+        public static bool isPS3;
+        public static bool isGC;
         //public static bool saveIsDC;
-        public static bool saveIsMain;
+        public static bool isMain;
         public static bool isLatest = true;
         public static string latestVersionString;
         public static string latestVersionReleaseNotes;
@@ -133,25 +136,25 @@ namespace SA2SaveUtility
 
         public static void WriteByte(int offset, int value, uint mainIndex)
         {
-            if (saveIsPC) { loadedSave[offset] = (byte)value; }
-            if (saveIsGC) { loadedSave[offset + 0x40] = (byte)value; }
-            if (!saveIsPC && !saveIsGC)
+            if (isPC) { loadedSave[offset] = (byte)value; }
+            if (isGC) { loadedSave[offset + 0x40] = (byte)value; }
+            if (!isPC && !isGC)
             {
-                if (!saveIsPS3) { loadedSave[offset + 4 + (int)(0x6004 * mainIndex)] = (byte)value; }
+                if (!isPS3) { loadedSave[offset + 4 + (int)(0x6004 * mainIndex)] = (byte)value; }
                 else { loadedSave[offset + 8 + (int)(0x6008 * mainIndex)] = (byte)value; }
             }
         }
         public static void WriteBytes(int offset, byte[] bytes, uint mainIndex, int length)
         {
             Array.Resize<byte>(ref bytes, length);
-            if (!saveIsPC) { Array.Reverse(bytes); }
+            if (!isPC) { Array.Reverse(bytes); }
             for (int i = 0; i < length; i++)
             {
-                if (saveIsPC) { loadedSave[offset + i] = bytes[i]; }
-                if (saveIsGC) { loadedSave[offset + 0x40 + i] = bytes[i]; }
-                if (!saveIsPC && !saveIsGC)
+                if (isPC) { loadedSave[offset + i] = bytes[i]; }
+                if (isGC) { loadedSave[offset + 0x40 + i] = bytes[i]; }
+                if (!isPC && !isGC)
                 {
-                    if (!saveIsPS3) { loadedSave[offset + i + (int)(0x6004 * mainIndex) + 4] = bytes[i]; }
+                    if (!isPS3) { loadedSave[offset + i + (int)(0x6004 * mainIndex) + 4] = bytes[i]; }
                     else { loadedSave[offset + i + (int)(0x6008 * mainIndex) + 8] = bytes[i]; }
                 }
             }
@@ -202,31 +205,31 @@ namespace SA2SaveUtility
                     DialogResult result = MessageBox.Show("Is the save you're loading an SA PC Chao Save?", "PC or 360/PS3 SA Chao Save?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        saveisSA = true;
-                        saveIsPC = true;
-                        saveIsGC = false;
+                        isSA = true;
+                        isPC = true;
+                        isGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA PC Chao Save]";
                     }
                     if (result == DialogResult.No)
                     {
-                        saveisSA = true;
-                        saveIsPC = false;
-                        saveIsGC = false;
+                        isSA = true;
+                        isPC = false;
+                        isGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA 360/PS3 Chao Save]";
                     }
-                    saveIsMain = false;
+                    isMain = false;
                     validSave = true;
                     SaveIsChao();
                 }
 
                 if (loadedSave.Length == 0x6000)
                 {
-                    saveisSA = false;
-                    saveIsPC = true;
-                    saveIsGC = false;
-                    saveIsMain = true;
+                    isSA = false;
+                    isPC = true;
+                    isGC = false;
+                    isMain = true;
                     validSave = true;
-                    SaveIsMain();
+                    IsMain();
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Main Save]";
                 }
                 if (loadedSave.Length == 0x10000)
@@ -234,59 +237,59 @@ namespace SA2SaveUtility
                     DialogResult result = MessageBox.Show("Is the save you're loading a PC Chao Save?", "PC or 360/PS3 Chao Save?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
-                        saveisSA = false;
-                        saveIsPC = true;
-                        saveIsGC = false;
+                        isSA = false;
+                        isPC = true;
+                        isGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Chao Save]";
                     }
                     if (result == DialogResult.No)
                     {
-                        saveisSA = false;
-                        saveIsPC = false;
-                        saveIsGC = false;
+                        isSA = false;
+                        isPC = false;
+                        isGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Chao Save]";
                     }
-                    saveIsMain = false;
+                    isMain = false;
                     validSave = true;
                     SaveIsChao();
                 }
                 if (loadedSave.Length == 0x3C028)
                 {
-                    saveisSA = false;
-                    saveIsPC = false;
-                    saveIsPS3 = false;
-                    saveIsGC = false;
+                    isSA = false;
+                    isPC = false;
+                    isPS3 = false;
+                    isGC = false;
                     validSave = true;
-                    SaveIsMain();
+                    IsMain();
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360 Main Save]";
                 }
                 if (loadedSave.Length == 0x3C050)
                 {
-                    saveisSA = false;
-                    saveIsPC = false;
-                    saveIsPS3 = true;
-                    saveIsGC = false;
+                    isSA = false;
+                    isPC = false;
+                    isPS3 = true;
+                    isGC = false;
                     validSave = true;
-                    SaveIsMain();
+                    IsMain();
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PS3 Main Save]";
                 }
                 if (loadedSave.Length == 0x6040)
                 {
-                    saveisSA = false;
-                    saveIsPC = false;
-                    saveIsGC = true;
+                    isSA = false;
+                    isPC = false;
+                    isGC = true;
                     gcFileBytes = loadedSave.Skip(0x12).Take(0x02).ToArray();
                     gcBytes = loadedSave.Take(0x40).ToArray();
                     loadedSave = loadedSave.Skip(0x40).ToArray();
                     validSave = true;
-                    SaveIsMain();
+                    IsMain();
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Main Save]";
                 }
                 if (loadedSave.Length == 0x10040)
                 {
-                    saveisSA = false;
-                    saveIsPC = false;
-                    saveIsGC = true;
+                    isSA = false;
+                    isPC = false;
+                    isGC = true;
                     gcBytes = loadedSave.Take(0x40).ToArray();
                     loadedSave = loadedSave.Skip(0x40).ToArray();
                     validSave = true;
@@ -309,10 +312,17 @@ namespace SA2SaveUtility
             }
         }
 
+        private void Tsmi_RTE_Click(object sender, EventArgs e)
+        {
+            isRTE = true;
+            isPC = true;
+            SaveIsChao();
+        }
+
         private void SaveIsChao()
         {
-            saveIsMain = false;
-            if (!saveisSA)
+            isMain = false;
+            if (!isSA && !isRTE)
             {
                 ChaoSave.GetChaoWorld();
                 tsmi_saveAsPS3.Visible = true;
@@ -327,16 +337,19 @@ namespace SA2SaveUtility
             }
 
             ChaoSave.GetChao();
-            tsmi_SaveCurrentChao.Enabled = true;
-            tsmi_Chao.Enabled = true;
-            tsmi_saveAs360New.Visible = false;
-            tsmi_saveAs360Append.Visible = false;
-            tsmi_saveAsPS3New.Visible = false;
-            tsmi_saveAsPS3Append.Visible = false;
+            if (!isRTE)
+            {
+                tsmi_SaveCurrentChao.Enabled = true;
+                tsmi_Chao.Enabled = true;
+                tsmi_saveAs360New.Visible = false;
+                tsmi_saveAs360Append.Visible = false;
+                tsmi_saveAsPS3New.Visible = false;
+                tsmi_saveAsPS3Append.Visible = false;
+            }
         }
-        private void SaveIsMain()
+        private void IsMain()
         {
-            saveIsMain = true;
+            isMain = true;
             MainSave.GetMain();
             tsmi_SaveCurrentChao.Enabled = false;
             tsmi_Chao.Enabled = false;
@@ -351,7 +364,7 @@ namespace SA2SaveUtility
             //if (tc_Main.SelectedIndex != 0)
             //{
                 uint chaoBeginning = 0x3AA4;
-                if (saveisSA) chaoBeginning = 0x818;
+                if (isSA) chaoBeginning = 0x818;
 
                 uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                 OpenFileDialog loadChao = new OpenFileDialog();
@@ -368,7 +381,7 @@ namespace SA2SaveUtility
                     {
                         List<byte> byteList = new List<byte>();
                         byteList.AddRange(loadedSave.Take((int)(chaoBeginning + (0x800 * uc.chaoNumber))).ToArray());
-                        if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                        if (!isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                         else { byteList.AddRange(chao); }
                         byteList.AddRange(loadedSave.Skip((int)(chaoBeginning + (0x800 * (uc.chaoNumber + 1)))).ToArray());
                         loadedSave = byteList.ToArray();
@@ -387,11 +400,11 @@ namespace SA2SaveUtility
             //if (tc_Main.SelectedIndex != 0)
             //{
                 uint chaoBeginning = 0x3AA4;
-                if (saveisSA) chaoBeginning = 0x818;
+                if (isSA) chaoBeginning = 0x818;
 
                 uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                 byte[] chao = new byte[2048];
-                if (!saveIsPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
+                if (!isPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
                 else { chao = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
                 SaveFileDialog saveChao = new SaveFileDialog();
                 saveChao.InitialDirectory = chaoDirectory;
@@ -427,7 +440,7 @@ namespace SA2SaveUtility
             //if (tc_Main.SelectedIndex != 0)
             //{
                 uint chaoBeginning = 0x3AA4;
-                if (saveisSA) chaoBeginning = 0x818;
+                if (isSA) chaoBeginning = 0x818;
 
                 uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                 byte[] chaoToDupe = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
@@ -457,9 +470,9 @@ namespace SA2SaveUtility
 
         private void Tsmi_saveAsPC_Click(object sender, EventArgs e)
         {
-            if (!saveisSA)
+            if (!isSA)
             {
-                if (!saveIsMain)
+                if (!isMain)
                 {
                     try
                     {
@@ -467,12 +480,12 @@ namespace SA2SaveUtility
                         byteList.AddRange(loadedSave.Take(0x3AA4).ToArray());
                         foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
                         {
-                            if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                            if (!isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                             else { byteList.AddRange(chao); }
                         }
                         byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
 
-                        if (!saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                        if (!isPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
                         byte[] chaoToSave = byteList.ToArray();
 
                         byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
@@ -509,10 +522,10 @@ namespace SA2SaveUtility
                     {
                         uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                         List<byte> toSave = new List<byte>();
-                        if (saveIsPC) { toSave = new List<byte>(loadedSave); }
+                        if (isPC) { toSave = new List<byte>(loadedSave); }
                         else
                         {
-                            if (!saveIsPS3) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
+                            if (!isPS3) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
                             else { toSave = new List<byte>(loadedSave.Skip((0x6008 * (int)(uc.mainIndex)) + 8).Take(0x6000).ToArray()); }
                             toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList();
                         }
@@ -542,7 +555,7 @@ namespace SA2SaveUtility
             }
             else
             {
-                if (!saveIsMain)
+                if (!isMain)
                 {
                     try
                     {
@@ -550,12 +563,12 @@ namespace SA2SaveUtility
                         byteList.AddRange(loadedSave.Take(0x818).ToArray());
                         foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x818).Take(0xC000).ToArray(), 0x800))
                         {
-                            if (!saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                            if (!isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                             else { byteList.AddRange(chao); }
                         }
                         byteList.AddRange(loadedSave.Skip(0xC818).Take(0x08).ToArray());
 
-                        if (!saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                        if (!isPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
                         byte[] chaoToSave = byteList.ToArray();
                         ChaoSave.WriteChecksum(chaoToSave, false);
                         string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SonicAdventureChaoGarden.snc";
@@ -589,7 +602,7 @@ namespace SA2SaveUtility
 
         private void Tsmi_saveAsGC_Click(object sender, EventArgs e)
         {
-            if (!saveIsMain)
+            if (!isMain)
             {
                 try
                 {
@@ -761,13 +774,13 @@ namespace SA2SaveUtility
 
                     foreach (byte[] chao in chaoList)
                     {
-                        if (saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                        if (isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                         else { byteList.AddRange(chao); }
                     }
 
                     byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
 
-                    if (saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                    if (isPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
 
                     byteList.InsertRange(0x00, header);
                     byteList.RemoveRange(0x80, 0x3000);
@@ -1074,9 +1087,9 @@ namespace SA2SaveUtility
                         0x80, 0x06, 0x80, 0x0B, 0x80, 0x00, 0xA1, 0x0B, 0x84, 0x27, 0x84, 0x48, 0x80, 0x00, 0x80, 0x00, 0x80, 0x00, 0x80, 0x00, 0x80, 0x00
                     };
                     List<byte> toSave = new List<byte>();
-                    if (saveIsPC) { toSave = new List<byte>(loadedSave); toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList(); }
-                    if (saveIsGC) { toSave = new List<byte>(loadedSave); }
-                    if (!saveIsPC && !saveIsGC) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
+                    if (isPC) { toSave = new List<byte>(loadedSave); toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList(); }
+                    if (isGC) { toSave = new List<byte>(loadedSave); }
+                    if (!isPC && !isGC) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
                     toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, true, false));
                     toSave.InsertRange(0, header);
                     toSave.RemoveRange(0x80, 0x2800);
@@ -1107,12 +1120,12 @@ namespace SA2SaveUtility
 
         private void Tsmi_saveAs360_Click(object sender, EventArgs e)
         {
-            if (!saveIsMain) { SaveAs360(); }
+            if (!isMain) { SaveAs360(); }
         }
 
         private void Tsmi_saveAsPS3_Click(object sender, EventArgs e)
         {
-            if (!saveIsMain) { SaveAsPS3(); }
+            if (!isMain) { SaveAsPS3(); }
         }
 
         private void Tsmi_About_Click(object sender, EventArgs e)
@@ -1133,7 +1146,7 @@ namespace SA2SaveUtility
 
         private void SaveAsPS3()
         {
-            if (!saveIsMain)
+            if (!isMain)
             {
                 try
                 {
@@ -1141,12 +1154,12 @@ namespace SA2SaveUtility
                     byteList.AddRange(loadedSave.Take(0x3AA4).ToArray());
                     foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
                     {
-                        if (saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                        if (isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                         else { byteList.AddRange(chao); }
                     }
                     byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
 
-                    if (saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                    if (isPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
 
                     byte[] chaoToSave = byteList.ToArray();
 
@@ -1184,7 +1197,7 @@ namespace SA2SaveUtility
                 {
                     uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                     List<byte> toSave = new List<byte>();
-                    if (!saveIsPC)
+                    if (!isPC)
                     {
                         toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, false, false, true));
                     }
@@ -1260,7 +1273,7 @@ namespace SA2SaveUtility
                                 {
                                     uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                                     List<byte> toSave = new List<byte>();
-                                    if (!saveIsPC)
+                                    if (!isPC)
                                     {
                                         toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6008 * uc.mainIndex)).Take(0x6008).ToArray(), false, false, true));
                                         toSave[3] = (byte)slotNotTaken;
@@ -1321,7 +1334,7 @@ namespace SA2SaveUtility
 
         private void SaveAs360()
         {
-            if (!saveIsMain)
+            if (!isMain)
             {
                 try
                 {
@@ -1329,12 +1342,12 @@ namespace SA2SaveUtility
                     byteList.AddRange(loadedSave.Take(0x3AA4).ToArray());
                     foreach (byte[] chao in SplitByteArray(loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800))
                     {
-                        if (saveIsPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                        if (isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
                         else { byteList.AddRange(chao); }
                     }
                     byteList.AddRange(loadedSave.Skip(0xFAA4).Take(0x55C).ToArray());
 
-                    if (saveIsPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
+                    if (isPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
 
                     byte[] chaoToSave = byteList.ToArray();
 
@@ -1372,7 +1385,7 @@ namespace SA2SaveUtility
                 {
                     uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                     List<byte> toSave = new List<byte>();
-                    if (!saveIsPC)
+                    if (!isPC)
                     {
                         toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, false, false, false));
                     }
@@ -1444,7 +1457,7 @@ namespace SA2SaveUtility
                                 {
                                     uc_Main uc = (uc_Main)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
                                     List<byte> toSave = new List<byte>();
-                                    if (!saveIsPC)
+                                    if (!isPC)
                                     {
                                         toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6004 * uc.mainIndex)).Take(0x6004).ToArray(), false, false, false));
                                         toSave[3] = (byte)slotNotTaken;
@@ -1565,5 +1578,7 @@ namespace SA2SaveUtility
                 updateCheckThread.Start();
             }
         }
+
+
     }
 }

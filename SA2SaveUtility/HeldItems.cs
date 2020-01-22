@@ -211,7 +211,7 @@ namespace SA2SaveUtility
         public HeldItems()
         {
             InitializeComponent();
-            if (Main.saveIsPC) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount]; }
+            if (Main.isPC) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount]; }
             else { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount + 3]; }
             switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart])
             {
@@ -644,7 +644,7 @@ namespace SA2SaveUtility
             if (itemCount == 5) { btn_AddItem.Enabled = false; }
             if (itemCount > 0) { btn_RemoveItem.Enabled = true; }
             SetSize();
-            if (Main.saveIsPC) { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
+            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
             else { Main.loadedSave[offsets.chaoSave.HeldCount + 3] = (byte)itemCount; }
         }
 
@@ -654,7 +654,7 @@ namespace SA2SaveUtility
             if (itemCount == 0) { btn_RemoveItem.Enabled = false; }
             if (itemCount < 5) { btn_AddItem.Enabled = true; }
             SetSize();
-            if (Main.saveIsPC) { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
+            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
             else { Main.loadedSave[offsets.chaoSave.HeldCount + 3] = (byte)itemCount; }
         }
 

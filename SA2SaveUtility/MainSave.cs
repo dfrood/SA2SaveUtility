@@ -97,12 +97,12 @@ namespace SA2SaveUtility
             offsets.main.BossOffsets.Add("Boss Attack - Dark", new KeyValuePair<uint, uint>(0x58DC, 0x5CD6));
             offsets.main.BossOffsets.Add("Boss Attack - All", new KeyValuePair<uint, uint>(0x59A0, 0x5CD7));
 
-            if (Main.saveIsPC || Main.saveIsGC)
+            if (Main.isPC || Main.isGC)
             {
                 uc_Main uc = new uc_Main();
                 TabPage tp = new TabPage();
                 tp.Controls.Add(uc);
-                if (Main.saveIsGC)
+                if (Main.isGC)
                 {
                     int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes));
                     uc.gcFileNo = fileNo;
@@ -118,10 +118,10 @@ namespace SA2SaveUtility
                 UpdateSave(Main.tc_Main, currentMain, Main.loadedSave.ToArray());
             }
             
-            if (!Main.saveIsPC && !Main.saveIsGC)
+            if (!Main.isPC && !Main.isGC)
             {
                 uint index = 0;
-                if (!Main.saveIsPS3)
+                if (!Main.isPS3)
                 {
                     foreach (byte[] main in Main.SplitByteArray(Main.loadedSave.ToArray(), 0x6004))
                     {
@@ -174,22 +174,22 @@ namespace SA2SaveUtility
 
         public static void UpdateSave(TabControl tc, KeyValuePair<int, TabPage> currentMain, byte[] save)
         {
-            if (!Main.saveIsPC && !Main.saveIsGC) { save = save.Skip(0x04).ToArray();  }
+            if (!Main.isPC && !Main.isGC) { save = save.Skip(0x04).ToArray();  }
 
             int playTime = 0;
-            if (Main.saveIsPC) { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime)).Take(4).ToArray(), 0); }
             else { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime)).Take(4).Reverse().ToArray(), 0); }
 
             int emblemTime = 0;
-            if (Main.saveIsPC) { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime)).Take(4).ToArray(), 0); }
             else { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime)).Take(4).Reverse().ToArray(), 0); }
 
             int lives = 0;
-            if (Main.saveIsPC) { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).ToArray(), 0); }
             else { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).Reverse().ToArray(), 0); }
 
             int rings = 0;
-            if (Main.saveIsPC) { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).ToArray(), 0); }
             else { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).Reverse().ToArray(), 0); }
 
             int textLang = (int)save[offsets.main.TextLanguage];
@@ -281,7 +281,7 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_GCFileNo")
                 {
-                    if (Main.saveIsGC)
+                    if (Main.isGC)
                     {
                         int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes).Replace("-", " "));
                         gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_GCFileNumber").First().Value = fileNo;
@@ -407,13 +407,13 @@ namespace SA2SaveUtility
                 int M5MS = (int)(currentMission[(int)(offsets.mission.M5T) + 0x02]);
 
                 int M1S = 0;
-                if (Main.saveIsPC) { M1S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M1S)).Take(4).ToArray(), 0); }
+                if (Main.isPC) { M1S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M1S)).Take(4).ToArray(), 0); }
                 else { M1S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M1S)).Take(4).Reverse().ToArray(), 0); }
                 int M4S = 0;
-                if (Main.saveIsPC) { M4S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M4S)).Take(4).ToArray(), 0); }
+                if (Main.isPC) { M4S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M4S)).Take(4).ToArray(), 0); }
                 else { M4S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M4S)).Take(4).Reverse().ToArray(), 0); }
                 int M5S = 0;
-                if (Main.saveIsPC) { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt16(offsets.mission.M5S)).Take(4).ToArray(), 0); }
+                if (Main.isPC) { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt16(offsets.mission.M5S)).Take(4).ToArray(), 0); }
                 else { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt16(offsets.mission.M5S)).Take(4).Reverse().ToArray(), 0); }
 
                 uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_1R").First().SelectedIndex = M1;

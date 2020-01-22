@@ -10,6 +10,7 @@ namespace SA2SaveUtility
         public Mission mission = new Mission();
         public Kart kart = new Kart();
         public Boss boss = new Boss();
+        public int chaoMemoryStart = 0x19F6EC4;
     }
 
     class ChaoWorld

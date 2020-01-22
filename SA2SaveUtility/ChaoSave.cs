@@ -1,12 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace SA2SaveUtility
 {
     class ChaoSave
     {
+        public const int PROCESS_WM_READ = 0x0010;
+        public const int PROCESS_VM_WRITE = 0x0020;
+        public const int PROCESS_VM_OPERATION = 0x0008;
+        public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+
         public static Offsets offsets = new Offsets();
         public static Dictionary<uint, TabPage> activeChao = new Dictionary<uint, TabPage>();
 
@@ -390,7 +406,7 @@ namespace SA2SaveUtility
         public static void UpdateChaoWorld()
         {
             Portals portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens].ToString());
-            if (!Main.saveIsPC) { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens+3].ToString()); }
+            if (!Main.isPC) { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens+3].ToString()); }
 
             Control.ControlCollection controls = Main.tc_Main.TabPages[0].Controls;
             foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
@@ -410,28 +426,28 @@ namespace SA2SaveUtility
             string name = GetName(nameBytes);
             int garden = (int)(chao[offsets.chao.Garden]);
             int happiness = 0;
-            if (Main.saveIsPC) { happiness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Happiness)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { happiness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Happiness)).Take(2).ToArray(), 0); }
             else { happiness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Happiness)).Take(2).Reverse().ToArray(), 0); }
             int lifespan1 = 0;
-            if (Main.saveIsPC) { lifespan1 = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Lifespan1)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { lifespan1 = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Lifespan1)).Take(2).ToArray(), 0); }
             else { lifespan1 = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Lifespan1)).Take(2).Reverse().ToArray(), 0); }
             int lifespan2 = 0;
-            if (Main.saveIsPC) { lifespan2 = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Lifespan2)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { lifespan2 = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Lifespan2)).Take(2).ToArray(), 0); }
             else { lifespan2 = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Lifespan2)).Take(2).Reverse().ToArray(), 0); }
             uint reincarnations = 0;
-            if (Main.saveIsPC) { reincarnations = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.Reincarnations)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { reincarnations = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.Reincarnations)).Take(2).ToArray(), 0); }
             else { reincarnations = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.Reincarnations)).Take(2).Reverse().ToArray(), 0); }
             Toys toys = 0;
-            if (!Main.saveisSA)
+            if (!Main.isSA)
             {
-                if (Main.saveIsPC) { toys = (Toys)Enum.Parse(typeof(Toys), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2Toys)).Take(4).ToArray(), 0).ToString()); }
+                if (Main.isPC) { toys = (Toys)Enum.Parse(typeof(Toys), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2Toys)).Take(4).ToArray(), 0).ToString()); }
                 else { toys = (Toys)Enum.Parse(typeof(Toys), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2Toys)).Take(4).Reverse().ToArray(), 0).ToString()); }
             }
             SAAnimalBehaviours saAnimalBehaviours = 0;
-            if (Main.saveIsPC) { saAnimalBehaviours = (SAAnimalBehaviours)Enum.Parse(typeof(SAAnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SAAnimalBehaviours)).Take(4).ToArray(), 0).ToString()); }
+            if (Main.isPC) { saAnimalBehaviours = (SAAnimalBehaviours)Enum.Parse(typeof(SAAnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SAAnimalBehaviours)).Take(4).ToArray(), 0).ToString()); }
             else { saAnimalBehaviours = (SAAnimalBehaviours)Enum.Parse(typeof(SAAnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SAAnimalBehaviours)).Take(4).Reverse().ToArray(), 0).ToString()); }
             AnimalBehaviours animalBehaviours = 0;
-            if (Main.saveIsPC) { animalBehaviours = (AnimalBehaviours)Enum.Parse(typeof(AnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2AnimalBehaviours)).Take(4).ToArray(), 0).ToString()); }
+            if (Main.isPC) { animalBehaviours = (AnimalBehaviours)Enum.Parse(typeof(AnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2AnimalBehaviours)).Take(4).ToArray(), 0).ToString()); }
             else { animalBehaviours = (AnimalBehaviours)Enum.Parse(typeof(AnimalBehaviours), BitConverter.ToUInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2AnimalBehaviours)).Take(4).Reverse().ToArray(), 0).ToString()); }
             ClassroomSkills classroomSkills = 0;
             classroomSkills = (ClassroomSkills)Enum.Parse(typeof(ClassroomSkills), BitConverter.ToInt32(chao.Skip(Convert.ToInt32(offsets.chao.SA2ClassroomSkills)).Take(4).ToArray(), 0).ToString());
@@ -453,25 +469,25 @@ namespace SA2SaveUtility
             int intelligenceBar = (int)chao[offsets.chao.IntelligenceBar];
 
             uint swimPoints = 0;
-            if (Main.saveIsPC) { swimPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.SwimPoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { swimPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.SwimPoints)).Take(2).ToArray(), 0); }
             else { swimPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.SwimPoints)).Take(2).Reverse().ToArray(), 0); }
             uint flyPoints = 0;
-            if (Main.saveIsPC) { flyPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.FlyPoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { flyPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.FlyPoints)).Take(2).ToArray(), 0); }
             else { flyPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.FlyPoints)).Take(2).Reverse().ToArray(), 0); }
             uint runPoints = 0;
-            if (Main.saveIsPC) { runPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.RunPoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { runPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.RunPoints)).Take(2).ToArray(), 0); }
             else { runPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.RunPoints)).Take(2).Reverse().ToArray(), 0); }
             uint powerPoints = 0;
-            if (Main.saveIsPC) { powerPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.PowerPoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { powerPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.PowerPoints)).Take(2).ToArray(), 0); }
             else { powerPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.PowerPoints)).Take(2).Reverse().ToArray(), 0); }
             uint staminaPoints = 0;
-            if (Main.saveIsPC) { staminaPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.StaminaPoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { staminaPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.StaminaPoints)).Take(2).ToArray(), 0); }
             else { staminaPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.StaminaPoints)).Take(2).Reverse().ToArray(), 0); }
             uint luckPoints = 0;
-            if (Main.saveIsPC) { luckPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.LuckPoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { luckPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.LuckPoints)).Take(2).ToArray(), 0); }
             else { luckPoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.LuckPoints)).Take(2).Reverse().ToArray(), 0); }
             uint intelligencePoints = 0;
-            if (Main.saveIsPC) { intelligencePoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.IntelligencePoints)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { intelligencePoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.IntelligencePoints)).Take(2).ToArray(), 0); }
             else { intelligencePoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.IntelligencePoints)).Take(2).Reverse().ToArray(), 0); }
 
             int swimGrade = (int)chao[offsets.chao.SwimGrade];
@@ -508,36 +524,36 @@ namespace SA2SaveUtility
             if (chaoType < 3) { chaoType -= 1; }
             if (chaoType > 2) { chaoType -= 3; }
             float alignment = 0;
-            if (Main.saveIsPC) { alignment = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Alignment)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { alignment = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Alignment)).Take(4).ToArray(), 0); }
             else { alignment = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Alignment)).Take(4).Reverse().ToArray(), 0); }
             float run2Power = 0;
-            if (Main.saveIsPC) { run2Power = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Run2PowerTranformation)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { run2Power = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Run2PowerTranformation)).Take(4).ToArray(), 0); }
             else { run2Power = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Run2PowerTranformation)).Take(4).Reverse().ToArray(), 0); }
             float swim2Fly = 0;
-            if (Main.saveIsPC) { swim2Fly = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Swim2FlyTransformation)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { swim2Fly = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Swim2FlyTransformation)).Take(4).ToArray(), 0); }
             else { swim2Fly = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.Swim2FlyTransformation)).Take(4).Reverse().ToArray(), 0); }
             float transformationMagnitude = 0;
-            if (Main.saveIsPC) { transformationMagnitude = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.TransformationMagnitude)).Take(4).ToArray(), 0); }
+            if (Main.isPC) { transformationMagnitude = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.TransformationMagnitude)).Take(4).ToArray(), 0); }
             else { transformationMagnitude = BitConverter.ToSingle(chao.Skip(Convert.ToInt32(offsets.chao.TransformationMagnitude)).Take(4).Reverse().ToArray(), 0); }
 
 
             int desireToMate = 0;
-            if (Main.saveIsPC) { desireToMate = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.DesireToMate)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { desireToMate = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.DesireToMate)).Take(2).ToArray(), 0); }
             else { desireToMate = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.DesireToMate)).Take(2).Reverse().ToArray(), 0); }
             int hunger = 0;
-            if (Main.saveIsPC) { hunger = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Hunger)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { hunger = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Hunger)).Take(2).ToArray(), 0); }
             else { hunger = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Hunger)).Take(2).Reverse().ToArray(), 0); }
             int sleepiness = 0;
-            if (Main.saveIsPC) { sleepiness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Sleepiness)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { sleepiness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Sleepiness)).Take(2).ToArray(), 0); }
             else { sleepiness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Sleepiness)).Take(2).Reverse().ToArray(), 0); }
             int tiredness = 0;
-            if (Main.saveIsPC) { tiredness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Tiredness)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { tiredness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Tiredness)).Take(2).ToArray(), 0); }
             else { tiredness = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Tiredness)).Take(2).Reverse().ToArray(), 0); }
             int boredom = 0;
-            if (Main.saveIsPC) { boredom = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Boredom)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { boredom = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Boredom)).Take(2).ToArray(), 0); }
             else { boredom = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Boredom)).Take(2).Reverse().ToArray(), 0); }
             int energy = 0;
-            if (Main.saveIsPC) { energy = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Energy)).Take(2).ToArray(), 0); }
+            if (Main.isPC) { energy = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Energy)).Take(2).ToArray(), 0); }
             else { energy = BitConverter.ToInt16(chao.Skip(Convert.ToInt16(offsets.chao.Energy)).Take(2).Reverse().ToArray(), 0); }
             int joy = (int)chao[offsets.chao.Joy];
             int urgeToCry = (int)chao[offsets.chao.UrgeToCry];
@@ -833,12 +849,47 @@ namespace SA2SaveUtility
             Main.tc_Main.TabPages.Add(tpChaoSave);
             UpdateChaoWorld();
         }
+
+        public static void WriteByteAtAddress(int address, byte toWrite)
+        {
+            Process process = Process.GetProcessesByName("sonic2app")[0];
+            if (process != null)
+            {
+                IntPtr processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
+
+                int bytesWritten = 0;
+
+                byte[] toWriteArray = new byte[1];
+
+                toWriteArray[0] = toWrite;
+
+                WriteProcessMemory((int)processHandle, offsets.chaoMemoryStart + address, toWriteArray, toWriteArray.Length, ref bytesWritten);
+            }
+        }
+
         public static void GetChao()
         {
             uint chaoIndex = 0;
             List<byte[]> chaoArray = new List<byte[]>();
-            if (!Main.saveisSA) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800); }
-            if (Main.saveisSA) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x818).Take(0xC000).ToArray(), 0x800); }
+            if (Main.isRTE)
+            {
+                Process process = Process.GetProcessesByName("sonic2app")[0];
+
+
+                if (process != null)
+                {
+                    IntPtr processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
+
+                    int bytesRead = 0;
+                    byte[] buffer = new byte[0xC000];
+
+                    ReadProcessMemory((int)processHandle, offsets.chaoMemoryStart, buffer, buffer.Length, ref bytesRead);
+
+                    chaoArray = Main.SplitByteArray(buffer, 0x800);
+                }
+            }
+            if (!Main.isSA && !Main.isRTE) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800); }
+            if (Main.isSA && !Main.isRTE) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x818).Take(0xC000).ToArray(), 0x800); }
             foreach (byte[] chao in chaoArray)
             {
                 byte[] nameBytes = chao.Skip(Convert.ToInt32(offsets.chao.Name)).Take(7).ToArray();

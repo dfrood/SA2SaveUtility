@@ -22,7 +22,7 @@ namespace SA2SaveUtility
             if (checkb_HeroGarden.Checked) { portals += 0x10; }
 
             byte[] portalBytes = BitConverter.GetBytes((UInt32)portals);
-            if (!Main.saveIsPC) { Array.Reverse(portalBytes); }
+            if (!Main.isPC) { Array.Reverse(portalBytes); }
             for (int i = 0; i < portalBytes.Length; i++)
             {
                 Main.loadedSave[(int)(offsets.chaoSave.Gardens + i)] = portalBytes[i];
