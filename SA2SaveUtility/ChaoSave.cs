@@ -873,11 +873,11 @@ namespace SA2SaveUtility
             List<byte[]> chaoArray = new List<byte[]>();
             if (Main.isRTE)
             {
-                Process process = Process.GetProcessesByName("sonic2app")[0];
-
-
-                if (process != null)
+                Process process = new Process();
+                try
                 {
+                    process = Process.GetProcessesByName("sonic2app")[0];
+
                     IntPtr processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
 
                     int bytesRead = 0;
@@ -887,6 +887,8 @@ namespace SA2SaveUtility
 
                     chaoArray = Main.SplitByteArray(buffer, 0x800);
                 }
+                catch { MessageBox.Show("Couldn't attach to Sonic Adventure 2 Process.", "Error attaching to process", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
             }
             if (!Main.isSA && !Main.isRTE) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800); }
             if (Main.isSA && !Main.isRTE) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x818).Take(0xC000).ToArray(), 0x800); }
