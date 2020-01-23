@@ -223,39 +223,95 @@ namespace SA2SaveUtility
             int eggmanCW = (int)save[offsets.main.ChaoWorldEggman];
             int rougeCW = (int)save[offsets.main.ChaoWorldRouge];
 
-            int sonicLS = (int)save[offsets.main.SonicLightShoes];
-            int sonicAL = (int)save[offsets.main.ShadowAncientLight];
-            int sonicMG = (int)save[offsets.main.SonicMagic];
-            int sonicFR = (int)save[offsets.main.SonicFlame];
-            int sonicBB = (int)save[offsets.main.SonicBounce];
-            int sonicMM = (int)save[offsets.main.SonicMM];
+            int sonicLS = 0;
+            if (!Main.isRTE) { sonicLS = (int)save[offsets.main.SonicLightShoes]; }
+            else { sonicLS = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.SonicLightShoesRTE), 1).First(); }
+            int sonicAL = 0;
+            if (!Main.isRTE) { sonicAL = (int)save[offsets.main.SonicAncientLight]; }
+            else { sonicAL = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.SonicAncientLightRTE), 1).First(); }
+            int sonicMG = 0;
+            if (!Main.isRTE) { sonicMG = (int)save[offsets.main.SonicMagic]; }
+            else { sonicMG = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.SonicMagicRTE), 1).First(); }
+            int sonicFR = 0;
+            if (!Main.isRTE) { sonicFR = (int)save[offsets.main.SonicFlame]; }
+            else { sonicFR = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.SonicFlameRTE), 1).First(); }
+            int sonicBB = 0;
+            if (!Main.isRTE) { sonicBB = (int)save[offsets.main.SonicBounce]; }
+            else { sonicBB = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.SonicBounceRTE), 1).First(); }
+            int sonicMM = 0;
+            if (!Main.isRTE) { sonicMM = (int)save[offsets.main.SonicMM]; }
+            else { sonicMM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.SonicMMRTE), 1).First(); }
 
-            int tailsBo = (int)save[offsets.main.TailsBooster];
-            int tailsBa = (int)save[offsets.main.TailsBazooka];
-            int tailsL = (int)save[offsets.main.TailsLaser];
-            int tailsMM = (int)save[offsets.main.TailsMM];
+            int tailsBo = 0;
+            if (!Main.isRTE) { tailsBo = (int)save[offsets.main.TailsBooster]; }
+            else { tailsBo = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.TailsBoosterRTE), 1).First(); }
+            int tailsBa = 0;
+            if (!Main.isRTE) { tailsBa = (int)save[offsets.main.TailsBazooka]; }
+            else { tailsBa = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.TailsBazookaRTE), 1).First(); }
+            int tailsL = 0;
+            if (!Main.isRTE) { tailsL = (int)save[offsets.main.TailsLaser]; }
+            else { tailsL = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.TailsLaserRTE), 1).First(); }
+            int tailsMM = 0;
+            if (!Main.isRTE) { tailsMM = (int)save[offsets.main.TailsMM]; }
+            else { tailsMM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.TailsMMRTE), 1).First(); }
 
-            int knucklesSC = (int)save[offsets.main.KnucklesShovel];
-            int knucklesS = (int)save[offsets.main.KnucklesSun];
-            int knucklesHG = (int)save[offsets.main.KnucklesHammer];
-            int knucklesAN = (int)save[offsets.main.KnucklesAir];
-            int knucklesMM = (int)save[offsets.main.KnucklesMM];
+            int knucklesSC = 0;
+            if (!Main.isRTE) { knucklesSC = (int)save[offsets.main.KnucklesShovel]; }
+            else { knucklesSC = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KnucklesShovelRTE), 1).First(); }
+            int knucklesS = 0;
+            if (!Main.isRTE) { knucklesS = (int)save[offsets.main.KnucklesSun]; }
+            else { knucklesS = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KnucklesSunRTE), 1).First(); }
+            int knucklesHG = 0;
+            if (!Main.isRTE) { knucklesHG = (int)save[offsets.main.KnucklesHammer]; }
+            else { knucklesHG = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KnucklesHammerRTE), 1).First(); }
+            int knucklesAN = 0;
+            if (!Main.isRTE) { knucklesAN = (int)save[offsets.main.KnucklesAir]; }
+            else { knucklesAN = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KnucklesAirRTE), 1).First(); }
+            int knucklesMM = 0;
+            if (!Main.isRTE) { knucklesMM = (int)save[offsets.main.KnucklesMM]; }
+            else { knucklesMM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KnucklesMMRTE), 1).First(); }
 
-            int shadowAS = (int)save[offsets.main.ShadowAir];
-            int shadowAL = (int)save[offsets.main.ShadowAncientLight];
-            int shadowFR = (int)save[offsets.main.ShadowFlame];
-            int shadowMM = (int)save[offsets.main.ShadowMM];
+            int shadowAS = 0;
+            if (!Main.isRTE) { shadowAS = (int)save[offsets.main.ShadowAir]; }
+            else { shadowAS = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ShadowAirRTE), 1).First(); }
+            int shadowAL = 0;
+            if (!Main.isRTE) { shadowAL = (int)save[offsets.main.ShadowAncientLight]; }
+            else { shadowAL = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ShadowAncientLightRTE), 1).First(); }
+            int shadowFR = 0;
+            if (!Main.isRTE) { shadowFR = (int)save[offsets.main.ShadowFlame]; }
+            else { shadowFR = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ShadowFlameRTE), 1).First(); }
+            int shadowMM = 0;
+            if (!Main.isRTE) { shadowMM = (int)save[offsets.main.ShadowMM]; }
+            else { shadowMM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ShadowMMRTE), 1).First(); }
 
-            int eggmanJE = (int)save[offsets.main.EggmanJet];
-            int eggmanLC = (int)save[offsets.main.EggmanCannon];
-            int eggmanLB = (int)save[offsets.main.EggmanLaser];
-            int eggmanPA = (int)save[offsets.main.EggmanArmor];
-            int eggmanMM = (int)save[offsets.main.EggmanMM];
+            int eggmanJE = 0;
+            if (!Main.isRTE) { eggmanJE = (int)save[offsets.main.EggmanJet]; }
+            else { eggmanJE = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.EggmanJetRTE), 1).First(); }
+            int eggmanLC = 0;
+            if (!Main.isRTE) { eggmanLC = (int)save[offsets.main.EggmanCannon]; }
+            else { eggmanLC = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.EggmanCannonRTE), 1).First(); }
+            int eggmanLB = 0;
+            if (!Main.isRTE) { eggmanLB = (int)save[offsets.main.EggmanLaser]; }
+            else { eggmanLB = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.EggmanLaserRTE), 1).First(); }
+            int eggmanPA = 0;
+            if (!Main.isRTE) { eggmanPA = (int)save[offsets.main.EggmanArmor]; }
+            else { eggmanPA = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.EggmanArmorRTE), 1).First(); }
+            int eggmanMM = 0;
+            if (!Main.isRTE) { eggmanMM = (int)save[offsets.main.EggmanMM]; }
+            else { eggmanMM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.EggmanMMRTE), 1).First(); }
 
-            int rougePN = (int)save[offsets.main.RougePick];
-            int rougeTS = (int)save[offsets.main.RougeTreasure];
-            int rougeIB = (int)save[offsets.main.RougeBoots];
-            int rougeMM = (int)save[offsets.main.RougeMM];
+            int rougePN = 0;
+            if (!Main.isRTE) { rougePN = (int)save[offsets.main.RougePick]; }
+            else { rougePN = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.RougePickRTE), 1).First(); }
+            int rougeTS = 0;
+            if (!Main.isRTE) { rougeTS = (int)save[offsets.main.RougeTreasure]; }
+            else { rougeTS = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.RougeTreasureRTE), 1).First(); }
+            int rougeIB = 0;
+            if (!Main.isRTE) { rougeIB = (int)save[offsets.main.RougeBoots]; }
+            else { rougeIB = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.RougeBootsRTE), 1).First(); }
+            int rougeMM = 0;
+            if (!Main.isRTE) { rougeMM = (int)save[offsets.main.RougeMM]; }
+            else { rougeMM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.RougeMMRTE), 1).First(); }
 
             int karateB = (int)save[offsets.main.ChaoKarateBeginner];
             int karateS = (int)save[offsets.main.ChaoKarateStandard];
@@ -373,8 +429,6 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_Upgrades")
                 {
-                    if (Main.isRTE) { gb.Visible = false; }
-                    else { gb.Visible = true; }
                     TabControl tcUp = gb.Controls.OfType<TabControl>().Where(x => x.Name == "tc_Upgrades").First();
                     TabPage tpSonic = tcUp.Controls.OfType<TabPage>().Where(x => x.Name == "tp_Sonic").First();
                     TabPage tpTails = tcUp.Controls.OfType<TabPage>().Where(x => x.Name == "tp_Tails").First();

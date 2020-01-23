@@ -59,48 +59,78 @@ namespace SA2SaveUtility
         public uint ChaoKarateSuper = 0x5A74;
         public uint ChaoKarateSuperUnlocked = 0x5A75;
 
+
+
         public uint SonicLightShoes = 0x5A77;
+        public uint SonicLightShoesRTE = 0x1DEB300;
         public uint SonicAncientLight = 0x5A78;
+        public uint SonicAncientLightRTE = 0x1DEB301;
         public uint SonicMagic = 0x5A79;
+        public uint SonicMagicRTE = 0x1DEB302;
         public uint SonicFlame = 0x5A7A;
+        public uint SonicFlameRTE = 0x1DEB303;
         public uint SonicBounce = 0x5A7B;
+        public uint SonicBounceRTE = 0x1DEB304;
         public uint SonicMM = 0x5A7C;
+        public uint SonicMMRTE = 0x1DEB305;
 
         public uint TailsBooster = 0x5A7D;
+        public uint TailsBoosterRTE = 0x1DEB306;
         public uint TailsBazooka = 0x5A7E;
+        public uint TailsBazookaRTE = 0x1DEB307;
         public uint TailsLaser = 0x5A7F;
+        public uint TailsLaserRTE = 0x1DEB308;
         public uint TailsMM = 0x5A80;
+        public uint TailsMMRTE = 0x1DEB309;
 
         public uint KnucklesShovel = 0x5A81;
+        public uint KnucklesShovelRTE = 0x1DEB30A;
         public uint KnucklesSun = 0x5A82;
+        public uint KnucklesSunRTE = 0x1DEB30B;
         public uint KnucklesHammer = 0x5A83;
+        public uint KnucklesHammerRTE = 0x1DEB30C;
         public uint KnucklesAir = 0x5A84;
+        public uint KnucklesAirRTE = 0x1DEB30D;
         public uint KnucklesMM = 0x5A85;
+        public uint KnucklesMMRTE = 0x1DEB30E;
 
         public uint ShadowAir = 0x5A87;
+        public uint ShadowAirRTE = 0x1DEB310;
         public uint ShadowAncientLight = 0x5A88;
+        public uint ShadowAncientLightRTE = 0x1DEB311;
         public uint ShadowFlame = 0x5A89;
+        public uint ShadowFlameRTE = 0x1DEB312;
         public uint ShadowMM = 0x5A8A;
+        public uint ShadowMMRTE = 0x1DEB313;
 
         public uint EggmanJet = 0x5A8B;
+        public uint EggmanJetRTE = 0x1DEB314;
         public uint EggmanCannon = 0x5A8C;
+        public uint EggmanCannonRTE = 0x1DEB315;
         public uint EggmanLaser = 0x5A8D;
+        public uint EggmanLaserRTE = 0x1DEB316;
         public uint EggmanArmor = 0x5A8E;
+        public uint EggmanArmorRTE = 0x1DEB317;
         public uint EggmanMM = 0x5A8F;
+        public uint EggmanMMRTE = 0x1DEB318;
 
         public uint RougePick = 0x5A90;
+        public uint RougePickRTE = 0x1DEB319;
         public uint RougeTreasure = 0x5A91;
+        public uint RougeTreasureRTE = 0x1DEB31A;
         public uint RougeBoots = 0x5A92;
+        public uint RougeBootsRTE = 0x1DEB31B;
         public uint RougeMM = 0x5A93;
+        public uint RougeMMRTE = 0x1DEB31C;
 
         public uint ThemeAmy = 0x5ADB;
-        public uint ThemeAmyRTE = 0x1D7BA7A;
+        public uint ThemeAmyRTE = 0x1D7BA75;
         public uint ThemeMaria = 0x5ADC;
-        public uint ThemeMariaRTE = 0x1D7BA6B;
+        public uint ThemeMariaRTE = 0x1D7BA68;
         public uint ThemeSecretary = 0x5ADD;
         public uint ThemeSecretaryRTE = 0x1D7BA6C;
         public uint ThemeOmochao = 0x5ADE;
-        public uint ThemeOmochaoRTE = 0x1D7BA71;
+        public uint ThemeOmochaoRTE = 0x1D7BA70;
 
         public uint AllASonic = 0x5CCD;
         public uint AllAShadow = 0x5CCE;

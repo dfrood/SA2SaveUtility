@@ -121,142 +121,170 @@ namespace SA2SaveUtility
 
         private void Checkb_SonicMysticMelody_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.SonicMM), Convert.ToInt32(Convert.ToInt32(checkb_SonicMysticMelody.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.SonicMM, Convert.ToInt32(checkb_SonicMysticMelody.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.SonicMMRTE, (byte)(checkb_SonicMysticMelody.Checked ? 1 : 0)); }
         }
 
         private void Checkb_SonicBounceBracelet_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.SonicBounce), Convert.ToInt32(Convert.ToInt32(checkb_SonicBounceBracelet.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.SonicBounce, Convert.ToInt32(checkb_SonicBounceBracelet.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.SonicBounceRTE, (byte)(checkb_SonicBounceBracelet.Checked ? 1 : 0)); }
         }
 
         private void Checkb_SonicFlameRing_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.SonicFlame), Convert.ToInt32(Convert.ToInt32(checkb_SonicFlameRing.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.SonicFlame, Convert.ToInt32(checkb_SonicFlameRing.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.SonicFlameRTE, (byte)(checkb_SonicFlameRing.Checked ? 1 : 0)); }
         }
 
         private void Checkb_SonicMagicGloves_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.SonicMagic), Convert.ToInt32(Convert.ToInt32(checkb_SonicMagicGloves.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.SonicMagic, Convert.ToInt32(checkb_SonicMagicGloves.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.SonicMagicRTE, (byte)(checkb_SonicMagicGloves.Checked ? 1 : 0)); }
         }
 
         private void Checkb_SonicAncientLight_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.SonicAncientLight), Convert.ToInt32(Convert.ToInt32(checkb_ShadowAncientLight.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.SonicAncientLight, Convert.ToInt32(checkb_SonicAncientLight.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.SonicAncientLightRTE, (byte)(checkb_SonicAncientLight.Checked ? 1 : 0)); }
         }
 
         private void Checkb_SonicLightShoes_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.SonicLightShoes), Convert.ToInt32(Convert.ToInt32(checkb_SonicLightShoes.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.SonicLightShoes, Convert.ToInt32(checkb_SonicLightShoes.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.SonicLightShoesRTE, (byte)(checkb_SonicLightShoes.Checked ? 1 : 0)); }
         }
 
         private void Checkb_TailsMysticMelody_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.TailsMM), Convert.ToInt32(Convert.ToInt32(checkb_TailsMysticMelody.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.TailsMM, Convert.ToInt32(checkb_TailsMysticMelody.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.TailsMMRTE, (byte)(checkb_TailsMysticMelody.Checked ? 1 : 0)); }
         }
 
         private void Checkb_TailsLaserBlaster_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.TailsLaser), Convert.ToInt32(Convert.ToInt32(checkb_TailsLaserBlaster.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.TailsLaser, Convert.ToInt32(checkb_TailsLaserBlaster.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.TailsLaser, (byte)(checkb_TailsLaserBlaster.Checked ? 1 : 0)); }
         }
 
         private void Checkb_TailsBazooka_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.TailsBazooka), Convert.ToInt32(Convert.ToInt32(checkb_TailsBazooka.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.TailsBazooka, Convert.ToInt32(checkb_TailsBazooka.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.TailsBazookaRTE, (byte)(checkb_TailsBazooka.Checked ? 1 : 0)); }
         }
 
         private void Checkb_TailsBooster_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.TailsBooster), Convert.ToInt32(Convert.ToInt32(checkb_TailsBooster.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.TailsBooster, Convert.ToInt32(checkb_TailsBooster.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.TailsBoosterRTE, (byte)(checkb_TailsBooster.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KnucklesMysticMelody_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.KnucklesMM), Convert.ToInt32(Convert.ToInt32(checkb_KnucklesMysticMelody.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KnucklesMM, Convert.ToInt32(checkb_KnucklesMysticMelody.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KnucklesMMRTE, (byte)(checkb_KnucklesMysticMelody.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KnucklesAirNecklace_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.KnucklesAir), Convert.ToInt32(Convert.ToInt32(checkb_KnucklesAirNecklace.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KnucklesAir, Convert.ToInt32(checkb_KnucklesAirNecklace.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KnucklesAirRTE, (byte)(checkb_KnucklesAirNecklace.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KnucklesHammerGloves_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.KnucklesHammer), Convert.ToInt32(Convert.ToInt32(checkb_KnucklesHammerGloves.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KnucklesHammer, Convert.ToInt32(checkb_KnucklesHammerGloves.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KnucklesHammer, (byte)(checkb_KnucklesHammerGloves.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KnucklesSunglasses_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.KnucklesSun), Convert.ToInt32(Convert.ToInt32(checkb_KnucklesSunglasses.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KnucklesSun, Convert.ToInt32(checkb_KnucklesSunglasses.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KnucklesSunRTE, (byte)(checkb_KnucklesSunglasses.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KnucklesShovelClaw_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.KnucklesShovel), Convert.ToInt32(Convert.ToInt32(checkb_KnucklesShovelClaw.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KnucklesShovel, Convert.ToInt32(checkb_KnucklesShovelClaw.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KnucklesShovelRTE, (byte)(checkb_KnucklesShovelClaw.Checked ? 1 : 0)); }
         }
 
         private void Checkb_ShadowMysticMelody_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.ShadowMM), Convert.ToInt32(Convert.ToInt32(checkb_CWShadow.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ShadowMM, Convert.ToInt32(checkb_ShadowMysticMelody.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ShadowMMRTE, (byte)(checkb_ShadowMysticMelody.Checked ? 1 : 0)); }
         }
 
         private void Checkb_ShadowFlameRing_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.ShadowFlame), Convert.ToInt32(Convert.ToInt32(checkb_ShadowFlameRing.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ShadowFlame, Convert.ToInt32(checkb_ShadowFlameRing.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ShadowFlameRTE, (byte)(checkb_ShadowFlameRing.Checked ? 1 : 0)); }
         }
 
         private void Checkb_ShadowAncientLight_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.ShadowAncientLight), Convert.ToInt32(Convert.ToInt32(checkb_ShadowAncientLight.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ShadowAncientLight, Convert.ToInt32(checkb_ShadowAncientLight.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ShadowAncientLightRTE, (byte)(checkb_ShadowAncientLight.Checked ? 1 : 0)); }
         }
 
         private void Checkb_ShadowAirShoes_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.ShadowAir), Convert.ToInt32(Convert.ToInt32(checkb_ShadowAirShoes.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ShadowAir, Convert.ToInt32(checkb_ShadowAirShoes.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ShadowAirRTE, (byte)(checkb_ShadowAirShoes.Checked ? 1 : 0)); }
         }
 
         private void Checkb_EggmanMysticMelody_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.EggmanMM), Convert.ToInt32(Convert.ToInt32(checkb_EggmanMysticMelody.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.EggmanMM, Convert.ToInt32(checkb_EggmanMysticMelody.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.EggmanMMRTE, (byte)(checkb_EggmanMysticMelody.Checked ? 1 : 0)); }
         }
 
         private void Checkb_EggmanProtectiveArmor_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.EggmanArmor), Convert.ToInt32(Convert.ToInt32(checkb_EggmanProtectiveArmor.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.EggmanArmor, Convert.ToInt32(checkb_EggmanProtectiveArmor.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.EggmanArmorRTE, (byte)(checkb_EggmanProtectiveArmor.Checked ? 1 : 0)); }
         }
 
         private void Checkb_EggmanLaserBlaster_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.EggmanLaser), Convert.ToInt32(Convert.ToInt32(checkb_EggmanLaserBlaster.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.EggmanLaser, Convert.ToInt32(checkb_EggmanLaserBlaster.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.EggmanLaserRTE, (byte)(checkb_EggmanLaserBlaster.Checked ? 1 : 0)); }
         }
 
         private void Checkb_EggmanLargeCannon_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.EggmanCannon), Convert.ToInt32(Convert.ToInt32(checkb_EggmanLargeCannon.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.EggmanCannon, Convert.ToInt32(checkb_EggmanLargeCannon.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.EggmanCannonRTE, (byte)(checkb_EggmanLargeCannon.Checked ? 1 : 0)); }
         }
 
         private void Checkb_EggmanJetEngine_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.EggmanJet), Convert.ToInt32(Convert.ToInt32(checkb_EggmanJetEngine.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.EggmanJet, Convert.ToInt32(checkb_EggmanJetEngine.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.EggmanJetRTE, (byte)(checkb_EggmanJetEngine.Checked ? 1 : 0)); }
         }
 
         private void Checkb_RougeMysticMelody_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.RougeMM), Convert.ToInt32(Convert.ToInt32(checkb_RougeMysticMelody.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.RougeMM, Convert.ToInt32(checkb_RougeMysticMelody.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.RougeMMRTE, (byte)(checkb_RougeMysticMelody.Checked ? 1 : 0)); }
         }
 
         private void Checkb_RougeIronBoots_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.RougeBoots), Convert.ToInt32(Convert.ToInt32(checkb_RougeIronBoots.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.RougeBoots, Convert.ToInt32(checkb_RougeIronBoots.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.RougeBootsRTE, (byte)(checkb_RougeIronBoots.Checked ? 1 : 0)); }
         }
 
         private void Checkb_RougeTreasureScope_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.RougeTreasure), Convert.ToInt32(Convert.ToInt32(checkb_RougeTreasureScope.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.RougeTreasure, Convert.ToInt32(checkb_RougeTreasureScope.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.RougeTreasureRTE, (byte)(checkb_RougeTreasureScope.Checked ? 1 : 0)); }
         }
 
         private void Checkb_RougePickNails_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)(offsets.main.RougePick), Convert.ToInt32(Convert.ToInt32(checkb_RougePickNails.Checked)), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.RougePick, Convert.ToInt32(checkb_RougePickNails.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.RougePickRTE, (byte)(checkb_RougePickNails.Checked ? 1 : 0)); }
         }
 
         private void Nud_Lives_ValueChanged(object sender, EventArgs e)
