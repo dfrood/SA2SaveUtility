@@ -41,6 +41,13 @@
             this.tsmi_saveAsPS3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAsPS3New = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_saveAsPS3Append = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE_SA = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE_SA_Main = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE_SA_Chao = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE_SA2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE_SA2_Main = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_RTE_SA2_Chao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_Chao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_LoadChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_SaveCurrentChao = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,7 +57,6 @@
             this.btn_AutoUpdate = new System.Windows.Forms.Button();
             this.checkb_AutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkb_CheckForUpdates = new System.Windows.Forms.CheckBox();
-            this.tsmi_RTE = new System.Windows.Forms.ToolStripMenuItem();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -160,6 +166,61 @@
             this.tsmi_saveAsPS3Append.Text = "Append Current Slot to Existing Save";
             this.tsmi_saveAsPS3Append.Click += new System.EventHandler(this.Tsmi_saveAsPS3Append_Click);
             // 
+            // tsmi_RTE
+            // 
+            this.tsmi_RTE.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_RTE_SA,
+            this.tsmi_RTE_SA2});
+            this.tsmi_RTE.Name = "tsmi_RTE";
+            this.tsmi_RTE.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE.Text = "Live Editor";
+            // 
+            // tsmi_RTE_SA
+            // 
+            this.tsmi_RTE_SA.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_RTE_SA_Main,
+            this.tsmi_RTE_SA_Chao});
+            this.tsmi_RTE_SA.Name = "tsmi_RTE_SA";
+            //NOT CURRENTLY IMPLEMENTED
+            this.tsmi_RTE_SA.Visible = false;
+            this.tsmi_RTE_SA.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA.Text = "Sonic Adventure";
+            // 
+            // tsmi_RTE_SA_Main
+            // 
+            this.tsmi_RTE_SA_Main.Name = "tsmi_RTE_SA_Main";
+            this.tsmi_RTE_SA_Main.Size = new System.Drawing.Size(102, 22);
+            this.tsmi_RTE_SA_Main.Text = "Main";
+            // 
+            // tsmi_RTE_SA_Chao
+            // 
+            this.tsmi_RTE_SA_Chao.Name = "tsmi_RTE_SA_Chao";
+            this.tsmi_RTE_SA_Chao.Size = new System.Drawing.Size(102, 22);
+            this.tsmi_RTE_SA_Chao.Text = "Chao";
+            // 
+            // tsmi_RTE_SA2
+            // 
+            this.tsmi_RTE_SA2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_RTE_SA2_Main,
+            this.tsmi_RTE_SA2_Chao});
+            this.tsmi_RTE_SA2.Name = "tsmi_RTE_SA2";
+            this.tsmi_RTE_SA2.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA2.Text = "Sonic Adventure 2";
+            // 
+            // tsmi_RTE_SA2_Main
+            // 
+            this.tsmi_RTE_SA2_Main.Name = "tsmi_RTE_SA2_Main";
+            this.tsmi_RTE_SA2_Main.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA2_Main.Text = "Main";
+            this.tsmi_RTE_SA2_Main.Click += new System.EventHandler(this.Tsmi_RTE_SA2_Main_Click);
+            // 
+            // tsmi_RTE_SA2_Chao
+            // 
+            this.tsmi_RTE_SA2_Chao.Name = "tsmi_RTE_SA2_Chao";
+            this.tsmi_RTE_SA2_Chao.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA2_Chao.Text = "Chao";
+            this.tsmi_RTE_SA2_Chao.Click += new System.EventHandler(this.Tsmi_RTE_SA2_Chao_Click);
+            // 
             // tsmi_Chao
             // 
             this.tsmi_Chao.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -241,13 +302,6 @@
             this.checkb_CheckForUpdates.UseVisualStyleBackColor = true;
             this.checkb_CheckForUpdates.CheckedChanged += new System.EventHandler(this.Checkb_CheckForUpdates_CheckedChanged);
             // 
-            // tsmi_RTE
-            // 
-            this.tsmi_RTE.Name = "tsmi_RTE";
-            this.tsmi_RTE.Size = new System.Drawing.Size(180, 22);
-            this.tsmi_RTE.Text = "Live Editor";
-            this.tsmi_RTE.Click += new System.EventHandler(this.Tsmi_RTE_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -294,6 +348,12 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3New;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3Append;
         private System.Windows.Forms.ToolStripMenuItem tsmi_RTE;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA_Main;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA_Chao;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA2;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA2_Main;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA2_Chao;
         public static System.Windows.Forms.TabControl tc_Main;
     }
 }

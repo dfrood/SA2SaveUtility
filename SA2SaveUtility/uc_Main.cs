@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace SA2SaveUtility
@@ -86,7 +85,8 @@ namespace SA2SaveUtility
 
         private void Nud_TotalRings_ValueChanged(object sender, EventArgs e)
         {
-            Main.WriteBytes((int)offsets.main.Rings, BitConverter.GetBytes((int)nud_TotalRings.Value), mainIndex, 4);
+            if (!Main.isRTE) { Main.WriteBytes((int)offsets.main.Rings, BitConverter.GetBytes((int)nud_TotalRings.Value), mainIndex, 4); }
+            else { Memory.WriteBytesAtAddress((int)offsets.main.RingsRTE, BitConverter.GetBytes((int)nud_TotalRings.Value)); }
         }
 
         private void Checkb_CWSonic_CheckedChanged(object sender, EventArgs e)
@@ -261,27 +261,32 @@ namespace SA2SaveUtility
 
         private void Nud_Lives_ValueChanged(object sender, EventArgs e)
         {
-            Main.WriteBytes((int)offsets.main.Lives, BitConverter.GetBytes((short)nud_Lives.Value), mainIndex, 2);
+            if (!Main.isRTE) { Main.WriteBytes((int)offsets.main.Lives, BitConverter.GetBytes((short)nud_Lives.Value), mainIndex, 2); }
+            else { Memory.WriteBytesAtAddress((int)offsets.main.LivesRTE, BitConverter.GetBytes((int)nud_Lives.Value)); }
         }
 
         private void Checkb_Secretary_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.ThemeSecretary, Convert.ToInt32(checkb_Secretary.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ThemeSecretary, Convert.ToInt32(checkb_Secretary.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ThemeSecretaryRTE, (byte)(checkb_Secretary.Checked ? 1 : 0)); }
         }
 
         private void Checkb_Amy_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.ThemeAmy, Convert.ToInt32(checkb_Amy.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ThemeAmy, Convert.ToInt32(checkb_Amy.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ThemeAmyRTE, (byte)(checkb_Amy.Checked ? 1 : 0)); }
         }
 
         private void Checkb_Omochao_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.ThemeOmochao, Convert.ToInt32(checkb_Omochao.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ThemeOmochao, Convert.ToInt32(checkb_Omochao.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ThemeOmochaoRTE, (byte)(checkb_Omochao.Checked ? 1 : 0)); }
         }
 
         private void Checkb_Maria_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.ThemeMaria, Convert.ToInt32(checkb_Maria.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.ThemeMaria, Convert.ToInt32(checkb_Maria.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.ThemeMariaRTE, (byte)(checkb_Maria.Checked ? 1 : 0)); }
         }
 
         private void Checkb_GreenHill_CheckedChanged(object sender, EventArgs e)
@@ -386,12 +391,14 @@ namespace SA2SaveUtility
 
         private void Cb_Text_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.TextLanguage, cb_Text.SelectedIndex, mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.TextLanguage, cb_Text.SelectedIndex, mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.TextLanguageRTE, (byte)cb_Text.SelectedIndex); }
         }
 
         private void Cb_Voice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.VoiceLanguage, cb_Voice.SelectedIndex, mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.VoiceLanguage, cb_Voice.SelectedIndex, mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.VoiceLanguageRTE, (byte)cb_Voice.SelectedIndex); }
         }
     }
 }

@@ -109,15 +109,23 @@ namespace SA2SaveUtility
                 }
                 Main.tc_Main.TabPages.Add(tp);
                 Main.tc_Main.SelectedTab = tp;
-                List<byte> header = new List<byte>(Main.loadedSave.Skip(0x27).Take(0x19));
-                tp.Text = Encoding.UTF8.GetString(header.Take(header.IndexOf(0x00)).ToArray());
+                List<byte> header = new List<byte>();
+                if (!Main.isRTE)
+                {
+                    header = Main.loadedSave.Skip(0x27).Take(0x19).ToList();
+                    tp.Text = Encoding.UTF8.GetString(header.Take(header.IndexOf(0x00)).ToArray());
+                }
+
+                if (Main.isRTE) { tp.Text = "Live Editor"; }
 
                 activeMain.Add(Main.tc_Main.TabPages.IndexOf(tp), tp);
 
                 KeyValuePair<int, TabPage> currentMain = activeMain.Where(x => x.Key == Main.tc_Main.TabPages.IndexOf(tp)).First();
-                UpdateSave(Main.tc_Main, currentMain, Main.loadedSave.ToArray());
+
+                if (!Main.isRTE) { UpdateSave(Main.tc_Main, currentMain, Main.loadedSave.ToArray()); }
+                else { UpdateSave(Main.tc_Main, currentMain, Memory.ReadBytes(offsets.mainMemoryStart, 0x6000)); }
             }
-            
+
             if (!Main.isPC && !Main.isGC)
             {
                 uint index = 0;
@@ -174,7 +182,7 @@ namespace SA2SaveUtility
 
         public static void UpdateSave(TabControl tc, KeyValuePair<int, TabPage> currentMain, byte[] save)
         {
-            if (!Main.isPC && !Main.isGC) { save = save.Skip(0x04).ToArray();  }
+            if (!Main.isPC && !Main.isGC) { save = save.Skip(0x04).ToArray(); }
 
             int playTime = 0;
             if (Main.isPC) { playTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.PlayTime)).Take(4).ToArray(), 0); }
@@ -185,15 +193,28 @@ namespace SA2SaveUtility
             else { emblemTime = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.EmblemResultsTime)).Take(4).Reverse().ToArray(), 0); }
 
             int lives = 0;
-            if (Main.isPC) { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).ToArray(), 0); }
+            if (Main.isPC)
+            {
+                if (!Main.isRTE) { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).ToArray(), 0); }
+                else { lives = BitConverter.ToInt16(Memory.ReadBytes(Convert.ToInt32(offsets.main.LivesRTE), 2), 0); }
+            }
             else { lives = BitConverter.ToInt16(save.Skip(Convert.ToInt32(offsets.main.Lives)).Take(2).Reverse().ToArray(), 0); }
 
             int rings = 0;
-            if (Main.isPC) { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).ToArray(), 0); }
+            if (Main.isPC)
+            {
+                if (!Main.isRTE) { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).ToArray(), 0); }
+                else { rings = BitConverter.ToInt32(Memory.ReadBytes(Convert.ToInt32(offsets.main.RingsRTE), 4), 0); }
+            }
             else { rings = BitConverter.ToInt32(save.Skip(Convert.ToInt32(offsets.main.Rings)).Take(4).Reverse().ToArray(), 0); }
 
-            int textLang = (int)save[offsets.main.TextLanguage];
-            int voiceLang = (int)save[offsets.main.VoiceLanguage];
+            int textLang = 0;
+            if (!Main.isRTE) { textLang = (int)save[offsets.main.TextLanguage]; }
+            else { textLang = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.TextLanguageRTE), 1).First(); }
+
+            int voiceLang = 0;
+            if (!Main.isRTE) { voiceLang = (int)save[offsets.main.VoiceLanguage]; }
+            else { voiceLang = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.VoiceLanguageRTE), 1).First(); }
 
             int sonicCW = (int)save[offsets.main.ChaoWorldSonic];
             int tailsCW = (int)save[offsets.main.ChaoWorldTails];
@@ -247,10 +268,18 @@ namespace SA2SaveUtility
             int raceH = (int)save[offsets.main.ChaoRaceHero];
             int raceD = (int)save[offsets.main.ChaoRaceDark];
 
-            int themeA = (int)save[offsets.main.ThemeAmy];
-            int themeM = (int)save[offsets.main.ThemeMaria];
-            int themeS = (int)save[offsets.main.ThemeSecretary];
-            int themeO = (int)save[offsets.main.ThemeOmochao];
+            int themeA = 0;
+            if (!Main.isRTE) { themeA = (int)save[offsets.main.ThemeAmy]; }
+            else { themeA = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ThemeAmyRTE), 1).First(); }
+            int themeM = 0;
+            if (!Main.isRTE) { themeM = (int)save[offsets.main.ThemeMaria]; }
+            else { themeM = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ThemeMariaRTE), 1).First(); }
+            int themeS = 0;
+            if (!Main.isRTE) { themeS = (int)save[offsets.main.ThemeSecretary]; }
+            else { themeS = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ThemeSecretaryRTE), 1).First(); }
+            int themeO = 0;
+            if (!Main.isRTE) { themeO = (int)save[offsets.main.ThemeOmochao]; }
+            else { themeO = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.ThemeOmochaoRTE), 1).First(); }
 
             int greenH = (int)save[offsets.main.GreenHill];
 
@@ -272,6 +301,8 @@ namespace SA2SaveUtility
                 if (gb.Name == "gb_Lives") { if (gb.Controls.OfType<NumericUpDown>().First().Value != lives) { gb.Controls.OfType<NumericUpDown>().First().Value = lives; } }
                 if (gb.Name == "gb_PlayTime")
                 {
+                    if (Main.isRTE) { gb.Visible = false; }
+                    else { gb.Visible = true; }
                     int hours = playTime / 216000;
                     int minutes = (playTime - (hours * 216000)) / 3600;
                     int seconds = ((playTime - (hours * 216000)) - ((playTime - (hours * 21600)) - ((playTime - (hours * 21600)) - minutes * 3600))) / 60;
@@ -281,6 +312,8 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_GCFileNo")
                 {
+                    if (!Main.isGC) { gb.Visible = false; }
+                    else { gb.Visible = true; }
                     if (Main.isGC)
                     {
                         int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes).Replace("-", " "));
@@ -289,11 +322,21 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_Languages")
                 {
+                    if (Main.isPC)
+                    {
+                        gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().Items.Clear();
+                        gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().Items.AddRange(new object[] {
+                            "Japanese",
+                            "English"});
+                    }
+
                     gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().SelectedIndex = textLang;
                     gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Voice").First().SelectedIndex = voiceLang;
                 }
                 if (gb.Name == "gb_EmblemTime")
                 {
+                    if (Main.isRTE) { gb.Visible = false; }
+                    else { gb.Visible = true; }
                     int hours = emblemTime / 216000;
                     int minutes = (emblemTime - (hours * 216000)) / 3600;
                     int seconds = ((emblemTime - (hours * 216000)) - ((emblemTime - (hours * 21600)) - ((emblemTime - (hours * 21600)) - minutes * 3600))) / 60;
@@ -312,6 +355,8 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_UnlockedKarts")
                 {
+                    if (Main.isRTE) { gb.Visible = false; }
+                    else { gb.Visible = true; }
                     gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartSonic").First().Checked = Convert.ToBoolean(kartS);
                     gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartShadow").First().Checked = Convert.ToBoolean(kartSh);
                     gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartTails").First().Checked = Convert.ToBoolean(kartT);
@@ -328,6 +373,8 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_Upgrades")
                 {
+                    if (Main.isRTE) { gb.Visible = false; }
+                    else { gb.Visible = true; }
                     TabControl tcUp = gb.Controls.OfType<TabControl>().Where(x => x.Name == "tc_Upgrades").First();
                     TabPage tpSonic = tcUp.Controls.OfType<TabPage>().Where(x => x.Name == "tp_Sonic").First();
                     TabPage tpTails = tcUp.Controls.OfType<TabPage>().Where(x => x.Name == "tp_Tails").First();
@@ -406,6 +453,39 @@ namespace SA2SaveUtility
                 int M5SS = (int)(currentMission[(int)(offsets.mission.M5T) + 0x01]);
                 int M5MS = (int)(currentMission[(int)(offsets.mission.M5T) + 0x02]);
 
+                int M1P = 0;
+                if (Main.isPC) { M1P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M1P)).Take(4).ToArray(), 0); }
+                else { M1P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M1P)).Take(4).Reverse().ToArray(), 0); }
+                int M2P = 0;
+                if (Main.isPC) { M2P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M2P)).Take(4).ToArray(), 0); }
+                else { M2P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M2P)).Take(4).Reverse().ToArray(), 0); }
+                int M3P = 0;
+                if (Main.isPC) { M3P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M3P)).Take(4).ToArray(), 0); }
+                else { M3P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M3P)).Take(4).Reverse().ToArray(), 0); }
+                int M4P = 0;
+                if (Main.isPC) { M4P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M4P)).Take(4).ToArray(), 0); }
+                else { M4P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M4P)).Take(4).Reverse().ToArray(), 0); }
+                int M5P = 0;
+                if (Main.isPC) { M5P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M5P)).Take(4).ToArray(), 0); }
+                else { M5P = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M5P)).Take(4).Reverse().ToArray(), 0); }
+
+                int M1R = 0;
+                if (Main.isPC) { M1R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M1R)).Take(4).ToArray(), 0); }
+                else { M1R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M1R)).Take(4).Reverse().ToArray(), 0); }
+                int M2R = 0;
+                if (Main.isPC) { M2R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M2R)).Take(4).ToArray(), 0); }
+                else { M2R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M2R)).Take(4).Reverse().ToArray(), 0); }
+                int M3R = 0;
+                if (Main.isPC) { M3R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M3R)).Take(4).ToArray(), 0); }
+                else { M3R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M3R)).Take(4).Reverse().ToArray(), 0); }
+                int M4R = 0;
+                if (Main.isPC) { M4R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M4R)).Take(4).ToArray(), 0); }
+                else { M4R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M4R)).Take(4).Reverse().ToArray(), 0); }
+                int M5R = 0;
+                if (Main.isPC) { M5R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M5R)).Take(4).ToArray(), 0); }
+                else { M5R = BitConverter.ToInt16(currentMission.Skip(Convert.ToInt32(offsets.mission.M5R)).Take(4).Reverse().ToArray(), 0); }
+
+
                 int M1S = 0;
                 if (Main.isPC) { M1S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M1S)).Take(4).ToArray(), 0); }
                 else { M1S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M1S)).Take(4).Reverse().ToArray(), 0); }
@@ -413,8 +493,8 @@ namespace SA2SaveUtility
                 if (Main.isPC) { M4S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M4S)).Take(4).ToArray(), 0); }
                 else { M4S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M4S)).Take(4).Reverse().ToArray(), 0); }
                 int M5S = 0;
-                if (Main.isPC) { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt16(offsets.mission.M5S)).Take(4).ToArray(), 0); }
-                else { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt16(offsets.mission.M5S)).Take(4).Reverse().ToArray(), 0); }
+                if (Main.isPC) { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M5S)).Take(4).ToArray(), 0); }
+                else { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M5S)).Take(4).Reverse().ToArray(), 0); }
 
                 uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_1R").First().SelectedIndex = M1;
                 uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_2R").First().SelectedIndex = M2;
@@ -437,6 +517,17 @@ namespace SA2SaveUtility
                 uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeMM").First().Value = M5MM;
                 uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeSS").First().Value = M5SS;
                 uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeMS").First().Value = M5MS;
+
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1P").First().Value = M1P;
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2P").First().Value = M2P;
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3P").First().Value = M3P;
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4P").First().Value = M4P;
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5P").First().Value = M5P;
+
+
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1Rings").First().Value = M1R;
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4Rings").First().Value = M4R;
+                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5Rings").First().Value = M5R;
 
                 uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1S").First().Value = M1S;
                 uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4S").First().Value = M4S;

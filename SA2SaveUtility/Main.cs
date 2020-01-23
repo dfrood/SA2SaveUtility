@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -43,7 +41,7 @@ namespace SA2SaveUtility
         public static byte[] gcBytes;
         public static byte[] gcFileBytes;
 
-        Offsets offsets = new Offsets();
+        static Offsets offsets = new Offsets();
 
         public Main()
         {
@@ -136,7 +134,8 @@ namespace SA2SaveUtility
 
         public static void WriteByte(int offset, int value, uint mainIndex)
         {
-            if (isPC) { loadedSave[offset] = (byte)value; }
+            if (isPC && !isRTE) { loadedSave[offset] = (byte)value; }
+            if (isRTE) { Memory.WriteByteAtAddress(offsets.mainMemoryStart + offset, (byte)value); }
             if (isGC) { loadedSave[offset + 0x40] = (byte)value; }
             if (!isPC && !isGC)
             {
@@ -150,7 +149,8 @@ namespace SA2SaveUtility
             if (!isPC) { Array.Reverse(bytes); }
             for (int i = 0; i < length; i++)
             {
-                if (isPC) { loadedSave[offset + i] = bytes[i]; }
+                if (isPC && !isRTE) { loadedSave[offset + i] = bytes[i]; }
+                if (isRTE) { Memory.WriteByteAtAddress(offsets.mainMemoryStart + offset + i, bytes[i]); }
                 if (isGC) { loadedSave[offset + 0x40 + i] = bytes[i]; }
                 if (!isPC && !isGC)
                 {
@@ -183,6 +183,24 @@ namespace SA2SaveUtility
             }
 
             return _byteArrayList;
+        }
+
+        private void Tsmi_RTE_SA2_Chao_Click(object sender, EventArgs e)
+        {
+            isRTE = true;
+            isPC = true;
+            isSA = false;
+            IsChao();
+            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Editor - SA2 Chao]";
+        }
+
+        private void Tsmi_RTE_SA2_Main_Click(object sender, EventArgs e)
+        {
+            isRTE = true;
+            isPC = true;
+            isSA = false;
+            IsMain();
+            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Editor - SA2 Main]";
         }
 
         private void Tsmi_Open_Click(object sender, EventArgs e)
@@ -219,7 +237,7 @@ namespace SA2SaveUtility
                     }
                     isMain = false;
                     validSave = true;
-                    SaveIsChao();
+                    IsChao();
                 }
 
                 if (loadedSave.Length == 0x6000)
@@ -251,7 +269,7 @@ namespace SA2SaveUtility
                     }
                     isMain = false;
                     validSave = true;
-                    SaveIsChao();
+                    IsChao();
                 }
                 if (loadedSave.Length == 0x3C028)
                 {
@@ -293,7 +311,7 @@ namespace SA2SaveUtility
                     gcBytes = loadedSave.Take(0x40).ToArray();
                     loadedSave = loadedSave.Skip(0x40).ToArray();
                     validSave = true;
-                    SaveIsChao();
+                    IsChao();
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Chao Save]";
                 }
 
@@ -312,16 +330,12 @@ namespace SA2SaveUtility
             }
         }
 
-        private void Tsmi_RTE_Click(object sender, EventArgs e)
+        private void IsChao()
         {
-            isRTE = true;
-            isPC = true;
-            SaveIsChao();
-            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Memory Editing]";
-        }
 
-        private void SaveIsChao()
-        {
+            tc_Main.TabPages.Clear();
+            MainSave.activeMain.Clear();
+            ChaoSave.activeChao.Clear();
             isMain = false;
             if (!isSA && !isRTE)
             {
@@ -347,14 +361,27 @@ namespace SA2SaveUtility
         }
         private void IsMain()
         {
+            tc_Main.TabPages.Clear();
+            MainSave.activeMain.Clear();
+            ChaoSave.activeChao.Clear();
             isMain = true;
             MainSave.GetMain();
             tsmi_SaveCurrentChao.Enabled = false;
             tsmi_Chao.Enabled = false;
-            tsmi_saveAs360New.Visible = true;
-            tsmi_saveAs360Append.Visible = true;
-            tsmi_saveAsPS3New.Visible = true;
-            tsmi_saveAsPS3Append.Visible = true;
+            if (!isSA && !isRTE)
+            {
+                tsmi_saveAs360New.Visible = true;
+                tsmi_saveAs360Append.Visible = true;
+                tsmi_saveAsPS3New.Visible = true;
+                tsmi_saveAsPS3Append.Visible = true;
+            }
+            else
+            {
+                tsmi_saveAs360New.Visible = false;
+                tsmi_saveAs360Append.Visible = false;
+                tsmi_saveAsPS3New.Visible = false;
+                tsmi_saveAsPS3Append.Visible = false;
+            }
         }
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
@@ -1616,7 +1643,5 @@ namespace SA2SaveUtility
                 updateCheckThread.Start();
             }
         }
-
-
     }
 }

@@ -11,6 +11,7 @@ namespace SA2SaveUtility
         public Kart kart = new Kart();
         public Boss boss = new Boss();
         public int chaoMemoryStart = 0x19F6EC4;
+        public int mainMemoryStart = 0x1DE9DC0;
     }
 
     class ChaoWorld
@@ -25,14 +26,18 @@ namespace SA2SaveUtility
     class Save
     {
         public uint TextLanguage = 0x2848;
+        public uint TextLanguageRTE = 0x174AFD1;
         public uint EmblemCount = 0x284E;
         public uint Lives = 0x285C;
+        public uint LivesRTE = 0x174B024;
         //Time is an integer, 0x01 = 1 60th of a second
         public uint EmblemResultsTime = 0x2868;
         public uint PlayTime = 0x286C;
         public uint Rings = 0x2870;
-        //public uint VoiceLanguage = 0x2877;
-        public uint VoiceLanguage = 0x284A;
+        public uint RingsRTE = 0x174B05C;
+        public uint VoiceLanguage = 0x2877;
+        //public uint VoiceLanguage = 0x284A;
+        public uint VoiceLanguageRTE = 0x174AFD2;
         public uint GreenHill = 0x4034;
 
         public uint ChaoWorldSonic = 0x5A69;
@@ -89,9 +94,13 @@ namespace SA2SaveUtility
         public uint RougeMM = 0x5A93;
 
         public uint ThemeAmy = 0x5ADB;
+        public uint ThemeAmyRTE = 0x1D7BA7A;
         public uint ThemeMaria = 0x5ADC;
+        public uint ThemeMariaRTE = 0x1D7BA6B;
         public uint ThemeSecretary = 0x5ADD;
+        public uint ThemeSecretaryRTE = 0x1D7BA6C;
         public uint ThemeOmochao = 0x5ADE;
+        public uint ThemeOmochaoRTE = 0x1D7BA71;
 
         public uint AllASonic = 0x5CCD;
         public uint AllAShadow = 0x5CCE;
