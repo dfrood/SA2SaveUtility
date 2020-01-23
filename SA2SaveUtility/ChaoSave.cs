@@ -2,27 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace SA2SaveUtility
 {
     class ChaoSave
     {
-        public const int PROCESS_WM_READ = 0x0010;
-        public const int PROCESS_VM_WRITE = 0x0020;
-        public const int PROCESS_VM_OPERATION = 0x0008;
-        public const int PROCESS_ALL_ACCESS = 0x1F0FFF;
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
-
         public static Offsets offsets = new Offsets();
         public static Dictionary<uint, TabPage> activeChao = new Dictionary<uint, TabPage>();
 
@@ -850,22 +835,6 @@ namespace SA2SaveUtility
             UpdateChaoWorld();
         }
 
-        public static void WriteByteAtAddress(int address, byte toWrite)
-        {
-            Process process = Process.GetProcessesByName("sonic2app")[0];
-            if (process != null)
-            {
-                IntPtr processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
-
-                int bytesWritten = 0;
-
-                byte[] toWriteArray = new byte[1];
-
-                toWriteArray[0] = toWrite;
-
-                WriteProcessMemory((int)processHandle, offsets.chaoMemoryStart + address, toWriteArray, toWriteArray.Length, ref bytesWritten);
-            }
-        }
 
         public static void GetChao()
         {
@@ -873,22 +842,7 @@ namespace SA2SaveUtility
             List<byte[]> chaoArray = new List<byte[]>();
             if (Main.isRTE)
             {
-                Process process = new Process();
-                try
-                {
-                    process = Process.GetProcessesByName("sonic2app")[0];
-
-                    IntPtr processHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
-
-                    int bytesRead = 0;
-                    byte[] buffer = new byte[0xC000];
-
-                    ReadProcessMemory((int)processHandle, offsets.chaoMemoryStart, buffer, buffer.Length, ref bytesRead);
-
-                    chaoArray = Main.SplitByteArray(buffer, 0x800);
-                }
-                catch { MessageBox.Show("Couldn't attach to Sonic Adventure 2 Process.", "Error attaching to process", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-
+                chaoArray = Main.SplitByteArray(Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000), 0x800);
             }
             if (!Main.isSA && !Main.isRTE) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x3AA4).Take(0xC000).ToArray(), 0x800); }
             if (Main.isSA && !Main.isRTE) { chaoArray = Main.SplitByteArray(Main.loadedSave.Skip(0x818).Take(0xC000).ToArray(), 0x800); }

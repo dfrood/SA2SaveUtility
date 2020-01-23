@@ -84,6 +84,7 @@
     <Compile Include="MarketItems.Designer.cs">
       <DependentUpon>MarketItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Memory.cs" />
     <Compile Include="Offsets.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

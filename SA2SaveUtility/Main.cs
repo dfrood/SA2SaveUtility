@@ -317,6 +317,7 @@ namespace SA2SaveUtility
             isRTE = true;
             isPC = true;
             SaveIsChao();
+            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Memory Editing]";
         }
 
         private void SaveIsChao()
@@ -337,15 +338,12 @@ namespace SA2SaveUtility
             }
 
             ChaoSave.GetChao();
-            if (!isRTE)
-            {
-                tsmi_SaveCurrentChao.Enabled = true;
-                tsmi_Chao.Enabled = true;
-                tsmi_saveAs360New.Visible = false;
-                tsmi_saveAs360Append.Visible = false;
-                tsmi_saveAsPS3New.Visible = false;
-                tsmi_saveAsPS3Append.Visible = false;
-            }
+            tsmi_SaveCurrentChao.Enabled = true;
+            tsmi_Chao.Enabled = true;
+            tsmi_saveAs360New.Visible = false;
+            tsmi_saveAs360Append.Visible = false;
+            tsmi_saveAsPS3New.Visible = false;
+            tsmi_saveAsPS3Append.Visible = false;
         }
         private void IsMain()
         {
@@ -363,35 +361,47 @@ namespace SA2SaveUtility
         {
             //if (tc_Main.SelectedIndex != 0)
             //{
-                uint chaoBeginning = 0x3AA4;
-                if (isSA) chaoBeginning = 0x818;
+            uint chaoBeginning = 0x3AA4;
+            if (isSA) chaoBeginning = 0x818;
+            if (isRTE) chaoBeginning = 0;
 
-                uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-                OpenFileDialog loadChao = new OpenFileDialog();
-                loadChao.InitialDirectory = chaoDirectory;
-                loadChao.Filter = "Chao File|*.chao";
-                loadChao.Title = "Load a Chao";
-                loadChao.ShowDialog();
-                if (loadChao.FileName != "")
+            uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+            OpenFileDialog loadChao = new OpenFileDialog();
+            loadChao.InitialDirectory = chaoDirectory;
+            loadChao.Filter = "Chao File|*.chao";
+            loadChao.Title = "Load a Chao";
+            loadChao.ShowDialog();
+            if (loadChao.FileName != "")
+            {
+                byte[] chao = File.ReadAllBytes(loadChao.FileName);
+                if (chao.Length == 2112) { chao = chao.Skip(0x40).ToArray(); }
+                if (chao.Length == 2048)
                 {
-                    byte[] chao = File.ReadAllBytes(loadChao.FileName);
-                    if (chao.Length == 2112) { chao = chao.Skip(0x40).ToArray(); }
-                    Console.WriteLine(chao.Length);
-                    if (chao.Length == 2048)
+                    List<byte> byteList = new List<byte>();
+                    if (!isRTE) { byteList.AddRange(loadedSave.Take((int)(chaoBeginning + (0x800 * uc.chaoNumber))).ToArray()); }
+                    else { byteList.AddRange(Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000).Take((int)(chaoBeginning + (0x800 * uc.chaoNumber))).ToArray()); }
+
+                    if (!isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
+                    else { byteList.AddRange(chao); }
+
+                    if (!isRTE)
                     {
-                        List<byte> byteList = new List<byte>();
-                        byteList.AddRange(loadedSave.Take((int)(chaoBeginning + (0x800 * uc.chaoNumber))).ToArray());
-                        if (!isPC) { byteList.AddRange(ChaoSave.ByteSwapChao(chao)); }
-                        else { byteList.AddRange(chao); }
                         byteList.AddRange(loadedSave.Skip((int)(chaoBeginning + (0x800 * (uc.chaoNumber + 1)))).ToArray());
                         loadedSave = byteList.ToArray();
-                        ChaoSave.GetChao();
                     }
                     else
                     {
-                        MessageBox.Show("That doesn't appear to be a chao file.", "Error loading chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        byteList.AddRange(Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000).Skip((int)(chaoBeginning + (0x800 * (uc.chaoNumber + 1)))).ToArray());
+                        Memory.WriteBytesAtAddress(offsets.chaoMemoryStart, byteList.ToArray());
                     }
+
+                    ChaoSave.GetChao();
                 }
+                else
+                {
+                    MessageBox.Show("That doesn't appear to be a chao file.", "Error loading chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             //}
         }
 
@@ -399,39 +409,44 @@ namespace SA2SaveUtility
         {
             //if (tc_Main.SelectedIndex != 0)
             //{
-                uint chaoBeginning = 0x3AA4;
-                if (isSA) chaoBeginning = 0x818;
+            uint chaoBeginning = 0x3AA4;
+            if (isSA) chaoBeginning = 0x818;
+            if (isRTE) chaoBeginning = 0;
 
-                uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-                byte[] chao = new byte[2048];
-                if (!isPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
-                else { chao = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
-                SaveFileDialog saveChao = new SaveFileDialog();
-                saveChao.InitialDirectory = chaoDirectory;
-                saveChao.Filter = "Chao File|*.chao|FCE Chao File|*.chao";
-                saveChao.Title = "Save a Chao";
-                saveChao.ShowDialog();
+            uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+            byte[] chao = new byte[2048];
+            if (!isPC) { chao = ChaoSave.ByteSwapChao(loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray()); }
+            else
+            {
+                if (!isRTE) { chao = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
+                else { chao = Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000).Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray(); }
+            }
+            SaveFileDialog saveChao = new SaveFileDialog();
+            saveChao.InitialDirectory = chaoDirectory;
+            saveChao.Filter = "Chao File|*.chao|FCE Chao File|*.chao";
+            saveChao.Title = "Save a Chao";
+            saveChao.ShowDialog();
 
-                if (saveChao.FileName != "")
+            if (saveChao.FileName != "")
+            {
+                List<byte> chaoToSave = new List<byte>(chao);
+                switch (saveChao.FilterIndex)
                 {
-                    List<byte> chaoToSave = new List<byte>(chao);
-                    switch (saveChao.FilterIndex)
-                    {
-                        case 1:
-                            break;
+                    case 1:
+                        break;
 
-                        case 2:
-                            chaoToSave.InsertRange(0, new byte[]
-                            {
+                    case 2:
+                        chaoToSave.InsertRange(0, new byte[]
+                        {
                                 0x14, 0x28, 0xB7, 0x52, 0xAD, 0x34, 0xF3, 0xC4, 0xC4, 0xFA, 0x25, 0x49, 0x04, 0xFF, 0x1B, 0x24, 0x13, 0x0C, 0x26, 0x4F, 0x6F,
                                 0xB5, 0x29, 0xA5, 0x7C, 0x87, 0x78, 0x89, 0x08, 0xBC, 0x2E, 0xE6, 0xAB, 0x3E, 0x55, 0x4F, 0xDD, 0x35, 0x68, 0x75, 0xF5, 0xF7,
                                 0xA8, 0x2B, 0x27, 0x67, 0xCA, 0x74, 0x4F, 0x28, 0xE1, 0x56, 0x1F, 0x69, 0xDB, 0xBE, 0xF3, 0x4D, 0xA6, 0xD3, 0xB1, 0xE7, 0x21,
                                 0x00
-                            });
-                            break;
-                    }
-                    File.WriteAllBytes(saveChao.FileName, chaoToSave.ToArray());
+                        });
+                        break;
                 }
+                File.WriteAllBytes(saveChao.FileName, chaoToSave.ToArray());
+            }
             //}
         }
 
@@ -439,32 +454,55 @@ namespace SA2SaveUtility
         {
             //if (tc_Main.SelectedIndex != 0)
             //{
-                uint chaoBeginning = 0x3AA4;
-                if (isSA) chaoBeginning = 0x818;
+            uint chaoBeginning = 0x3AA4;
+            if (isSA) chaoBeginning = 0x818;
+            if (isRTE) chaoBeginning = 0;
 
-                uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
-                byte[] chaoToDupe = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
-                byte[] array = loadedSave.Skip((int)chaoBeginning).Take(0x12000).ToArray();
-                uint chaoIndex = 0;
-                foreach (byte[] chao in SplitByteArray(array, 0x800))
+            uc_Chao uc = (uc_Chao)tc_Main.Controls[tc_Main.SelectedIndex].Controls[0];
+            byte[] chaoToDupe = new byte[0x800];
+            byte[] array = new byte[0xC000];
+
+            if (!isRTE)
+            {
+                chaoToDupe = loadedSave.Skip((int)(chaoBeginning + (0x800 * uc.chaoNumber))).Take(0x800).ToArray();
+                array = loadedSave.Skip((int)chaoBeginning).Take(0xC000).ToArray();
+            }
+            else
+            {
+                chaoToDupe = Memory.ReadBytes((int)(offsets.chaoMemoryStart + (int)(0x800 * uc.chaoNumber)), 0x800);
+                array = Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000);
+            }
+
+            uint chaoIndex = 0;
+            foreach (byte[] chao in SplitByteArray(array, 0x800))
+            {
+                if ((chao[offsets.chao.Garden] == 0 || chao[offsets.chao.Garden] == 255) && chaoIndex != 24)
                 {
-                    if ((chao[offsets.chao.Garden] == 0 || chao[offsets.chao.Garden] == 255) && chaoIndex != 24)
+                    List<byte> byteArray = new List<byte>();
+                    if (!isRTE)
                     {
-                        List<byte> byteArray = new List<byte>();
                         byteArray.AddRange(loadedSave.Take((int)(chaoBeginning + (0x800 * chaoIndex))).ToArray());
                         byteArray.AddRange(chaoToDupe);
                         byteArray.AddRange(loadedSave.Skip((int)(chaoBeginning + (0x800 * (chaoIndex + 1)))).ToArray());
                         loadedSave = byteArray.ToArray();
-                        MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
-                        ChaoSave.GetChao();
-                        break;
                     }
-                    else if (chaoIndex == 24)
+                    else
                     {
-                        MessageBox.Show("Failed to find a slot for the chao, you'll have to make room.", "Error duping chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        byteArray.AddRange(Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000).Take((int)(chaoBeginning + (0x800 * chaoIndex))).ToArray());
+                        byteArray.AddRange(chaoToDupe);
+                        byteArray.AddRange(Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000).Skip((int)(chaoBeginning + (0x800 * chaoIndex + 1))).ToArray());
+                        Memory.WriteBytesAtAddress(offsets.chaoMemoryStart, byteArray.ToArray());
                     }
-                    chaoIndex++;
+                    MessageBox.Show("Chao has been duped into slot " + (chaoIndex + 1) + ".", "Chao duped", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    ChaoSave.GetChao();
+                    break;
                 }
+                else if (chaoIndex == 24)
+                {
+                    MessageBox.Show("Failed to find a slot for the chao, you'll have to make room.", "Error duping chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                chaoIndex++;
+            }
             //}
         }
 
@@ -787,7 +825,7 @@ namespace SA2SaveUtility
                     byteList.InsertRange(0x80, header2);
                     byte[] splitForChecksum = byteList.Skip(0x3080).ToArray();
                     ChaoSave.WriteChecksum(splitForChecksum, true);
-                    byteList.RemoveRange(0x3080, byteList.Count-0x3080);
+                    byteList.RemoveRange(0x3080, byteList.Count - 0x3080);
                     byteList.AddRange(splitForChecksum.ToList());
 
                     string gcFileName = Path.GetDirectoryName(loadedFile) + @"\SA2CHAO.gci";
