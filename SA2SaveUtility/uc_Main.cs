@@ -324,32 +324,38 @@ namespace SA2SaveUtility
 
         private void Checkb_KartSonic_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.KartSonic, Convert.ToInt32(checkb_KartSonic.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KartSonic, Convert.ToInt32(checkb_KartSonic.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KartSonicRTE, (byte)(checkb_KartSonic.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KartTails_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.KartTails, Convert.ToInt32(checkb_KartTails.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KartTails, Convert.ToInt32(checkb_KartTails.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KartTailsRTE, (byte)(checkb_KartTails.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KartKnuckles_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.KartKnuckles, Convert.ToInt32(checkb_KartKnuckles.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KartKnuckles, Convert.ToInt32(checkb_KartKnuckles.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KartKnucklesRTE, (byte)(checkb_KartKnuckles.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KartShadow_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.KartShadow, Convert.ToInt32(checkb_KartShadow.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KartShadow, Convert.ToInt32(checkb_KartShadow.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KartShadowRTE, (byte)(checkb_KartShadow.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KartEggman_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.KartEggman, Convert.ToInt32(checkb_KartEggman.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KartEggman, Convert.ToInt32(checkb_KartEggman.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KartEggmanRTE, (byte)(checkb_KartEggman.Checked ? 1 : 0)); }
         }
 
         private void Checkb_KartRouge_CheckedChanged(object sender, EventArgs e)
         {
-            Main.WriteByte((int)offsets.main.KartRouge, Convert.ToInt32(checkb_KartRouge.Checked), mainIndex);
+            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.KartRouge, Convert.ToInt32(checkb_KartRouge.Checked), mainIndex); }
+            else { Memory.WriteByteAtAddress((int)offsets.main.KartRougeRTE, (byte)(checkb_KartRouge.Checked ? 1 : 0)); }
         }
 
         private void Nud_PlayHour_ValueChanged(object sender, EventArgs e)

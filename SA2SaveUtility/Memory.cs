@@ -7,6 +7,9 @@ namespace SA2SaveUtility
 {
     class Memory
     {
+
+        public static bool connected { get; set; }
+
         public static Offsets offsets = new Offsets();
 
         public const int PROCESS_WM_READ = 0x0010;
@@ -36,17 +39,25 @@ namespace SA2SaveUtility
                 int bytesRead = 0;
 
                 ReadProcessMemory((int)processHandle, address, bytes, length, ref bytesRead);
+
+                connected = true;
             }
-            catch { MessageBox.Show("Couldn't attach to Sonic Adventure 2 Process.", "Error attaching to process", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch
+            {
+                MessageBox.Show("Couldn't read from Sonic Adventure 2 Process.", "Error reading from process", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connected = false;
+            }
 
             return bytes;
         }
 
         public static void WriteByteAtAddress(int address, byte toWrite)
         {
-            Process process = Process.GetProcessesByName("sonic2app")[0];
-            if (process != null)
+            Process process = new Process();
+            try
             {
+                process = Process.GetProcessesByName("sonic2app")[0];
+
                 IntPtr processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
 
                 int bytesWritten = 0;
@@ -56,19 +67,33 @@ namespace SA2SaveUtility
                 toWriteArray[0] = toWrite;
 
                 WriteProcessMemory((int)processHandle, address, toWriteArray, toWriteArray.Length, ref bytesWritten);
+                connected = true;
+            }
+            catch
+            {
+                MessageBox.Show("Couldn't write to Sonic Adventure 2 Process.", "Error writing to process", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connected = false;
             }
         }
 
         public static void WriteBytesAtAddress(int address, byte[] toWrite)
         {
-            Process process = Process.GetProcessesByName("sonic2app")[0];
-            if (process != null)
+            Process process = new Process();
+            try
             {
+                process = Process.GetProcessesByName("sonic2app")[0];
+
                 IntPtr processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, process.Id);
 
                 int bytesWritten = 0;
 
                 WriteProcessMemory((int)processHandle, address, toWrite, toWrite.Length, ref bytesWritten);
+                connected = true;
+            }
+            catch
+            {
+                MessageBox.Show("Couldn't write to Sonic Adventure 2 Process.", "Error writing to process", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                connected = false;
             }
         }
     }

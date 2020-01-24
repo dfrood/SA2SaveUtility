@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -23,10 +24,8 @@ namespace SA2SaveUtility
         //public static bool saveIsDC;
         public static bool isMain;
         public static bool isLatest = true;
-        public static string latestVersionString;
-        public static string latestVersionReleaseNotes;
-        public static string latestVersionFile;
-        public static string latestVersionDownloadURL;
+        public List<Release> releases;
+        public List<Release> releasesBehind;
         public static bool checkForUpdates;
         public static bool autoUpdate;
 
@@ -87,19 +86,43 @@ namespace SA2SaveUtility
                 updateCheckThread.Start();
             }
         }
-
         public void UpdateCheck()
         {
             try
             {
-                string xml = new WebClient().DownloadString("https://dev.froody.tech/autoupdate.xml");
-                XDocument doc = XDocument.Parse(xml);
-                latestVersionString = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestVersion").Value;
-                latestVersionReleaseNotes = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestReleaseNotes").Value; ;
-                latestVersionFile = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestFile").Value;
-                latestVersionDownloadURL = doc.XPathSelectElement("Applications/SA2SaveUtility/LatestDownload").Value; ;
-                Version latestVersion = Version.Parse(latestVersionString);
+                string projectJSON = "";
+
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers["User-Agent"] =
+                    "Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0)";
+
+                    projectJSON = client.DownloadString("https://api.github.com/repos/dfrood/SA2SaveUtility" + "/releases");
+                }
+
+                JavaScriptSerializer js = new JavaScriptSerializer();  
+
+                releases = js.Deserialize<List<Release>>(projectJSON);
+
                 Version currentVersion = Version.Parse(ProductVersion);
+
+                Version latestVersion = currentVersion;
+
+                releasesBehind = new List<Release>();
+
+                foreach (Release release in releases)
+                {
+                    Version releaseBeingChecked = Version.Parse(release.tag_name);
+
+                    if (currentVersion.CompareTo(releaseBeingChecked) < 0)
+                    {
+                        latestVersion = releaseBeingChecked;
+                        releasesBehind.Add(release);
+                    }
+                }
+
+                releasesBehind.Reverse();
+
                 if (currentVersion.CompareTo(latestVersion) < 0)
                 {
                     isLatest = false;
@@ -124,6 +147,7 @@ namespace SA2SaveUtility
                 Console.WriteLine(ex);
             }
         }
+
         public bool ControlInvokeRequired(Control c, Action a)
         {
             if (c.InvokeRequired) c.Invoke(new MethodInvoker(delegate { a(); }));
@@ -1195,8 +1219,19 @@ namespace SA2SaveUtility
 
         private void Tsmi_About_Click(object sender, EventArgs e)
         {
-            if (isLatest) { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
-            else { MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "There is a new version available at " + latestVersionDownloadURL + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+            if (isLatest)
+            {
+                MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                Release latest = releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
+                string versionsBehind = "";
+
+                if (releasesBehind.Count() == 1) { versionsBehind = releasesBehind.Count() + " version behind!"; }
+                else { versionsBehind = releasesBehind.Count() + " versions behind!"; }
+                MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "Latest Version: " + latest.tag_name + Environment.NewLine + "You are " + versionsBehind + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void Tsmi_saveAs360New_Click(object sender, EventArgs e)
@@ -1579,7 +1614,14 @@ namespace SA2SaveUtility
 
         private void Btn_AutoUpdate_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Current Version: " + ProductVersion + Environment.NewLine + "Latest Version: " + latestVersionString + Environment.NewLine + "Release Notes: " + latestVersionReleaseNotes + Environment.NewLine + "Do you want to update now?", "Auto Updater", MessageBoxButtons.YesNo);
+            Release latest = releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
+            string versionsBehind = "";
+            if (releasesBehind.Count() == 1) { versionsBehind = releasesBehind.Count() + " version behind!"; }
+            else { versionsBehind = releasesBehind.Count() + " versions behind!"; }
+
+            string releasenotes = "";
+            foreach (Release release in releasesBehind) { releasenotes += "\n" + release.tag_name + ": " + release.body; }
+            DialogResult result = MessageBox.Show("Current Version: " + ProductVersion + Environment.NewLine + "Latest Version: " + latest.tag_name + Environment.NewLine + "You are " + versionsBehind + Environment.NewLine + "Release Notes: " + releasenotes + Environment.NewLine + "Do you want to update now?", "Auto Updater", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 UpdateApplication();
@@ -1588,9 +1630,10 @@ namespace SA2SaveUtility
 
         private void UpdateApplication()
         {
+            Release latest = releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
             using (var client = new WebClient())
             {
-                client.DownloadFile(latestVersionDownloadURL, "temp.exe");
+                client.DownloadFile(latest.assets[0].browser_download_url, "temp.exe");
                 if (File.Exists("temp.exe"))
                 {
                     Assembly currentAssembly = Assembly.GetEntryAssembly();
@@ -1600,7 +1643,7 @@ namespace SA2SaveUtility
                         string currentName = Path.GetFileNameWithoutExtension(currentAssembly.Location);
                         string currentExtension = Path.GetExtension(currentAssembly.Location);
                         string tempFile = Path.Combine(currentFolder, "temp.exe");
-                        string newFile = Path.Combine(currentFolder, latestVersionFile);
+                        string newFile = Path.Combine(currentFolder, latest.assets[0].name);
                         string currentFile = Path.Combine(currentFolder, currentName + currentExtension);
                         if (!Directory.Exists(oldDir)) { Directory.CreateDirectory(oldDir); }
                         string backupPath = Path.Combine(oldDir, currentName + ".old");

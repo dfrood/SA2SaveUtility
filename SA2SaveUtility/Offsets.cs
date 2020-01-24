@@ -147,11 +147,17 @@ namespace SA2SaveUtility
         public uint AllACannonsCore = 0x5CD9;
 
         public uint KartSonic = 0x5AD3;
+        public uint KartSonicRTE = 0x01DEB35C;
         public uint KartTails = 0x5AD4;
+        public uint KartTailsRTE = 0x01DEB35D;
         public uint KartKnuckles = 0x5AD5;
+        public uint KartKnucklesRTE = 0x01DEB35E;
         public uint KartShadow = 0x5AD6;
+        public uint KartShadowRTE = 0x01DEB35F;
         public uint KartEggman = 0x5AD7;
+        public uint KartEggmanRTE = 0x01DEB360;
         public uint KartRouge = 0x5AD8;
+        public uint KartRougeRTE = 0x01DEB361;
 
 
         public Dictionary<string, uint> MissionOffsets = new Dictionary<string, uint>();

@@ -340,12 +340,24 @@ namespace SA2SaveUtility
             int greenH = (int)save[offsets.main.GreenHill];
 
 
-            int kartS = (int)save[offsets.main.KartSonic];
-            int kartSh = (int)save[offsets.main.KartShadow];
-            int kartT = (int)save[offsets.main.KartTails];
-            int kartE = (int)save[offsets.main.KartEggman];
-            int kartK = (int)save[offsets.main.KartKnuckles];
-            int kartR = (int)save[offsets.main.KartRouge];
+            int kartS = 0;
+            if (!Main.isRTE) { kartS = (int)save[offsets.main.KartSonic]; }
+            else { kartS = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KartSonicRTE), 1).First(); }
+            int kartSh = 0;
+            if (!Main.isRTE) { kartSh = (int)save[offsets.main.KartShadow]; }
+            else { kartSh = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KartShadowRTE), 1).First(); }
+            int kartT = 0;
+            if (!Main.isRTE) { kartT = (int)save[offsets.main.KartTails]; }
+            else { kartT = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KartTailsRTE), 1).First(); }
+            int kartE = 0;
+            if (!Main.isRTE) { kartE = (int)save[offsets.main.KartEggman]; }
+            else { kartE = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KartEggmanRTE), 1).First(); }
+            int kartK = 0;
+            if (!Main.isRTE) { kartK = (int)save[offsets.main.KartKnuckles]; }
+            else { kartK = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KartKnucklesRTE), 1).First(); }
+            int kartR = 0;
+            if (!Main.isRTE) { kartR = (int)save[offsets.main.KartRouge]; }
+            else { kartR = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.KartRougeRTE), 1).First(); }
 
             Control.ControlCollection controls = tc.TabPages[tc.TabPages.IndexOf(currentMain.Value)].Controls[0].Controls[0].Controls;
 
@@ -357,8 +369,6 @@ namespace SA2SaveUtility
                 if (gb.Name == "gb_Lives") { if (gb.Controls.OfType<NumericUpDown>().First().Value != lives) { gb.Controls.OfType<NumericUpDown>().First().Value = lives; } }
                 if (gb.Name == "gb_PlayTime")
                 {
-                    if (Main.isRTE) { gb.Visible = false; }
-                    else { gb.Visible = true; }
                     int hours = playTime / 216000;
                     int minutes = (playTime - (hours * 216000)) / 3600;
                     int seconds = ((playTime - (hours * 216000)) - ((playTime - (hours * 21600)) - ((playTime - (hours * 21600)) - minutes * 3600))) / 60;
@@ -391,8 +401,6 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_EmblemTime")
                 {
-                    if (Main.isRTE) { gb.Visible = false; }
-                    else { gb.Visible = true; }
                     int hours = emblemTime / 216000;
                     int minutes = (emblemTime - (hours * 216000)) / 3600;
                     int seconds = ((emblemTime - (hours * 216000)) - ((emblemTime - (hours * 21600)) - ((emblemTime - (hours * 21600)) - minutes * 3600))) / 60;
@@ -411,8 +419,6 @@ namespace SA2SaveUtility
                 }
                 if (gb.Name == "gb_UnlockedKarts")
                 {
-                    if (Main.isRTE) { gb.Visible = false; }
-                    else { gb.Visible = true; }
                     gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartSonic").First().Checked = Convert.ToBoolean(kartS);
                     gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartShadow").First().Checked = Convert.ToBoolean(kartSh);
                     gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartTails").First().Checked = Convert.ToBoolean(kartT);
