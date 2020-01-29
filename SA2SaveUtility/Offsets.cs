@@ -159,10 +159,54 @@ namespace SA2SaveUtility
         public uint KartRouge = 0x5AD8;
         public uint KartRougeRTE = 0x01DEB361;
 
+        public Dictionary<string, uint> MissionOffsets = new Dictionary<string, uint>()
+        {
+            { "City Escape", 0x326C },
+            { "Wild Canyon", 0x34B8 },
+            { "Prison Lane", 0x2F5C },
+            { "Metal Harbour", 0x3020 },
+            { "Green Forest", 0x2AC4 },
+            { "Pumpkin Hill", 0x2C4C },
+            { "Mission Street", 0x357C },
+            { "Aquatic Mine", 0x2DD4 },
+            { "Route 101", 0x5668 },
+            { "Hidden Base", 0x3A14 },
+            { "Pyramid Cave", 0x3DE8 },
+            { "Death Chamber", 0x3B9C },
+            { "Eternal Engine", 0x3AD8 },
+            { "Meteor Herd", 0x40F8 },
+            { "Crazy Gadget", 0x3950 },
+            { "Final Rush", 0x3F70 },
 
-        public Dictionary<string, uint> MissionOffsets = new Dictionary<string, uint>();
-        public Dictionary<string, uint> KartOffsets = new Dictionary<string, uint>();
-        public Dictionary<string, KeyValuePair<uint, uint>> BossOffsets = new Dictionary<string, KeyValuePair<uint, uint>>();
+            { "Iron Gate", 0x30E4 },
+            { "Dry Lagoon", 0x3640 },
+            { "Sand Ocean", 0x388C },
+            { "Radical Highway", 0x3330 },
+            { "Egg Quarters", 0x3C60 },
+            { "Lost Colony", 0x3D24 },
+            { "Weapons Bed", 0x31A8 },
+            { "Security Hall", 0x2E98 },
+            { "White Jungle", 0x2B88 },
+            { "Route 202", 0x572C },
+            { "Sky Rail", 0x2D10 },
+            { "Mad Space", 0x4A28 },
+            { "Cosmic Wall", 0x4964 },
+            { "Final Chase", 0x4718 },
+
+            { "Cannon's Core", 0x4280 }
+        };
+        public Dictionary<string, uint> KartOffsets = new Dictionary<string, uint>()
+        {
+            { "Kart Racing - Beginner", 0x57F0 },
+            { "Kart Racing - Standard", 0x57FD },
+            { "Kart Racing - Expert", 0x580A }
+        };
+        public Dictionary<string, KeyValuePair<uint, uint>> BossOffsets = new Dictionary<string, KeyValuePair<uint, uint>>()
+        {
+            { "Boss Attack - Hero", new KeyValuePair<uint, uint>(0x5818, 0x5CD5) },
+            { "Boss Attack - Dark", new KeyValuePair<uint, uint>(0x58DC, 0x5CD6) },
+            { "Boss Attack - All", new KeyValuePair<uint, uint>(0x59A0, 0x5CD7) }
+        };
     }
 
     class Kart
@@ -247,6 +291,7 @@ namespace SA2SaveUtility
         public uint ChaoType = 0x80;
         public uint Garden = 0x81;
         public uint Happiness = 0x82;
+        public uint InitChao = 0x84;
         public uint Lifespan1 = 0x8A;
         public uint Lifespan2 = 0x8C;
         public uint Reincarnations = 0x8E;

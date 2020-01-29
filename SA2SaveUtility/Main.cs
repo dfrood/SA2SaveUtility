@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -16,6 +14,8 @@ namespace SA2SaveUtility
 {
     public partial class Main : Form
     {
+        public static System.Timers.Timer rteTimer = new System.Timers.Timer();
+
         public static bool isRTE;
         public static bool isSA;
         public static bool isPC;
@@ -23,11 +23,10 @@ namespace SA2SaveUtility
         public static bool isGC;
         //public static bool saveIsDC;
         public static bool isMain;
-        public static bool isLatest = true;
-        public List<Release> releases;
-        public List<Release> releasesBehind;
-        public static bool checkForUpdates;
-        public static bool autoUpdate;
+
+        public static bool firstRTECheck;
+        public static bool rteUpdates;
+        public static int rteInterval;
 
         public string loadedFile { get; set; }
         public string currentDir = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
@@ -36,15 +35,24 @@ namespace SA2SaveUtility
         string chaoDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location) + @"\chao";
         public static string configFile = Directory.GetParent(Assembly.GetExecutingAssembly().Location) + @"\config.xml";
 
+        public static Version currentVersion;
+
         public static byte[] loadedSave;
         public static byte[] gcBytes;
         public static byte[] gcFileBytes;
+
 
         static Offsets offsets = new Offsets();
 
         public Main()
         {
             InitializeComponent();
+
+            firstRTECheck = true;
+
+            tc_Main.Selected += new TabControlEventHandler(tc_Main_Selected);
+
+            currentVersion = Version.Parse(ProductVersion);
 
             //Delete Old Files From Auto Update
             if (Directory.Exists(oldDir))
@@ -70,90 +78,76 @@ namespace SA2SaveUtility
                         defaultCFG.Save(configFile);
                     }
                 }
-
             }
 
             XDocument config = XDocument.Parse(File.ReadAllText(configFile));
-            checkForUpdates = Convert.ToBoolean(config.XPathSelectElement("Config/CheckForUpdates").Value);
-            autoUpdate = Convert.ToBoolean(config.XPathSelectElement("Config/AutoUpdate").Value);
 
-            checkb_AutoUpdate.Checked = autoUpdate;
-            checkb_CheckForUpdates.Checked = checkForUpdates;
-
-            if (checkForUpdates)
+            if (config.XPathSelectElement("Config/CheckForUpdates") == null || config.XPathSelectElement("Config/AutoUpdate") == null || config.XPathSelectElement("Config/RTEUpdates") == null || config.XPathSelectElement("Config/RTEUpdateInterval") == null)
             {
-                Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
-                updateCheckThread.Start();
-            }
-        }
-        public void UpdateCheck()
-        {
-            try
-            {
-                string projectJSON = "";
-
-                using (WebClient client = new WebClient())
+                using (Stream stream = GetType().Assembly.GetManifestResourceStream("SA2SaveUtility.DefaultConfig.xml"))
                 {
-                    client.Headers["User-Agent"] =
-                    "Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0)";
-
-                    projectJSON = client.DownloadString("https://api.github.com/repos/dfrood/SA2SaveUtility" + "/releases");
-                }
-
-                JavaScriptSerializer js = new JavaScriptSerializer();  
-
-                releases = js.Deserialize<List<Release>>(projectJSON);
-
-                Version currentVersion = Version.Parse(ProductVersion);
-
-                Version latestVersion = currentVersion;
-
-                releasesBehind = new List<Release>();
-
-                foreach (Release release in releases)
-                {
-                    Version releaseBeingChecked = Version.Parse(release.tag_name);
-
-                    if (currentVersion.CompareTo(releaseBeingChecked) < 0)
+                    using (StreamReader streamReader = new StreamReader(stream))
                     {
-                        latestVersion = releaseBeingChecked;
-                        releasesBehind.Add(release);
+                        XmlDocument defaultCFG = new XmlDocument();
+                        defaultCFG.LoadXml(streamReader.ReadToEnd());
+                        defaultCFG.Save(configFile);
                     }
                 }
-
-                releasesBehind.Reverse();
-
-                if (currentVersion.CompareTo(latestVersion) < 0)
-                {
-                    isLatest = false;
-                    btn_AutoUpdate.BeginInvoke(new MethodInvoker(() =>
-                    {
-                        btn_AutoUpdate.Visible = true;
-                    }));
-                    if (!isLatest && autoUpdate) { UpdateApplication(); }
-                }
-                else
-                {
-                    isLatest = true;
-                    btn_AutoUpdate.BeginInvoke(new MethodInvoker(() =>
-                    {
-                        btn_AutoUpdate.Visible = false;
-                    }));
-                }
-
+                config = XDocument.Parse(File.ReadAllText(configFile));
+                MessageBox.Show("Your config file has been reset.", "Config Reset!", MessageBoxButtons.OK, MessageBoxIcon.None);
             }
-            catch (Exception ex)
+
+            Updater.checkForUpdates = Convert.ToBoolean(config.XPathSelectElement("Config/CheckForUpdates").Value);
+            Updater.autoUpdate = Convert.ToBoolean(config.XPathSelectElement("Config/AutoUpdate").Value);
+            rteUpdates = Convert.ToBoolean(config.XPathSelectElement("Config/RTEUpdates").Value);
+            rteInterval = Convert.ToInt32(config.XPathSelectElement("Config/RTEUpdateInterval").Value);
+
+            checkb_AutoUpdate.Checked = Updater.autoUpdate;
+            checkb_CheckForUpdates.Checked = Updater.checkForUpdates;
+            checkb_RTEUpdates.Checked = rteUpdates;
+
+            if (Updater.checkForUpdates)
             {
-                Console.WriteLine(ex);
+                Thread updateCheckThread = new Thread(new ThreadStart(Updater.UpdateCheck));
+                updateCheckThread.Start();
             }
+
+            rteTimer.Elapsed += new System.Timers.ElapsedEventHandler(RTEUpdates);
+            rteTimer.Interval = rteInterval;
+            rteTimer.Start();
+        }
+        private void tc_Main_Selected(Object sender, TabControlEventArgs e)
+        {
+            if (tc_Main.SelectedTab.Text == "Empty Slot" && !isMain) { ChaoSave.EmptyChaoSelected(e.TabPageIndex); }
         }
 
-        public bool ControlInvokeRequired(Control c, Action a)
-        {
-            if (c.InvokeRequired) c.Invoke(new MethodInvoker(delegate { a(); }));
-            else return false;
 
-            return true;
+        public static void RTEUpdates(object source, System.Timers.ElapsedEventArgs e)
+        {
+            if (rteUpdates)
+            {
+                if (firstRTECheck)
+                {
+                    rteTimer.Stop();
+                    firstRTECheck = false;
+                    Thread.Sleep(10000);
+                    rteTimer.Start();
+                }
+                if (isRTE)
+                {
+                    if (isMain && MainSave.activeMain.Count != 0)
+                    {
+                        Thread updateCheckThread = new Thread(() => MainSave.UpdateSave(tc_Main, MainSave.activeMain.First(), Memory.ReadBytes(offsets.mainMemoryStart, 0x6000)));
+                        updateCheckThread.Start();
+                    }
+
+                    if (!isMain && ChaoSave.activeChao.Count != 0)
+                    {
+                        Thread updateCheckThread = new Thread(() => ChaoSave.UpdateChaoRTE(tc_Main, Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000)));
+                        updateCheckThread.Start();
+                    }
+                }
+            }
         }
 
         public static void WriteByte(int offset, int value, uint mainIndex)
@@ -211,20 +205,20 @@ namespace SA2SaveUtility
 
         private void Tsmi_RTE_SA2_Chao_Click(object sender, EventArgs e)
         {
+            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Editor - SA2 Chao]";
             isRTE = true;
             isPC = true;
             isSA = false;
             IsChao();
-            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Editor - SA2 Chao]";
         }
 
         private void Tsmi_RTE_SA2_Main_Click(object sender, EventArgs e)
         {
+            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Editor - SA2 Main]";
             isRTE = true;
             isPC = true;
             isSA = false;
             IsMain();
-            ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Live Editor - SA2 Main]";
         }
 
         private void Tsmi_Open_Click(object sender, EventArgs e)
@@ -259,20 +253,18 @@ namespace SA2SaveUtility
                         isGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing SA 360/PS3 Chao Save]";
                     }
-                    isMain = false;
                     validSave = true;
                     IsChao();
                 }
 
                 if (loadedSave.Length == 0x6000)
                 {
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Main Save]";
                     isSA = false;
                     isPC = true;
                     isGC = false;
-                    isMain = true;
                     validSave = true;
                     IsMain();
-                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Main Save]";
                 }
                 if (loadedSave.Length == 0x10000)
                 {
@@ -291,32 +283,32 @@ namespace SA2SaveUtility
                         isGC = false;
                         ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360/PS3 Chao Save]";
                     }
-                    isMain = false;
                     validSave = true;
                     IsChao();
                 }
                 if (loadedSave.Length == 0x3C028)
                 {
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360 Main Save]";
                     isSA = false;
                     isPC = false;
                     isPS3 = false;
                     isGC = false;
                     validSave = true;
                     IsMain();
-                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360 Main Save]";
                 }
                 if (loadedSave.Length == 0x3C050)
                 {
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PS3 Main Save]";
                     isSA = false;
                     isPC = false;
                     isPS3 = true;
                     isGC = false;
                     validSave = true;
                     IsMain();
-                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PS3 Main Save]";
                 }
                 if (loadedSave.Length == 0x6040)
                 {
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Main Save]";
                     isSA = false;
                     isPC = false;
                     isGC = true;
@@ -325,10 +317,10 @@ namespace SA2SaveUtility
                     loadedSave = loadedSave.Skip(0x40).ToArray();
                     validSave = true;
                     IsMain();
-                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Main Save]";
                 }
                 if (loadedSave.Length == 0x10040)
                 {
+                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Chao Save]";
                     isSA = false;
                     isPC = false;
                     isGC = true;
@@ -336,7 +328,6 @@ namespace SA2SaveUtility
                     loadedSave = loadedSave.Skip(0x40).ToArray();
                     validSave = true;
                     IsChao();
-                    ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Chao Save]";
                 }
 
                 if (validSave)
@@ -356,7 +347,7 @@ namespace SA2SaveUtility
 
         private void IsChao()
         {
-
+            isMain = false;
             tc_Main.TabPages.Clear();
             MainSave.activeMain.Clear();
             ChaoSave.activeChao.Clear();
@@ -385,6 +376,7 @@ namespace SA2SaveUtility
         }
         private void IsMain()
         {
+            isMain = true;
             tc_Main.TabPages.Clear();
             MainSave.activeMain.Clear();
             ChaoSave.activeChao.Clear();
@@ -410,6 +402,7 @@ namespace SA2SaveUtility
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
         {
+            rteTimer.Stop();
             //if (tc_Main.SelectedIndex != 0)
             //{
             uint chaoBeginning = 0x3AA4;
@@ -445,7 +438,6 @@ namespace SA2SaveUtility
                         byteList.AddRange(Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000).Skip((int)(chaoBeginning + (0x800 * (uc.chaoNumber + 1)))).ToArray());
                         Memory.WriteBytesAtAddress(offsets.chaoMemoryStart, byteList.ToArray());
                     }
-
                     ChaoSave.GetChao();
                 }
                 else
@@ -453,6 +445,7 @@ namespace SA2SaveUtility
                     MessageBox.Show("That doesn't appear to be a chao file.", "Error loading chao", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            rteTimer.Start();
             //}
         }
 
@@ -503,6 +496,7 @@ namespace SA2SaveUtility
 
         private void Tsmi_DupeCurrentChao_Click(object sender, EventArgs e)
         {
+            rteTimer.Stop();
             //if (tc_Main.SelectedIndex != 0)
             //{
             uint chaoBeginning = 0x3AA4;
@@ -554,6 +548,7 @@ namespace SA2SaveUtility
                 }
                 chaoIndex++;
             }
+            rteTimer.Start();
             //}
         }
 
@@ -578,7 +573,7 @@ namespace SA2SaveUtility
                         byte[] chaoToSave = byteList.ToArray();
 
                         byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
-                        ChaoSave.WriteChecksum(splitForChecksum, true);
+                        Checksum.WriteChaoChecksum(splitForChecksum, true);
                         List<byte> byteArray = new List<byte>();
                         byteArray.AddRange(chaoToSave.Take(0x3040).ToArray());
                         byteArray.AddRange(splitForChecksum);
@@ -618,7 +613,7 @@ namespace SA2SaveUtility
                             else { toSave = new List<byte>(loadedSave.Skip((0x6008 * (int)(uc.mainIndex)) + 8).Take(0x6000).ToArray()); }
                             toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList();
                         }
-                        toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, false, false));
+                        toSave = new List<byte>(Checksum.WriteMainChecksum(toSave.ToArray(), true, false, false));
                         string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SONIC2B__S01";
                         int index = 1;
                         while (true)
@@ -659,7 +654,7 @@ namespace SA2SaveUtility
 
                         if (!isPC) { byteList = ChaoSave.ByteSwapChaoWorld(byteList.ToArray()).ToList(); }
                         byte[] chaoToSave = byteList.ToArray();
-                        ChaoSave.WriteChecksum(chaoToSave, false);
+                        Checksum.WriteChaoChecksum(chaoToSave, false);
                         string pcFileName = Path.GetDirectoryName(loadedFile) + @"\SonicAdventureChaoGarden.snc";
                         int index = 1;
                         while (true)
@@ -875,7 +870,7 @@ namespace SA2SaveUtility
                     byteList.RemoveRange(0x80, 0x3000);
                     byteList.InsertRange(0x80, header2);
                     byte[] splitForChecksum = byteList.Skip(0x3080).ToArray();
-                    ChaoSave.WriteChecksum(splitForChecksum, true);
+                    Checksum.WriteChaoChecksum(splitForChecksum, true);
                     byteList.RemoveRange(0x3080, byteList.Count - 0x3080);
                     byteList.AddRange(splitForChecksum.ToList());
 
@@ -1179,7 +1174,7 @@ namespace SA2SaveUtility
                     if (isPC) { toSave = new List<byte>(loadedSave); toSave = MainSave.ByteSwapMain(toSave.ToArray()).ToList(); }
                     if (isGC) { toSave = new List<byte>(loadedSave); }
                     if (!isPC && !isGC) { toSave = new List<byte>(loadedSave.Skip((0x6004 * (int)(uc.mainIndex)) + 4).Take(0x6000).ToArray()); }
-                    toSave = new List<byte>(MainSave.WriteChecksum(toSave.ToArray(), true, true, false));
+                    toSave = new List<byte>(Checksum.WriteMainChecksum(toSave.ToArray(), true, true, false));
                     toSave.InsertRange(0, header);
                     toSave.RemoveRange(0x80, 0x2800);
                     toSave.InsertRange(0x80, header2);
@@ -1219,17 +1214,17 @@ namespace SA2SaveUtility
 
         private void Tsmi_About_Click(object sender, EventArgs e)
         {
-            if (isLatest)
+            if (Updater.isLatest)
             {
                 MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                Release latest = releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
+                Release latest = Updater.releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
                 string versionsBehind = "";
 
-                if (releasesBehind.Count() == 1) { versionsBehind = releasesBehind.Count() + " version behind!"; }
-                else { versionsBehind = releasesBehind.Count() + " versions behind!"; }
+                if (SA2SaveUtility.Updater.releasesBehind.Count() == 1) { versionsBehind = SA2SaveUtility.Updater.releasesBehind.Count() + " version behind!"; }
+                else { versionsBehind = SA2SaveUtility.Updater.releasesBehind.Count() + " versions behind!"; }
                 MessageBox.Show("Version: " + ProductVersion + Environment.NewLine + "Latest Version: " + latest.tag_name + Environment.NewLine + "You are " + versionsBehind + Environment.NewLine + "SA2 Save Utility is created by Froody." + Environment.NewLine + "Some chao offsets retrieved from https://chao.tehfusion.co.uk/chao-hacking/, thank you Fusion!", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -1264,7 +1259,7 @@ namespace SA2SaveUtility
                     byte[] chaoToSave = byteList.ToArray();
 
                     byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
-                    ChaoSave.WriteChecksum(splitForChecksum, true);
+                    Checksum.WriteChaoChecksum(splitForChecksum, true);
                     List<byte> byteArray = new List<byte>();
                     byteArray.AddRange(chaoToSave.Take(0x3040).ToArray());
                     byteArray.AddRange(splitForChecksum);
@@ -1299,7 +1294,7 @@ namespace SA2SaveUtility
                     List<byte> toSave = new List<byte>();
                     if (!isPC)
                     {
-                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, false, false, true));
+                        toSave = new List<byte>(Checksum.WriteMainChecksum(loadedSave, false, false, true));
                     }
                     else
                     {
@@ -1312,7 +1307,7 @@ namespace SA2SaveUtility
                         toSave.Add(0x00);
                         toSave.Add(0x00);
                         toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
-                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, true).ToList();
+                        toSave = Checksum.WriteMainChecksum(toSave.ToArray(), false, false, true).ToList();
                     }
                     for (int i = toSave.Count; i < 0x3C050; i++)
                     {
@@ -1375,7 +1370,7 @@ namespace SA2SaveUtility
                                     List<byte> toSave = new List<byte>();
                                     if (!isPC)
                                     {
-                                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6008 * uc.mainIndex)).Take(0x6008).ToArray(), false, false, true));
+                                        toSave = new List<byte>(Checksum.WriteMainChecksum(loadedSave.Skip((int)(0x6008 * uc.mainIndex)).Take(0x6008).ToArray(), false, false, true));
                                         toSave[3] = (byte)slotNotTaken;
                                     }
                                     else
@@ -1389,7 +1384,7 @@ namespace SA2SaveUtility
                                         toSave.Add(0x00);
                                         toSave.Add(0x00);
                                         toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
-                                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, true).ToList();
+                                        toSave = Checksum.WriteMainChecksum(toSave.ToArray(), false, false, true).ToList();
                                     }
                                     combinedSave.AddRange(save.Take(0x6008 * slotIndex));
                                     combinedSave.AddRange(toSave);
@@ -1452,7 +1447,7 @@ namespace SA2SaveUtility
                     byte[] chaoToSave = byteList.ToArray();
 
                     byte[] splitForChecksum = chaoToSave.Skip(0x3040).ToArray();
-                    ChaoSave.WriteChecksum(splitForChecksum, true);
+                    Checksum.WriteChaoChecksum(splitForChecksum, true);
                     List<byte> byteArray = new List<byte>();
                     byteArray.AddRange(chaoToSave.Take(0x3040).ToArray());
                     byteArray.AddRange(splitForChecksum);
@@ -1487,7 +1482,7 @@ namespace SA2SaveUtility
                     List<byte> toSave = new List<byte>();
                     if (!isPC)
                     {
-                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave, false, false, false));
+                        toSave = new List<byte>(Checksum.WriteMainChecksum(loadedSave, false, false, false));
                     }
                     else
                     {
@@ -1496,7 +1491,7 @@ namespace SA2SaveUtility
                         toSave.Add(0x00);
                         toSave.Add(0x01);
                         toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
-                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, false).ToList();
+                        toSave = Checksum.WriteMainChecksum(toSave.ToArray(), false, false, false).ToList();
                     }
                     for (int i = toSave.Count; i < 0x3C028; i++)
                     {
@@ -1559,7 +1554,7 @@ namespace SA2SaveUtility
                                     List<byte> toSave = new List<byte>();
                                     if (!isPC)
                                     {
-                                        toSave = new List<byte>(MainSave.WriteChecksum(loadedSave.Skip((int)(0x6004 * uc.mainIndex)).Take(0x6004).ToArray(), false, false, false));
+                                        toSave = new List<byte>(Checksum.WriteMainChecksum(loadedSave.Skip((int)(0x6004 * uc.mainIndex)).Take(0x6004).ToArray(), false, false, false));
                                         toSave[3] = (byte)slotNotTaken;
                                     }
                                     else
@@ -1569,7 +1564,7 @@ namespace SA2SaveUtility
                                         toSave.Add(0x00);
                                         toSave.Add((byte)slotNotTaken);
                                         toSave.AddRange(MainSave.ByteSwapMain(loadedSave));
-                                        toSave = MainSave.WriteChecksum(toSave.ToArray(), false, false, false).ToList();
+                                        toSave = Checksum.WriteMainChecksum(toSave.ToArray(), false, false, false).ToList();
                                     }
                                     combinedSave.AddRange(save.Take(0x6004 * slotIndex));
                                     combinedSave.AddRange(toSave);
@@ -1614,44 +1609,17 @@ namespace SA2SaveUtility
 
         private void Btn_AutoUpdate_Click(object sender, EventArgs e)
         {
-            Release latest = releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
+            Release latest = Updater.releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
             string versionsBehind = "";
-            if (releasesBehind.Count() == 1) { versionsBehind = releasesBehind.Count() + " version behind!"; }
-            else { versionsBehind = releasesBehind.Count() + " versions behind!"; }
+            if (Updater.releasesBehind.Count() == 1) { versionsBehind = Updater.releasesBehind.Count() + " version behind!"; }
+            else { versionsBehind = Updater.releasesBehind.Count() + " versions behind!"; }
 
             string releasenotes = "";
-            foreach (Release release in releasesBehind) { releasenotes += "\n" + release.tag_name + ": " + release.body; }
+            foreach (Release release in Updater.releasesBehind) { releasenotes += "\n" + release.tag_name + ": " + release.body; }
             DialogResult result = MessageBox.Show("Current Version: " + ProductVersion + Environment.NewLine + "Latest Version: " + latest.tag_name + Environment.NewLine + "You are " + versionsBehind + Environment.NewLine + "Release Notes: " + releasenotes + Environment.NewLine + "Do you want to update now?", "Auto Updater", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                UpdateApplication();
-            }
-        }
-
-        private void UpdateApplication()
-        {
-            Release latest = releasesBehind.OrderByDescending(x => Version.Parse(x.tag_name)).First();
-            using (var client = new WebClient())
-            {
-                client.DownloadFile(latest.assets[0].browser_download_url, "temp.exe");
-                if (File.Exists("temp.exe"))
-                {
-                    Assembly currentAssembly = Assembly.GetEntryAssembly();
-                    if (currentAssembly != null)
-                    {
-                        string currentFolder = Path.GetDirectoryName(currentAssembly.Location);
-                        string currentName = Path.GetFileNameWithoutExtension(currentAssembly.Location);
-                        string currentExtension = Path.GetExtension(currentAssembly.Location);
-                        string tempFile = Path.Combine(currentFolder, "temp.exe");
-                        string newFile = Path.Combine(currentFolder, latest.assets[0].name);
-                        string currentFile = Path.Combine(currentFolder, currentName + currentExtension);
-                        if (!Directory.Exists(oldDir)) { Directory.CreateDirectory(oldDir); }
-                        string backupPath = Path.Combine(oldDir, currentName + ".old");
-                        File.Move(currentFile, backupPath);
-                        File.Move(tempFile, newFile);
-                        Application.Restart();
-                    }
-                }
+                Updater.UpdateApplication();
             }
         }
 
@@ -1662,11 +1630,11 @@ namespace SA2SaveUtility
             XmlNode root = xml.DocumentElement["CheckForUpdates"];
             root.FirstChild.InnerText = checkb_CheckForUpdates.Checked.ToString();
             xml.Save(configFile);
-            checkForUpdates = checkb_CheckForUpdates.Checked;
-            if (!checkForUpdates && autoUpdate) { checkb_AutoUpdate.Checked = false; }
-            if (checkForUpdates)
+            Updater.checkForUpdates = checkb_CheckForUpdates.Checked;
+            if (!Updater.checkForUpdates && Updater.autoUpdate) { checkb_AutoUpdate.Checked = false; }
+            if (Updater.checkForUpdates)
             {
-                Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
+                Thread updateCheckThread = new Thread(new ThreadStart(Updater.UpdateCheck));
                 updateCheckThread.Start();
             }
         }
@@ -1678,13 +1646,23 @@ namespace SA2SaveUtility
             XmlNode root = xml.DocumentElement["AutoUpdate"];
             root.FirstChild.InnerText = checkb_AutoUpdate.Checked.ToString();
             xml.Save(configFile);
-            autoUpdate = checkb_AutoUpdate.Checked;
-            if (autoUpdate)
+            Updater.autoUpdate = checkb_AutoUpdate.Checked;
+            if (Updater.autoUpdate)
             {
-                checkb_CheckForUpdates.Checked = autoUpdate;
-                Thread updateCheckThread = new Thread(new ThreadStart(UpdateCheck));
+                checkb_CheckForUpdates.Checked = Updater.autoUpdate;
+                Thread updateCheckThread = new Thread(new ThreadStart(Updater.UpdateCheck));
                 updateCheckThread.Start();
             }
+        }
+
+        private void Checkb_RTEUpdates_CheckedChanged(object sender, EventArgs e)
+        {
+            XmlDocument xml = new XmlDocument();
+            xml.Load(configFile);
+            XmlNode root = xml.DocumentElement["RTEUpdates"];
+            root.FirstChild.InnerText = checkb_RTEUpdates.Checked.ToString();
+            xml.Save(configFile);
+            rteUpdates = checkb_RTEUpdates.Checked;
         }
     }
 }

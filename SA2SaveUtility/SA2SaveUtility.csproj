@@ -65,7 +65,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvokeChecker.cs" />
+    <Compile Include="PopulateChaoMsgBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopulateChaoMsgBox.Designer.cs">
+      <DependentUpon>PopulateChaoMsgBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Updater.cs" />
     <Compile Include="ChaoSave.cs" />
+    <Compile Include="Checksum.cs" />
     <Compile Include="HeldItems.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MarketItems.resx">
       <DependentUpon>MarketItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopulateChaoMsgBox.resx">
+      <DependentUpon>PopulateChaoMsgBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -54,9 +54,10 @@
             this.tsmi_DupeChao = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_About = new System.Windows.Forms.ToolStripMenuItem();
             tc_Main = new System.Windows.Forms.TabControl();
-            this.btn_AutoUpdate = new System.Windows.Forms.Button();
+            btn_AutoUpdate = new System.Windows.Forms.Button();
             this.checkb_AutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkb_CheckForUpdates = new System.Windows.Forms.CheckBox();
+            this.checkb_RTEUpdates = new System.Windows.Forms.CheckBox();
             this.ms_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +87,7 @@
             // tsmi_Open
             // 
             this.tsmi_Open.Name = "tsmi_Open";
-            this.tsmi_Open.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Open.Size = new System.Drawing.Size(129, 22);
             this.tsmi_Open.Text = "Load";
             this.tsmi_Open.Click += new System.EventHandler(this.Tsmi_Open_Click);
             // 
@@ -99,7 +100,7 @@
             this.tsmi_saveAsPS3});
             this.tsmi_Save.Enabled = false;
             this.tsmi_Save.Name = "tsmi_Save";
-            this.tsmi_Save.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Save.Size = new System.Drawing.Size(129, 22);
             this.tsmi_Save.Text = "Save";
             // 
             // tsmi_saveAsPC
@@ -172,7 +173,7 @@
             this.tsmi_RTE_SA,
             this.tsmi_RTE_SA2});
             this.tsmi_RTE.Name = "tsmi_RTE";
-            this.tsmi_RTE.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE.Size = new System.Drawing.Size(129, 22);
             this.tsmi_RTE.Text = "Live Editor";
             // 
             // tsmi_RTE_SA
@@ -181,10 +182,9 @@
             this.tsmi_RTE_SA_Main,
             this.tsmi_RTE_SA_Chao});
             this.tsmi_RTE_SA.Name = "tsmi_RTE_SA";
-            //NOT CURRENTLY IMPLEMENTED
-            this.tsmi_RTE_SA.Visible = false;
-            this.tsmi_RTE_SA.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA.Size = new System.Drawing.Size(170, 22);
             this.tsmi_RTE_SA.Text = "Sonic Adventure";
+            this.tsmi_RTE_SA.Visible = false;
             // 
             // tsmi_RTE_SA_Main
             // 
@@ -204,20 +204,20 @@
             this.tsmi_RTE_SA2_Main,
             this.tsmi_RTE_SA2_Chao});
             this.tsmi_RTE_SA2.Name = "tsmi_RTE_SA2";
-            this.tsmi_RTE_SA2.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA2.Size = new System.Drawing.Size(170, 22);
             this.tsmi_RTE_SA2.Text = "Sonic Adventure 2";
             // 
             // tsmi_RTE_SA2_Main
             // 
             this.tsmi_RTE_SA2_Main.Name = "tsmi_RTE_SA2_Main";
-            this.tsmi_RTE_SA2_Main.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA2_Main.Size = new System.Drawing.Size(102, 22);
             this.tsmi_RTE_SA2_Main.Text = "Main";
             this.tsmi_RTE_SA2_Main.Click += new System.EventHandler(this.Tsmi_RTE_SA2_Main_Click);
             // 
             // tsmi_RTE_SA2_Chao
             // 
             this.tsmi_RTE_SA2_Chao.Name = "tsmi_RTE_SA2_Chao";
-            this.tsmi_RTE_SA2_Chao.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_RTE_SA2_Chao.Size = new System.Drawing.Size(102, 22);
             this.tsmi_RTE_SA2_Chao.Text = "Chao";
             this.tsmi_RTE_SA2_Chao.Click += new System.EventHandler(this.Tsmi_RTE_SA2_Chao_Click);
             // 
@@ -270,15 +270,15 @@
             // 
             // btn_AutoUpdate
             // 
-            this.btn_AutoUpdate.ForeColor = System.Drawing.Color.ForestGreen;
-            this.btn_AutoUpdate.Location = new System.Drawing.Point(231, 1);
-            this.btn_AutoUpdate.Name = "btn_AutoUpdate";
-            this.btn_AutoUpdate.Size = new System.Drawing.Size(122, 23);
-            this.btn_AutoUpdate.TabIndex = 4;
-            this.btn_AutoUpdate.Text = "An update is available!";
-            this.btn_AutoUpdate.UseVisualStyleBackColor = true;
-            this.btn_AutoUpdate.Visible = false;
-            this.btn_AutoUpdate.Click += new System.EventHandler(this.Btn_AutoUpdate_Click);
+            btn_AutoUpdate.ForeColor = System.Drawing.Color.ForestGreen;
+            btn_AutoUpdate.Location = new System.Drawing.Point(144, 1);
+            btn_AutoUpdate.Name = "btn_AutoUpdate";
+            btn_AutoUpdate.Size = new System.Drawing.Size(122, 23);
+            btn_AutoUpdate.TabIndex = 4;
+            btn_AutoUpdate.Text = "An update is available!";
+            btn_AutoUpdate.UseVisualStyleBackColor = true;
+            btn_AutoUpdate.Visible = false;
+            btn_AutoUpdate.Click += new System.EventHandler(Btn_AutoUpdate_Click);
             // 
             // checkb_AutoUpdate
             // 
@@ -302,14 +302,26 @@
             this.checkb_CheckForUpdates.UseVisualStyleBackColor = true;
             this.checkb_CheckForUpdates.CheckedChanged += new System.EventHandler(this.Checkb_CheckForUpdates_CheckedChanged);
             // 
+            // checkb_RTEUpdates
+            // 
+            this.checkb_RTEUpdates.AutoSize = true;
+            this.checkb_RTEUpdates.Location = new System.Drawing.Point(268, 5);
+            this.checkb_RTEUpdates.Name = "checkb_RTEUpdates";
+            this.checkb_RTEUpdates.Size = new System.Drawing.Size(91, 17);
+            this.checkb_RTEUpdates.TabIndex = 7;
+            this.checkb_RTEUpdates.Text = "RTE Updates";
+            this.checkb_RTEUpdates.UseVisualStyleBackColor = true;
+            this.checkb_RTEUpdates.CheckedChanged += new System.EventHandler(this.Checkb_RTEUpdates_CheckedChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(569, 258);
+            this.Controls.Add(this.checkb_RTEUpdates);
             this.Controls.Add(this.checkb_CheckForUpdates);
             this.Controls.Add(this.checkb_AutoUpdate);
-            this.Controls.Add(this.btn_AutoUpdate);
+            this.Controls.Add(btn_AutoUpdate);
             this.Controls.Add(tc_Main);
             this.Controls.Add(this.ms_Main);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -341,7 +353,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360New;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAs360Append;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsGC;
-        private System.Windows.Forms.Button btn_AutoUpdate;
         private System.Windows.Forms.CheckBox checkb_AutoUpdate;
         private System.Windows.Forms.CheckBox checkb_CheckForUpdates;
         private System.Windows.Forms.ToolStripMenuItem tsmi_saveAsPS3;
@@ -354,6 +365,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA2;
         private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA2_Main;
         private System.Windows.Forms.ToolStripMenuItem tsmi_RTE_SA2_Chao;
+        private System.Windows.Forms.CheckBox checkb_RTEUpdates;
+        public static System.Windows.Forms.Button btn_AutoUpdate;
         public static System.Windows.Forms.TabControl tc_Main;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -391,7 +390,7 @@ namespace SA2SaveUtility
         public static void UpdateChaoWorld()
         {
             Portals portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens].ToString());
-            if (!Main.isPC) { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens+3].ToString()); }
+            if (!Main.isPC) { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens + 3].ToString()); }
 
             Control.ControlCollection controls = Main.tc_Main.TabPages[0].Controls;
             foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
@@ -403,6 +402,16 @@ namespace SA2SaveUtility
                 }
             }
 
+        }
+
+        public static void UpdateChaoRTE(TabControl tc, byte[] chaoData)
+        {
+            int index = 0;
+            foreach (byte[] chao in Main.SplitByteArray(chaoData, 0x800))
+            {
+                UpdateChao(tc, activeChao.Where(x => x.Key == index).First(), chao);
+                index++;
+            }
         }
 
         public static void UpdateChao(TabControl tc, KeyValuePair<uint, TabPage> currentChao, byte[] chao)
@@ -597,232 +606,434 @@ namespace SA2SaveUtility
             Control.ControlCollection controls = tc.TabPages[tc.TabPages.IndexOf(currentChao.Value)].Controls[0].Controls[0].Controls;
 
             //Tab Name
-            tc.TabPages[tc.TabPages.IndexOf(currentChao.Value)].Text = name;
+            TabPage currentTab = tc.TabPages[tc.TabPages.IndexOf(currentChao.Value)];
+
+            if ((int)chao[offsets.chao.ChaoType] == 0)
+            {
+                foreach (Control ctl in currentTab.Controls) ctl.InvokeCheck(() => ctl.Enabled = false);
+                foreach (Control ctl in currentTab.Controls) ctl.InvokeCheck(() => ctl.Visible = false);
+                if (currentTab.Text != "Empty Slot")
+                {
+                    currentTab.InvokeCheck(() => currentTab.Text = "Empty Slot");
+                }
+            }
+            else
+            {
+                foreach (Control ctl in currentTab.Controls) ctl.InvokeCheck(() => ctl.Enabled = true);
+                foreach (Control ctl in currentTab.Controls) ctl.InvokeCheck(() => ctl.Visible = true);
+                if (currentTab.Text != name)
+                {
+                    currentTab.InvokeCheck(() => currentTab.Text = name);
+                }
+            }
+
 
             //General
-            controls[0].Controls.OfType<TextBox>().Where(x => x.Name == "tb_Name").First().Text = name;
-            controls[0].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Garden").First().SelectedIndex = garden - 1;
-            controls[0].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Happiness").First().Value = happiness;
-            controls[0].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Reincarnations").First().Value = reincarnations;
+            TextBox tb_Name = controls[0].Controls.OfType<TextBox>().Where(x => x.Name == "tb_Name").First();
+            ComboBox cb_Garden = controls[0].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Garden").First();
+            NumericUpDown nud_Happiness = controls[0].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Happiness").First();
+            NumericUpDown nud_Reincarnations = controls[0].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Reincarnations").First();
             GroupBox gb_Toys = controls[0].Controls.OfType<GroupBox>().Where(x => x.Name == "gb_Toys").First();
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Rattle").First().Checked = (toys & Toys.Rattle) == Toys.Rattle;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Car").First().Checked = (toys & Toys.Car) == Toys.Car;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_PictureBook").First().Checked = (toys & Toys.PictureBook) == Toys.PictureBook;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicDoll").First().Checked = (toys & Toys.SonicDoll) == Toys.SonicDoll;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Broomstick").First().Checked = (toys & Toys.Broomstick) == Toys.Broomstick;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Glitch").First().Checked = (toys & Toys.Glitch) == Toys.Glitch;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_PogoStick").First().Checked = (toys & Toys.PogoStick) == Toys.PogoStick;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Crayons").First().Checked = (toys & Toys.Crayons) == Toys.Crayons;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_BubbleWand").First().Checked = (toys & Toys.BubbleWand) == Toys.BubbleWand;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shovel").First().Checked = (toys & Toys.Shovel) == Toys.Shovel;
-            gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_WateringCan").First().Checked = (toys & Toys.WateringCan) == Toys.WateringCan;
+            CheckBox checkb_Rattle = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Rattle").First();
+            CheckBox checkb_Car = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Car").First();
+            CheckBox checkb_PictureBook = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_PictureBook").First();
+            CheckBox checkb_SonicDoll = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicDoll").First();
+            CheckBox checkb_Broomstick = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Broomstick").First();
+            CheckBox checkb_Glitch = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Glitch").First();
+            CheckBox checkb_PogoStick = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_PogoStick").First();
+            CheckBox checkb_Crayons = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Crayons").First();
+            CheckBox checkb_BubbleWand = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_BubbleWand").First();
+            CheckBox checkb_Shovel = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shovel").First();
+            CheckBox checkb_WateringCan = gb_Toys.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_WateringCan").First();
             TabControl tc_AnimalBehaviours = controls[0].Controls.OfType<TabControl>().Where(x => x.Name == "tc_AnimalBehaviours").First();
             TabPage tp_SAAnimalBehaviours = tc_AnimalBehaviours.TabPages[tc_AnimalBehaviours.TabPages.IndexOfKey("tp_SAAnimalBehaviours")];
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASeal").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Seal) == SAAnimalBehaviours.Seal;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAPenguin").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Penguin) == SAAnimalBehaviours.Penguin;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAOtter").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Otter) == SAAnimalBehaviours.Otter;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAPeacock").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Peacock) == SAAnimalBehaviours.Peacock;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASwallow").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Swallow) == SAAnimalBehaviours.Swallow;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAParrot").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Parrot) == SAAnimalBehaviours.Parrot;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SADeer").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Deer) == SAAnimalBehaviours.Deer;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SARabbit").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Rabbit) == SAAnimalBehaviours.Rabbit;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAKangaroo").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Kangaroo) == SAAnimalBehaviours.Kangaroo;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAGorilla").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Gorilla) == SAAnimalBehaviours.Gorilla;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SALion").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Lion) == SAAnimalBehaviours.Lion;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAElephant").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Elephant) == SAAnimalBehaviours.Elephant;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAMole").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Mole) == SAAnimalBehaviours.Mole;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAKoala").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Koala) == SAAnimalBehaviours.Koala;
-            tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASkunk").First().Checked = (saAnimalBehaviours & SAAnimalBehaviours.Skunk) == SAAnimalBehaviours.Skunk;
+            CheckBox checkb_SASeal = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASeal").First();
+            CheckBox checkb_SAPenguin = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAPenguin").First();
+            CheckBox checkb_SAOtter = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAOtter").First();
+            CheckBox checkb_SAPeacock = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAPeacock").First();
+            CheckBox checkb_SASwallow = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASwallow").First();
+            CheckBox checkb_SAParrot = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAParrot").First();
+            CheckBox checkb_SADeer = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SADeer").First();
+            CheckBox checkb_SARabbit = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SARabbit").First();
+            CheckBox checkb_SAKangaroo = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAKangaroo").First();
+            CheckBox checkb_SAGorilla = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAGorilla").First();
+            CheckBox checkb_SALion = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SALion").First();
+            CheckBox checkb_SAElephant = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAElephant").First();
+            CheckBox checkb_SAMole = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAMole").First();
+            CheckBox checkb_SAKoala = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SAKoala").First();
+            CheckBox checkb_SASkunk = tp_SAAnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SASkunk").First();
             TabPage tp_SA2AnimalBehaviours = tc_AnimalBehaviours.TabPages[tc_AnimalBehaviours.TabPages.IndexOfKey("tp_SA2AnimalBehaviours")];
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Penguin").First().Checked = (animalBehaviours & AnimalBehaviours.Penguin) == AnimalBehaviours.Penguin;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Seal").First().Checked = (animalBehaviours & AnimalBehaviours.Seal) == AnimalBehaviours.Seal;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Otter").First().Checked = (animalBehaviours & AnimalBehaviours.Otter) == AnimalBehaviours.Otter;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Rabbit").First().Checked = (animalBehaviours & AnimalBehaviours.Rabbit) == AnimalBehaviours.Rabbit;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Cheetah").First().Checked = (animalBehaviours & AnimalBehaviours.Cheetah) == AnimalBehaviours.Cheetah;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Warthog").First().Checked = (animalBehaviours & AnimalBehaviours.Warthog) == AnimalBehaviours.Warthog;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bear").First().Checked = (animalBehaviours & AnimalBehaviours.Bear) == AnimalBehaviours.Bear;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Tiger").First().Checked = (animalBehaviours & AnimalBehaviours.Tiger) == AnimalBehaviours.Tiger;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Gorilla").First().Checked = (animalBehaviours & AnimalBehaviours.Gorilla) == AnimalBehaviours.Gorilla;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Peacock").First().Checked = (animalBehaviours & AnimalBehaviours.Peacock) == AnimalBehaviours.Peacock;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Parrot").First().Checked = (animalBehaviours & AnimalBehaviours.Parrot) == AnimalBehaviours.Parrot;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Condor").First().Checked = (animalBehaviours & AnimalBehaviours.Condor) == AnimalBehaviours.Condor;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Skunk").First().Checked = (animalBehaviours & AnimalBehaviours.Skunk) == AnimalBehaviours.Skunk;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Sheep").First().Checked = (animalBehaviours & AnimalBehaviours.Sheep) == AnimalBehaviours.Sheep;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Raccoon").First().Checked = (animalBehaviours & AnimalBehaviours.Raccoon) == AnimalBehaviours.Raccoon;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_HalfFish").First().Checked = (animalBehaviours & AnimalBehaviours.HalfFish) == AnimalBehaviours.HalfFish;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SkeletonDog").First().Checked = (animalBehaviours & AnimalBehaviours.SkeletonDog) == AnimalBehaviours.SkeletonDog;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bat").First().Checked = (animalBehaviours & AnimalBehaviours.Bat) == AnimalBehaviours.Bat;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Dragon").First().Checked = (animalBehaviours & AnimalBehaviours.Dragon) == AnimalBehaviours.Dragon;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Unicorn").First().Checked = (animalBehaviours & AnimalBehaviours.Unicorn) == AnimalBehaviours.Unicorn;
-            tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Phoenix").First().Checked = (animalBehaviours & AnimalBehaviours.Phoenix) == AnimalBehaviours.Phoenix;
+            CheckBox checkb_Penguin = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Penguin").First();
+            CheckBox checkb_Seal = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Seal").First();
+            CheckBox checkb_Otter = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Otter").First();
+            CheckBox checkb_Rabbit = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Rabbit").First();
+            CheckBox checkb_Cheetah = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Cheetah").First();
+            CheckBox checkb_Warthog = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Warthog").First();
+            CheckBox checkb_Bear = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bear").First();
+            CheckBox checkb_Tiger = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Tiger").First();
+            CheckBox checkb_Gorilla = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Gorilla").First();
+            CheckBox checkb_Peacock = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Peacock").First();
+            CheckBox checkb_Parrot = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Parrot").First();
+            CheckBox checkb_Condor = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Condor").First();
+            CheckBox checkb_Skunk = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Skunk").First();
+            CheckBox checkb_Sheep = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Sheep").First();
+            CheckBox checkb_Raccoon = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Raccoon").First();
+            CheckBox checkb_HalfFish = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_HalfFish").First();
+            CheckBox checkb_SkeletonDog = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SkeletonDog").First();
+            CheckBox checkb_Bat = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bat").First();
+            CheckBox checkb_Dragon = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Dragon").First();
+            CheckBox checkb_Unicorn = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Unicorn").First();
+            CheckBox checkb_Phoenix = tp_SA2AnimalBehaviours.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Phoenix").First();
             GroupBox gb_ClassroomSkills = controls[0].Controls.OfType<GroupBox>().Where(x => x.Name == "gb_ClassroomSkills").First();
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing1").First().Checked = (classroomSkills & ClassroomSkills.Drawing1) == ClassroomSkills.Drawing1;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing2").First().Checked = (classroomSkills & ClassroomSkills.Drawing2) == ClassroomSkills.Drawing2;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing3").First().Checked = (classroomSkills & ClassroomSkills.Drawing3) == ClassroomSkills.Drawing3;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing4").First().Checked = (classroomSkills & ClassroomSkills.Drawing4) == ClassroomSkills.Drawing4;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing5").First().Checked = (classroomSkills & ClassroomSkills.Drawing5) == ClassroomSkills.Drawing5;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShakeDance").First().Checked = (classroomSkills & ClassroomSkills.Shake) == ClassroomSkills.Shake;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SpinDance").First().Checked = (classroomSkills & ClassroomSkills.Spin) == ClassroomSkills.Spin;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_StepDance").First().Checked = (classroomSkills & ClassroomSkills.Step) == ClassroomSkills.Step;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GoGoDance").First().Checked = (classroomSkills & ClassroomSkills.GoGo) == ClassroomSkills.GoGo;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Exercise").First().Checked = (classroomSkills & ClassroomSkills.Exercise) == ClassroomSkills.Exercise;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drum").First().Checked = (classroomSkills & ClassroomSkills.Drum) == ClassroomSkills.Drum;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song1").First().Checked = (classroomSkills & ClassroomSkills.Song1) == ClassroomSkills.Song1;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song2").First().Checked = (classroomSkills & ClassroomSkills.Song2) == ClassroomSkills.Song2;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song3").First().Checked = (classroomSkills & ClassroomSkills.Song3) == ClassroomSkills.Song3;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song4").First().Checked = (classroomSkills & ClassroomSkills.Song4) == ClassroomSkills.Song4;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song5").First().Checked = (classroomSkills & ClassroomSkills.Song5) == ClassroomSkills.Song5;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bell").First().Checked = (classroomSkills & ClassroomSkills.Bell) == ClassroomSkills.Bell;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Castanets").First().Checked = (classroomSkills & ClassroomSkills.Castanets) == ClassroomSkills.Castanets;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Cymbals").First().Checked = (classroomSkills & ClassroomSkills.Cymbals) == ClassroomSkills.Cymbals;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Flute").First().Checked = (classroomSkills & ClassroomSkills.Flute) == ClassroomSkills.Flute;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Maracas").First().Checked = (classroomSkills & ClassroomSkills.Maracas) == ClassroomSkills.Maracas;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Trumpet").First().Checked = (classroomSkills & ClassroomSkills.Trumpet) == ClassroomSkills.Trumpet;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Tambourine").First().Checked = (classroomSkills & ClassroomSkills.Tambourine) == ClassroomSkills.Tambourine;
-            gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bell").First().Checked = (classroomSkills & ClassroomSkills.Bell) == ClassroomSkills.Bell;
+            CheckBox checkb_Drawing1 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing1").First();
+            CheckBox checkb_Drawing2 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing2").First();
+            CheckBox checkb_Drawing3 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing3").First();
+            CheckBox checkb_Drawing4 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing4").First();
+            CheckBox checkb_Drawing5 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drawing5").First();
+            CheckBox checkb_ShakeDance = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShakeDance").First();
+            CheckBox checkb_SpinDance = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SpinDance").First();
+            CheckBox checkb_StepDance = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_StepDance").First();
+            CheckBox checkb_GoGoDance = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GoGoDance").First();
+            CheckBox checkb_Exercise = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Exercise").First();
+            CheckBox checkb_Drum = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Drum").First();
+            CheckBox checkb_Song1 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song1").First();
+            CheckBox checkb_Song2 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song2").First();
+            CheckBox checkb_Song3 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song3").First();
+            CheckBox checkb_Song4 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song4").First();
+            CheckBox checkb_Song5 = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Song5").First();
+            CheckBox checkb_Bell = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Bell").First();
+            CheckBox checkb_Castanets = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Castanets").First();
+            CheckBox checkb_Cymbals = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Cymbals").First();
+            CheckBox checkb_Flute = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Flute").First();
+            CheckBox checkb_Maracas = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Maracas").First();
+            CheckBox checkb_Trumpet = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Trumpet").First();
+            CheckBox checkb_Tambourine = gb_ClassroomSkills.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Tambourine").First();
+
+            tb_Name.InvokeCheck(() => tb_Name.Text = name);
+            if (garden != 255) { cb_Garden.InvokeCheck(() => cb_Garden.SelectedIndex = garden - 1); }
+            nud_Happiness.InvokeCheck(() => nud_Happiness.Value = happiness);
+            nud_Reincarnations.InvokeCheck(() => nud_Reincarnations.Value = reincarnations);
+            checkb_Rattle.InvokeCheck(() => checkb_Rattle.Checked = (toys & Toys.Rattle) == Toys.Rattle);
+            checkb_Car.InvokeCheck(() => checkb_Car.Checked = (toys & Toys.Car) == Toys.Car);
+            checkb_PictureBook.InvokeCheck(() => checkb_PictureBook.Checked = (toys & Toys.PictureBook) == Toys.PictureBook);
+            checkb_SonicDoll.InvokeCheck(() => checkb_SonicDoll.Checked = (toys & Toys.SonicDoll) == Toys.SonicDoll);
+            checkb_Broomstick.InvokeCheck(() => checkb_Broomstick.Checked = (toys & Toys.Broomstick) == Toys.Broomstick);
+            checkb_Glitch.InvokeCheck(() => checkb_Glitch.Checked = (toys & Toys.Glitch) == Toys.Glitch);
+            checkb_PogoStick.InvokeCheck(() => checkb_PogoStick.Checked = (toys & Toys.PogoStick) == Toys.PogoStick);
+            checkb_Crayons.InvokeCheck(() => checkb_Crayons.Checked = (toys & Toys.Crayons) == Toys.Crayons);
+            checkb_BubbleWand.InvokeCheck(() => checkb_BubbleWand.Checked = (toys & Toys.BubbleWand) == Toys.BubbleWand);
+            checkb_Shovel.InvokeCheck(() => checkb_Shovel.Checked = (toys & Toys.Shovel) == Toys.Shovel);
+            checkb_WateringCan.InvokeCheck(() => checkb_WateringCan.Checked = (toys & Toys.WateringCan) == Toys.WateringCan);
+            checkb_SASeal.InvokeCheck(() => checkb_SASeal.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Seal) == SAAnimalBehaviours.Seal);
+            checkb_SAPenguin.InvokeCheck(() => checkb_SAPenguin.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Penguin) == SAAnimalBehaviours.Penguin);
+            checkb_SAOtter.InvokeCheck(() => checkb_SAOtter.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Otter) == SAAnimalBehaviours.Otter);
+            checkb_SAPeacock.InvokeCheck(() => checkb_SAPeacock.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Peacock) == SAAnimalBehaviours.Peacock);
+            checkb_SASwallow.InvokeCheck(() => checkb_SASwallow.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Swallow) == SAAnimalBehaviours.Swallow);
+            checkb_SAParrot.InvokeCheck(() => checkb_SAParrot.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Parrot) == SAAnimalBehaviours.Parrot);
+            checkb_SADeer.InvokeCheck(() => checkb_SADeer.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Deer) == SAAnimalBehaviours.Deer);
+            checkb_SARabbit.InvokeCheck(() => checkb_SARabbit.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Rabbit) == SAAnimalBehaviours.Rabbit);
+            checkb_SAKangaroo.InvokeCheck(() => checkb_SAKangaroo.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Kangaroo) == SAAnimalBehaviours.Kangaroo);
+            checkb_SAGorilla.InvokeCheck(() => checkb_SAGorilla.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Gorilla) == SAAnimalBehaviours.Gorilla);
+            checkb_SALion.InvokeCheck(() => checkb_SALion.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Lion) == SAAnimalBehaviours.Lion);
+            checkb_SAElephant.InvokeCheck(() => checkb_SAElephant.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Elephant) == SAAnimalBehaviours.Elephant);
+            checkb_SAMole.InvokeCheck(() => checkb_SAMole.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Mole) == SAAnimalBehaviours.Mole);
+            checkb_SAKoala.InvokeCheck(() => checkb_SAKoala.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Koala) == SAAnimalBehaviours.Koala);
+            checkb_SASkunk.InvokeCheck(() => checkb_SASkunk.Checked = (saAnimalBehaviours & SAAnimalBehaviours.Skunk) == SAAnimalBehaviours.Skunk);
+            checkb_Penguin.InvokeCheck(() => checkb_Penguin.Checked = (animalBehaviours & AnimalBehaviours.Penguin) == AnimalBehaviours.Penguin);
+            checkb_Seal.InvokeCheck(() => checkb_Seal.Checked = (animalBehaviours & AnimalBehaviours.Seal) == AnimalBehaviours.Seal);
+            checkb_Otter.InvokeCheck(() => checkb_Otter.Checked = (animalBehaviours & AnimalBehaviours.Otter) == AnimalBehaviours.Otter);
+            checkb_Rabbit.InvokeCheck(() => checkb_Rabbit.Checked = (animalBehaviours & AnimalBehaviours.Rabbit) == AnimalBehaviours.Rabbit);
+            checkb_Cheetah.InvokeCheck(() => checkb_Cheetah.Checked = (animalBehaviours & AnimalBehaviours.Cheetah) == AnimalBehaviours.Cheetah);
+            checkb_Warthog.InvokeCheck(() => checkb_Warthog.Checked = (animalBehaviours & AnimalBehaviours.Warthog) == AnimalBehaviours.Warthog);
+            checkb_Bear.InvokeCheck(() => checkb_Bear.Checked = (animalBehaviours & AnimalBehaviours.Bear) == AnimalBehaviours.Bear);
+            checkb_Tiger.InvokeCheck(() => checkb_Tiger.Checked = (animalBehaviours & AnimalBehaviours.Tiger) == AnimalBehaviours.Tiger);
+            checkb_Gorilla.InvokeCheck(() => checkb_Gorilla.Checked = (animalBehaviours & AnimalBehaviours.Gorilla) == AnimalBehaviours.Gorilla);
+            checkb_Peacock.InvokeCheck(() => checkb_Peacock.Checked = (animalBehaviours & AnimalBehaviours.Peacock) == AnimalBehaviours.Peacock);
+            checkb_Parrot.InvokeCheck(() => checkb_Parrot.Checked = (animalBehaviours & AnimalBehaviours.Parrot) == AnimalBehaviours.Parrot);
+            checkb_Condor.InvokeCheck(() => checkb_Condor.Checked = (animalBehaviours & AnimalBehaviours.Condor) == AnimalBehaviours.Condor);
+            checkb_Skunk.InvokeCheck(() => checkb_Skunk.Checked = (animalBehaviours & AnimalBehaviours.Skunk) == AnimalBehaviours.Skunk);
+            checkb_Sheep.InvokeCheck(() => checkb_Sheep.Checked = (animalBehaviours & AnimalBehaviours.Sheep) == AnimalBehaviours.Sheep);
+            checkb_Raccoon.InvokeCheck(() => checkb_Raccoon.Checked = (animalBehaviours & AnimalBehaviours.Raccoon) == AnimalBehaviours.Raccoon);
+            checkb_HalfFish.InvokeCheck(() => checkb_HalfFish.Checked = (animalBehaviours & AnimalBehaviours.HalfFish) == AnimalBehaviours.HalfFish);
+            checkb_SkeletonDog.InvokeCheck(() => checkb_SkeletonDog.Checked = (animalBehaviours & AnimalBehaviours.SkeletonDog) == AnimalBehaviours.SkeletonDog);
+            checkb_Bat.InvokeCheck(() => checkb_Bat.Checked = (animalBehaviours & AnimalBehaviours.Bat) == AnimalBehaviours.Bat);
+            checkb_Dragon.InvokeCheck(() => checkb_Dragon.Checked = (animalBehaviours & AnimalBehaviours.Dragon) == AnimalBehaviours.Dragon);
+            checkb_Unicorn.InvokeCheck(() => checkb_Unicorn.Checked = (animalBehaviours & AnimalBehaviours.Unicorn) == AnimalBehaviours.Unicorn);
+            checkb_Phoenix.InvokeCheck(() => checkb_Phoenix.Checked = (animalBehaviours & AnimalBehaviours.Phoenix) == AnimalBehaviours.Phoenix);
+            checkb_Drawing1.InvokeCheck(() => checkb_Drawing1.Checked = (classroomSkills & ClassroomSkills.Drawing1) == ClassroomSkills.Drawing1);
+            checkb_Drawing2.InvokeCheck(() => checkb_Drawing2.Checked = (classroomSkills & ClassroomSkills.Drawing2) == ClassroomSkills.Drawing2);
+            checkb_Drawing3.InvokeCheck(() => checkb_Drawing3.Checked = (classroomSkills & ClassroomSkills.Drawing3) == ClassroomSkills.Drawing3);
+            checkb_Drawing4.InvokeCheck(() => checkb_Drawing4.Checked = (classroomSkills & ClassroomSkills.Drawing4) == ClassroomSkills.Drawing4);
+            checkb_Drawing5.InvokeCheck(() => checkb_Drawing5.Checked = (classroomSkills & ClassroomSkills.Drawing5) == ClassroomSkills.Drawing5);
+            checkb_ShakeDance.InvokeCheck(() => checkb_ShakeDance.Checked = (classroomSkills & ClassroomSkills.Shake) == ClassroomSkills.Shake);
+            checkb_SpinDance.InvokeCheck(() => checkb_SpinDance.Checked = (classroomSkills & ClassroomSkills.Spin) == ClassroomSkills.Spin);
+            checkb_StepDance.InvokeCheck(() => checkb_StepDance.Checked = (classroomSkills & ClassroomSkills.Step) == ClassroomSkills.Step);
+            checkb_GoGoDance.InvokeCheck(() => checkb_GoGoDance.Checked = (classroomSkills & ClassroomSkills.GoGo) == ClassroomSkills.GoGo);
+            checkb_Exercise.InvokeCheck(() => checkb_Exercise.Checked = (classroomSkills & ClassroomSkills.Exercise) == ClassroomSkills.Exercise);
+            checkb_Drum.InvokeCheck(() => checkb_Drum.Checked = (classroomSkills & ClassroomSkills.Drum) == ClassroomSkills.Drum);
+            checkb_Song1.InvokeCheck(() => checkb_Song1.Checked = (classroomSkills & ClassroomSkills.Song1) == ClassroomSkills.Song1);
+            checkb_Song2.InvokeCheck(() => checkb_Song2.Checked = (classroomSkills & ClassroomSkills.Song2) == ClassroomSkills.Song2);
+            checkb_Song3.InvokeCheck(() => checkb_Song3.Checked = (classroomSkills & ClassroomSkills.Song3) == ClassroomSkills.Song3);
+            checkb_Song4.InvokeCheck(() => checkb_Song4.Checked = (classroomSkills & ClassroomSkills.Song4) == ClassroomSkills.Song4);
+            checkb_Song5.InvokeCheck(() => checkb_Song5.Checked = (classroomSkills & ClassroomSkills.Song5) == ClassroomSkills.Song5);
+            checkb_Bell.InvokeCheck(() => checkb_Bell.Checked = (classroomSkills & ClassroomSkills.Bell) == ClassroomSkills.Bell);
+            checkb_Castanets.InvokeCheck(() => checkb_Castanets.Checked = (classroomSkills & ClassroomSkills.Castanets) == ClassroomSkills.Castanets);
+            checkb_Cymbals.InvokeCheck(() => checkb_Cymbals.Checked = (classroomSkills & ClassroomSkills.Cymbals) == ClassroomSkills.Cymbals);
+            checkb_Flute.InvokeCheck(() => checkb_Flute.Checked = (classroomSkills & ClassroomSkills.Flute) == ClassroomSkills.Flute);
+            checkb_Maracas.InvokeCheck(() => checkb_Maracas.Checked = (classroomSkills & ClassroomSkills.Maracas) == ClassroomSkills.Maracas);
+            checkb_Trumpet.InvokeCheck(() => checkb_Trumpet.Checked = (classroomSkills & ClassroomSkills.Trumpet) == ClassroomSkills.Trumpet);
+            checkb_Tambourine.InvokeCheck(() => checkb_Tambourine.Checked = (classroomSkills & ClassroomSkills.Tambourine) == ClassroomSkills.Tambourine);
 
             //Stats
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_SwimLevel").First().Value = swimLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_FlyLevel").First().Value = flyLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_RunLevel").First().Value = runLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PowerLevel").First().Value = powerLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_StaminaLevel").First().Value = staminaLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckLevel").First().Value = luckLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceLevel").First().Value = intelligenceLevel;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_SwimBar").First().Value = swimBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_FlyBar").First().Value = flyBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_RunBar").First().Value = runBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PowerBar").First().Value = powerBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_StaminaBar").First().Value = staminaBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckBar").First().Value = luckBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceBar").First().Value = intelligenceBar;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_SwimStat").First().Value = swimPoints;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_FlyStat").First().Value = flyPoints;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_RunStat").First().Value = runPoints;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PowerStat").First().Value = powerPoints;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_StaminaStat").First().Value = staminaPoints;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckStat").First().Value = luckPoints;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceStat").First().Value = intelligencePoints;
-            controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_SwimGrade").First().SelectedIndex = swimGrade;
-            controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FlyGrade").First().SelectedIndex = flyGrade;
-            controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_RunGrade").First().SelectedIndex = runGrade;
-            controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_PowerGrade").First().SelectedIndex = powerGrade;
-            controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_StaminaGrade").First().SelectedIndex = staminaGrade;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckGrade").First().Value = luckGrade;
-            controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceGrade").First().Value = intelligenceGrade;
+            NumericUpDown nud_SwimLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_SwimLevel").First();
+            NumericUpDown nud_FlyLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_FlyLevel").First();
+            NumericUpDown nud_RunLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_RunLevel").First();
+            NumericUpDown nud_PowerLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PowerLevel").First();
+            NumericUpDown nud_StaminaLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_StaminaLevel").First();
+            NumericUpDown nud_LuckLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckLevel").First();
+            NumericUpDown nud_IntelligenceLevel = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceLevel").First();
+            NumericUpDown nud_SwimBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_SwimBar").First();
+            NumericUpDown nud_FlyBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_FlyBar").First();
+            NumericUpDown nud_RunBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_RunBar").First();
+            NumericUpDown nud_PowerBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PowerBar").First();
+            NumericUpDown nud_StaminaBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_StaminaBar").First();
+            NumericUpDown nud_LuckBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckBar").First();
+            NumericUpDown nud_IntelligenceBar = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceBar").First();
+            NumericUpDown nud_SwimStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_SwimStat").First();
+            NumericUpDown nud_FlyStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_FlyStat").First();
+            NumericUpDown nud_RunStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_RunStat").First();
+            NumericUpDown nud_PowerStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PowerStat").First();
+            NumericUpDown nud_StaminaStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_StaminaStat").First();
+            NumericUpDown nud_LuckStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckStat").First();
+            NumericUpDown nud_IntelligenceStat = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceStat").First();
+            ComboBox cb_SwimGrade = controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_SwimGrade").First();
+            ComboBox cb_FlyGrade = controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FlyGrade").First();
+            ComboBox cb_RunGrade = controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_RunGrade").First();
+            ComboBox cb_PowerGrade = controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_PowerGrade").First();
+            ComboBox cb_StaminaGrade = controls[1].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_StaminaGrade").First();
+            NumericUpDown nud_LuckGrade = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_LuckGrade").First();
+            NumericUpDown nud_IntelligenceGrade = controls[1].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_IntelligenceGrade").First();
+
+            nud_SwimLevel.InvokeCheck(() => nud_SwimLevel.Value = swimLevel);
+            nud_FlyLevel.InvokeCheck(() => nud_FlyLevel.Value = flyLevel);
+            nud_RunLevel.InvokeCheck(() => nud_RunLevel.Value = runLevel);
+            nud_PowerLevel.InvokeCheck(() => nud_PowerLevel.Value = powerLevel);
+            nud_StaminaLevel.InvokeCheck(() => nud_StaminaLevel.Value = staminaLevel);
+            nud_LuckLevel.InvokeCheck(() => nud_LuckLevel.Value = luckLevel);
+            nud_IntelligenceLevel.InvokeCheck(() => nud_IntelligenceLevel.Value = intelligenceLevel);
+            nud_SwimBar.InvokeCheck(() => nud_SwimBar.Value = swimBar);
+            nud_FlyBar.InvokeCheck(() => nud_FlyBar.Value = flyBar);
+            nud_RunBar.InvokeCheck(() => nud_RunBar.Value = runBar);
+            nud_PowerBar.InvokeCheck(() => nud_PowerBar.Value = powerBar);
+            nud_StaminaBar.InvokeCheck(() => nud_StaminaBar.Value = staminaBar);
+            nud_LuckBar.InvokeCheck(() => nud_LuckBar.Value = luckBar);
+            nud_IntelligenceBar.InvokeCheck(() => nud_IntelligenceBar.Value = intelligenceBar);
+            nud_SwimStat.InvokeCheck(() => nud_SwimStat.Value = swimPoints);
+            nud_FlyStat.InvokeCheck(() => nud_FlyStat.Value = flyPoints);
+            nud_RunStat.InvokeCheck(() => nud_RunStat.Value = runPoints);
+            nud_PowerStat.InvokeCheck(() => nud_PowerStat.Value = powerPoints);
+            nud_StaminaStat.InvokeCheck(() => nud_StaminaStat.Value = staminaPoints);
+            nud_LuckStat.InvokeCheck(() => nud_LuckStat.Value = luckPoints);
+            nud_IntelligenceStat.InvokeCheck(() => nud_IntelligenceStat.Value = intelligencePoints);
+            cb_SwimGrade.InvokeCheck(() => cb_SwimGrade.SelectedIndex = swimGrade);
+            cb_FlyGrade.InvokeCheck(() => cb_FlyGrade.SelectedIndex = flyGrade);
+            cb_RunGrade.InvokeCheck(() => cb_RunGrade.SelectedIndex = runGrade);
+            cb_PowerGrade.InvokeCheck(() => cb_PowerGrade.SelectedIndex = powerGrade);
+            cb_StaminaGrade.InvokeCheck(() => cb_StaminaGrade.SelectedIndex = staminaGrade);
+            nud_LuckGrade.InvokeCheck(() => nud_LuckGrade.Value = luckGrade);
+            nud_IntelligenceGrade.InvokeCheck(() => nud_IntelligenceGrade.Value = intelligenceGrade);
 
             //Appearance
             ComboBox cb_Colour = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Colour").First();
-            cb_Colour.SelectedIndex = cb_Colour.FindStringExact(chaoColours.Where(x => x.Value == colour).First().Key);
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Texture").First().SelectedIndex = texture;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_BodyType").First().SelectedIndex = bodyType;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Hat").First().SelectedIndex = hat;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Medal").First().SelectedIndex = medal;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_BodyTypeAnimal").First().SelectedIndex = bodyTypeAnimal;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Eyes").First().SelectedIndex = eyes;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Emotiball").First().SelectedIndex = emotiball;
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Mouth").First().SelectedIndex = mouth;
+            ComboBox cb_Texture = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Texture").First();
+            ComboBox cb_BodyType = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_BodyType").First();
+            ComboBox cb_Hat = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Hat").First();
+            ComboBox cb_Medal = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Medal").First();
+            ComboBox cb_BodyTypeAnimal = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_BodyTypeAnimal").First();
+            ComboBox cb_Eyes = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Eyes").First();
+            ComboBox cb_Emotiball = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Emotiball").First();
+            ComboBox cb_Mouth = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Mouth").First();
             ComboBox cb_ArmsPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_ArmsPart").First();
-            cb_ArmsPart.SelectedIndex = cb_ArmsPart.FindStringExact(animalParts.Where(x => x.Value == armsPart).First().Key);
             ComboBox cb_EarsPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EarsPart").First();
-            cb_EarsPart.SelectedIndex = cb_EarsPart.FindStringExact(animalParts.Where(x => x.Value == earsPart).First().Key);
             ComboBox cb_ForeheadPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_ForeheadPart").First();
-            cb_ForeheadPart.SelectedIndex = cb_ForeheadPart.FindStringExact(animalParts.Where(x => x.Value == foreheadPart).First().Key);
             ComboBox cb_HornsPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_HornsPart").First();
-            cb_HornsPart.SelectedIndex = cb_HornsPart.FindStringExact(animalParts.Where(x => x.Value == hornsPart).First().Key);
             ComboBox cb_LegsPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_LegsPart").First();
-            cb_LegsPart.SelectedIndex = cb_LegsPart.FindStringExact(animalParts.Where(x => x.Value == legsPart).First().Key);
             ComboBox cb_TailPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_TailPart").First();
-            cb_TailPart.SelectedIndex = cb_TailPart.FindStringExact(animalParts.Where(x => x.Value == tailPart).First().Key);
             ComboBox cb_WingsPart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_WingsPart").First();
-            cb_WingsPart.SelectedIndex = cb_WingsPart.FindStringExact(animalParts.Where(x => x.Value == wingsPart).First().Key);
             ComboBox cb_FacePart = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FacePart").First();
-            cb_FacePart.SelectedIndex = cb_FacePart.FindStringExact(animalParts.Where(x => x.Value == facePart).First().Key);
-            controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EggColour").First().SelectedIndex = eggColour;
-            controls[2].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shiny").First().Checked = Convert.ToBoolean(shiny);
-            controls[2].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_MonoTone").First().Checked = Convert.ToBoolean(monoTone);
-            controls[2].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_FeetHidden").First().Checked = Convert.ToBoolean(feetHidden);
+            ComboBox cb_EggColour = controls[2].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EggColour").First();
+            CheckBox checkb_Shiny = controls[2].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shiny").First();
+            CheckBox checkb_MonoTone = controls[2].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_MonoTone").First();
+            CheckBox checkb_FeetHidden = controls[2].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_FeetHidden").First();
+
+            cb_Colour.InvokeCheck(() => cb_Colour.SelectedIndex = cb_Colour.FindStringExact(chaoColours.Where(x => x.Value == colour).First().Key));
+            cb_Texture.InvokeCheck(() => cb_Texture.SelectedIndex = texture);
+            cb_BodyType.InvokeCheck(() => cb_BodyType.SelectedIndex = bodyType);
+            cb_Hat.InvokeCheck(() => cb_Hat.SelectedIndex = hat);
+            cb_Medal.InvokeCheck(() => cb_Medal.SelectedIndex = medal);
+            cb_BodyTypeAnimal.InvokeCheck(() => cb_BodyTypeAnimal.SelectedIndex = bodyTypeAnimal);
+            cb_Eyes.InvokeCheck(() => cb_Eyes.SelectedIndex = eyes);
+            cb_Emotiball.InvokeCheck(() => cb_Emotiball.SelectedIndex = emotiball);
+            cb_Mouth.InvokeCheck(() => cb_Mouth.SelectedIndex = mouth);
+            cb_ArmsPart.InvokeCheck(() => cb_ArmsPart.SelectedIndex = cb_ArmsPart.FindStringExact(animalParts.Where(x => x.Value == armsPart).First().Key));
+            cb_EarsPart.InvokeCheck(() => cb_EarsPart.SelectedIndex = cb_EarsPart.FindStringExact(animalParts.Where(x => x.Value == earsPart).First().Key));
+            cb_ForeheadPart.InvokeCheck(() => cb_ForeheadPart.SelectedIndex = cb_ForeheadPart.FindStringExact(animalParts.Where(x => x.Value == foreheadPart).First().Key));
+            cb_HornsPart.InvokeCheck(() => cb_HornsPart.SelectedIndex = cb_HornsPart.FindStringExact(animalParts.Where(x => x.Value == hornsPart).First().Key));
+            cb_LegsPart.InvokeCheck(() => cb_LegsPart.SelectedIndex = cb_LegsPart.FindStringExact(animalParts.Where(x => x.Value == legsPart).First().Key));
+            cb_TailPart.InvokeCheck(() => cb_TailPart.SelectedIndex = cb_TailPart.FindStringExact(animalParts.Where(x => x.Value == tailPart).First().Key));
+            cb_WingsPart.InvokeCheck(() => cb_WingsPart.SelectedIndex = cb_WingsPart.FindStringExact(animalParts.Where(x => x.Value == wingsPart).First().Key));
+            cb_FacePart.InvokeCheck(() => cb_FacePart.SelectedIndex = cb_FacePart.FindStringExact(animalParts.Where(x => x.Value == facePart).First().Key));
+            cb_EggColour.InvokeCheck(() => cb_EggColour.SelectedIndex = eggColour);
+            checkb_Shiny.InvokeCheck(() => checkb_Shiny.Checked = Convert.ToBoolean(shiny));
+            checkb_MonoTone.InvokeCheck(() => checkb_MonoTone.Checked = Convert.ToBoolean(monoTone));
+            checkb_FeetHidden.InvokeCheck(() => checkb_FeetHidden.Checked = Convert.ToBoolean(feetHidden));
 
             //Evolution
-            controls[3].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_ChaoType").First().SelectedIndex = chaoType;
-            if (alignment <= 1 && alignment >= -1 && run2Power <= 1 && run2Power >= -1 && swim2Fly <= 1 && swim2Fly >= -1) { controls[3].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RealisticValues").First().Checked = true; }
-            else { controls[3].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RealisticValues").First().Checked = false; }
+            ComboBox cb_ChaoType = controls[3].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_ChaoType").First();
+            CheckBox checkb_RealisticValues = controls[3].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RealisticValues").First();
             uc_Chao uc = tc.TabPages[tc.TabPages.IndexOf(currentChao.Value)].Controls.OfType<uc_Chao>().Where(x => x.chaoNumber == currentChao.Key).First();
+            TrackBar trackb_Alignment = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Alignment").First();
+            TrackBar trackb_Run2Power = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Run2Power").First();
+            TrackBar trackb_Swim2Fly = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Swim2Fly").First();
+            TrackBar trackb_TransformationMagnitude = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TransformationMagnitude").First();
+            TrackBar trackb_Lifespan1 = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan1").First();
+            TrackBar trackb_Lifespan2 = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan2").First();
+
+            cb_ChaoType.InvokeCheck(() => cb_ChaoType.SelectedIndex = chaoType);
+            if (alignment <= 1 && alignment >= -1 && run2Power <= 1 && run2Power >= -1 && swim2Fly <= 1 && swim2Fly >= -1) { checkb_RealisticValues.InvokeCheck(() => checkb_RealisticValues.Checked = true); }
+            else { checkb_RealisticValues.InvokeCheck(() => checkb_RealisticValues.Checked = false); }
             uc.CheckRealistic();
-            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Alignment").First().Value = (int)(alignment * 10000000);
-            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Run2Power").First().Value = (int)(run2Power * 10000000);
-            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Swim2Fly").First().Value = (int)(swim2Fly * 10000000);
-            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TransformationMagnitude").First().Value = (int)(transformationMagnitude * 10000000);
-            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan1").First().Value = lifespan1;
-            controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan2").First().Value = lifespan2;
-            if (lifespan1 > lifespan2) { controls[0].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan2").First().Value = lifespan1; }
+            trackb_Alignment.InvokeCheck(() => trackb_Alignment.Value = (int)(alignment * 10000000));
+            trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Value = (int)(run2Power * 10000000));
+            trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Value = (int)(swim2Fly * 10000000));
+            trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.Value = (int)(transformationMagnitude * 10000000));
+            trackb_Lifespan1.InvokeCheck(() => trackb_Lifespan1.Value = lifespan1);
+            trackb_Lifespan2.InvokeCheck(() => trackb_Lifespan2.Value = lifespan2);
+            if (lifespan1 > lifespan2) { trackb_Lifespan2.InvokeCheck(() => trackb_Lifespan2.Value = lifespan1); }
 
             //Emotions
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_DesireToMate").First().Value = desireToMate;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Hunger").First().Value = hunger;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Sleepiness").First().Value = sleepiness;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Tiredness").First().Value = tiredness;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Boredom").First().Value = boredom;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Energy").First().Value = energy;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Joy").First().Value = joy;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_UrgeToCry").First().Value = urgeToCry;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Fear").First().Value = fear;
-            controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Dizziness").First().Value = dizziness;
+            TrackBar trackb_DesireToMate = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_DesireToMate").First();
+            TrackBar trackb_Hunger = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Hunger").First();
+            TrackBar trackb_Sleepiness = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Sleepiness").First();
+            TrackBar trackb_Tiredness = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Tiredness").First();
+            TrackBar trackb_Boredom = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Boredom").First();
+            TrackBar trackb_Energy = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Energy").First();
+            TrackBar trackb_Joy = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Joy").First();
+            TrackBar trackb_UrgeToCry = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_UrgeToCry").First();
+            TrackBar trackb_Fear = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Fear").First();
+            TrackBar trackb_Dizziness = controls[4].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Dizziness").First();
+
+            trackb_DesireToMate.InvokeCheck(() => trackb_DesireToMate.Value = desireToMate);
+            trackb_Hunger.InvokeCheck(() => trackb_Hunger.Value = hunger);
+            trackb_Sleepiness.InvokeCheck(() => trackb_Sleepiness.Value = sleepiness);
+            trackb_Tiredness.InvokeCheck(() => trackb_Tiredness.Value = tiredness);
+            trackb_Boredom.InvokeCheck(() => trackb_Boredom.Value = boredom);
+            trackb_Energy.InvokeCheck(() => trackb_Energy.Value = energy);
+            trackb_Joy.InvokeCheck(() => trackb_Joy.Value = joy);
+            trackb_UrgeToCry.InvokeCheck(() => trackb_UrgeToCry.Value = urgeToCry);
+            trackb_Fear.InvokeCheck(() => trackb_Fear.Value = fear);
+            trackb_Dizziness.InvokeCheck(() => trackb_Dizziness.Value = dizziness);
 
             //Character Bonds
-            controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_SonicBond").First().Value = sonicBond;
-            controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TailsBond").First().Value = tailsBond;
-            controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_KnucklesBond").First().Value = knucklesBond;
-            controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_ShadowBond").First().Value = shadowBond;
-            controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_EggmanBond").First().Value = eggmanBond;
-            controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_RougeBond").First().Value = rougeBond;
+            TrackBar trackb_SonicBond = controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_SonicBond").First();
+            TrackBar trackb_TailsBond = controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TailsBond").First();
+            TrackBar trackb_KnucklesBond = controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_KnucklesBond").First();
+            TrackBar trackb_ShadowBond = controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_ShadowBond").First();
+            TrackBar trackb_EggmanBond = controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_EggmanBond").First();
+            TrackBar trackb_RougeBond = controls[5].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_RougeBond").First();
+
+            trackb_SonicBond.InvokeCheck(() => trackb_SonicBond.Value = sonicBond);
+            trackb_TailsBond.InvokeCheck(() => trackb_TailsBond.Value = tailsBond);
+            trackb_KnucklesBond.InvokeCheck(() => trackb_KnucklesBond.Value = knucklesBond);
+            trackb_ShadowBond.InvokeCheck(() => trackb_ShadowBond.Value = shadowBond);
+            trackb_EggmanBond.InvokeCheck(() => trackb_EggmanBond.Value = eggmanBond);
+            trackb_RougeBond.InvokeCheck(() => trackb_RougeBond.Value = rougeBond);
 
             //Personality
-            controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2Curious").First().Value = normal2Curious;
-            controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_CryBaby2Energetic").First().Value = cryBaby2Energetic;
-            controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Naive2Normal").First().Value = naive2Normal;
-            controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2BigEater").First().Value = normal2BigEater;
-            controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2Carefree").First().Value = normal2Carefree;
-            if (favouriteFruit == 16) { controls[6].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FavouriteFruit").First().SelectedIndex = 8;  }
-            else { controls[6].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FavouriteFruit").First().SelectedIndex = favouriteFruit; }
+            TrackBar trackb_Normal2Curious = controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2Curious").First();
+            TrackBar trackb_CryBaby2Energetic = controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_CryBaby2Energetic").First();
+            TrackBar trackb_Naive2Normal = controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Naive2Normal").First();
+            TrackBar trackb_Normal2BigEater = controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2BigEater").First();
+            TrackBar trackb_Normal2Carefree = controls[6].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Normal2Carefree").First();
+            ComboBox cb_FavouriteFruit = controls[6].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_FavouriteFruit").First();
+
+            trackb_Normal2Curious.InvokeCheck(() => trackb_Normal2Curious.Value = normal2Curious);
+            trackb_CryBaby2Energetic.InvokeCheck(() => trackb_CryBaby2Energetic.Value = cryBaby2Energetic);
+            trackb_Naive2Normal.InvokeCheck(() => trackb_Naive2Normal.Value = naive2Normal);
+            trackb_Normal2BigEater.InvokeCheck(() => trackb_Normal2BigEater.Value = normal2BigEater);
+            trackb_Normal2Carefree.InvokeCheck(() => trackb_Normal2Carefree.Value = normal2Carefree);
+            if (favouriteFruit == 16) { cb_FavouriteFruit.InvokeCheck(() => cb_FavouriteFruit.SelectedIndex = 8); }
+            else { cb_FavouriteFruit.InvokeCheck(() => cb_FavouriteFruit.SelectedIndex = favouriteFruit); }
 
             //Health
-            controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Cough").First().Value = cough;
-            controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Cold").First().Value = cold;
-            controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Rash").First().Value = rash;
-            controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_RunnyNose").First().Value = runnyNose;
-            controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Hiccups").First().Value = hiccups;
-            controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_StomachAche").First().Value = stomachAche;
+            TrackBar trackb_Cough = controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Cough").First();
+            TrackBar trackb_Cold = controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Cold").First();
+            TrackBar trackb_Rash = controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Rash").First();
+            TrackBar trackb_RunnyNose = controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_RunnyNose").First();
+            TrackBar trackb_Hiccups = controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Hiccups").First();
+            TrackBar trackb_StomachAche = controls[7].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_StomachAche").First();
+
+            trackb_Cough.InvokeCheck(() => trackb_Cough.Value = cough);
+            trackb_Cold.InvokeCheck(() => trackb_Cold.Value = cold);
+            trackb_Rash.InvokeCheck(() => trackb_Rash.Value = rash);
+            trackb_RunnyNose.InvokeCheck(() => trackb_RunnyNose.Value = runnyNose);
+            trackb_Hiccups.InvokeCheck(() => trackb_Hiccups.Value = hiccups);
+            trackb_StomachAche.InvokeCheck(() => trackb_StomachAche.Value = stomachAche);
 
             //DNA
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Swim1").First().SelectedIndex = swimDNAGrade1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Swim2").First().SelectedIndex = swimDNAGrade2;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fly1").First().SelectedIndex = flyDNAGrade1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fly2").First().SelectedIndex = flyDNAGrade2;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Run1").First().SelectedIndex = runDNAGrade1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Run2").First().SelectedIndex = runDNAGrade2;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Power1").First().SelectedIndex = powerDNAGrade1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Power2").First().SelectedIndex = powerDNAGrade2;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Stamina1").First().SelectedIndex = staminaDNAGrade1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Stamina2").First().SelectedIndex = staminaDNAGrade2;
-            controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Luck1").First().Value = luckDNAGrade1;
-            controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Luck2").First().Value = luckDNAGrade2;
-            controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Intelligence1").First().Value = intelligenceDNAGrade1;
-            controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Intelligence2").First().Value = intelligenceDNAGrade2;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fruit1").First().SelectedIndex = fruit1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fruit2").First().SelectedIndex = fruit2;
+            ComboBox cb_Swim1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Swim1").First();
+            ComboBox cb_Swim2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Swim2").First();
+            ComboBox cb_Fly1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fly1").First();
+            ComboBox cb_Fly2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fly2").First();
+            ComboBox cb_Run1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Run1").First();
+            ComboBox cb_Run2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Run2").First();
+            ComboBox cb_Power1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Power1").First();
+            ComboBox cb_Power2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Power2").First();
+            ComboBox cb_Stamina1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Stamina1").First();
+            ComboBox cb_Stamina2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Stamina2").First();
+            NumericUpDown nud_Luck1 = controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Luck1").First();
+            NumericUpDown nud_Luck2 = controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Luck2").First();
+            NumericUpDown nud_Intelligence1 = controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Intelligence1").First();
+            NumericUpDown nud_Intelligence2 = controls[8].Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Intelligence2").First();
+            ComboBox cb_Fruit1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fruit1").First();
+            ComboBox cb_Fruit2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Fruit2").First();
             ComboBox cb_Colour1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Colour1").First();
-            cb_Colour1.SelectedIndex = cb_Colour1.FindStringExact(chaoColours.Where(x => x.Value == colour1).First().Key);
             ComboBox cb_Colour2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Colour2").First();
-            cb_Colour2.SelectedIndex = cb_Colour2.FindStringExact(chaoColours.Where(x => x.Value == colour2).First().Key);
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EggColour1").First().SelectedIndex = eggColour1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EggColour2").First().SelectedIndex = eggColour2;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Texture1").First().SelectedIndex = texture1;
-            controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Texture2").First().SelectedIndex = texture2;
-            controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shiny1").First().Checked = Convert.ToBoolean(shiny1);
-            controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shiny2").First().Checked = Convert.ToBoolean(shiny2);
-            controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_MonoTone1").First().Checked = Convert.ToBoolean(monoTone1);
-            controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_MonoTone2").First().Checked = Convert.ToBoolean(monoTone2);
+            ComboBox cb_EggColour1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EggColour1").First();
+            ComboBox cb_EggColour2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_EggColour2").First();
+            ComboBox cb_Texture1 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Texture1").First();
+            ComboBox cb_Texture2 = controls[8].Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Texture2").First();
+            CheckBox checkb_Shiny1 = controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shiny1").First();
+            CheckBox checkb_Shiny2 = controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Shiny2").First();
+            CheckBox checkb_MonoTone1 = controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_MonoTone1").First();
+            CheckBox checkb_MonoTone2 = controls[8].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_MonoTone2").First();
+
+            cb_Swim1.InvokeCheck(() => cb_Swim1.SelectedIndex = swimDNAGrade1);
+            cb_Swim2.InvokeCheck(() => cb_Swim2.SelectedIndex = swimDNAGrade2);
+            cb_Fly1.InvokeCheck(() => cb_Fly1.SelectedIndex = flyDNAGrade1);
+            cb_Fly2.InvokeCheck(() => cb_Fly2.SelectedIndex = flyDNAGrade2);
+            cb_Run1.InvokeCheck(() => cb_Run1.SelectedIndex = runDNAGrade1);
+            cb_Run2.InvokeCheck(() => cb_Run2.SelectedIndex = runDNAGrade2);
+            cb_Power1.InvokeCheck(() => cb_Power1.SelectedIndex = powerDNAGrade1);
+            cb_Power2.InvokeCheck(() => cb_Power2.SelectedIndex = powerDNAGrade2);
+            cb_Stamina1.InvokeCheck(() => cb_Stamina1.SelectedIndex = staminaDNAGrade1);
+            cb_Stamina2.InvokeCheck(() => cb_Stamina2.SelectedIndex = staminaDNAGrade2);
+            nud_Luck1.InvokeCheck(() => nud_Luck1.Value = luckDNAGrade1);
+            nud_Luck2.InvokeCheck(() => nud_Luck2.Value = luckDNAGrade2);
+            nud_Intelligence1.InvokeCheck(() => nud_Intelligence1.Value = intelligenceDNAGrade1);
+            nud_Intelligence2.InvokeCheck(() => nud_Intelligence2.Value = intelligenceDNAGrade2);
+            cb_Fruit1.InvokeCheck(() => cb_Fruit1.SelectedIndex = fruit1);
+            cb_Fruit2.InvokeCheck(() => cb_Fruit2.SelectedIndex = fruit2);
+            cb_Colour1.InvokeCheck(() => cb_Colour1.SelectedIndex = cb_Colour1.FindStringExact(chaoColours.Where(x => x.Value == colour1).First().Key));
+            cb_Colour2.InvokeCheck(() => cb_Colour2.SelectedIndex = cb_Colour2.FindStringExact(chaoColours.Where(x => x.Value == colour2).First().Key));
+            cb_EggColour1.InvokeCheck(() => cb_EggColour1.SelectedIndex = eggColour1);
+            cb_EggColour2.InvokeCheck(() => cb_EggColour2.SelectedIndex = eggColour2);
+            cb_Texture1.InvokeCheck(() => cb_Texture1.SelectedIndex = texture1);
+            cb_Texture2.InvokeCheck(() => cb_Texture2.SelectedIndex = texture2);
+            checkb_Shiny1.InvokeCheck(() => checkb_Shiny1.Checked = Convert.ToBoolean(shiny1));
+            checkb_Shiny2.InvokeCheck(() => checkb_Shiny2.Checked = Convert.ToBoolean(shiny2));
+            checkb_MonoTone1.InvokeCheck(() => checkb_MonoTone1.Checked = Convert.ToBoolean(monoTone1));
+            checkb_MonoTone2.InvokeCheck(() => checkb_MonoTone2.Checked = Convert.ToBoolean(monoTone2));
         }
 
         public static void GetChaoWorld()
@@ -835,6 +1046,17 @@ namespace SA2SaveUtility
             UpdateChaoWorld();
         }
 
+
+        public static void EmptyChaoSelected(int index)
+        {
+            DialogResult result = MessageBox.Show("Would you like to create a chao in slot #" + (index+1) + "?", "Chao Slot #" + (index+1), MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                PopulateChaoMsgBox populateChaoMsgBox = new PopulateChaoMsgBox();
+                populateChaoMsgBox.tabIndex = index;
+                populateChaoMsgBox.ShowDialog();
+            }
+        }
 
         public static void GetChao()
         {
@@ -849,31 +1071,20 @@ namespace SA2SaveUtility
             foreach (byte[] chao in chaoArray)
             {
                 byte[] nameBytes = chao.Skip(Convert.ToInt32(offsets.chao.Name)).Take(7).ToArray();
-                if (chao[offsets.chao.Garden] != 0 && chao[offsets.chao.Garden] != 255)
+
+                string name = GetName(nameBytes);
+                if (!activeChao.ContainsKey(chaoIndex))
                 {
-                    string name = GetName(nameBytes);
-                    if (!activeChao.ContainsKey(chaoIndex))
-                    {
-                        uc_Chao uc = new uc_Chao();
-                        TabPage tp = new TabPage();
-                        uc.chaoNumber = chaoIndex;
-                        tp.Controls.Add(uc);
-                        tp.Text = name;
-                        Main.tc_Main.TabPages.Add(tp);
-                        activeChao.Add(chaoIndex, tp);
-                    }
-                    KeyValuePair<uint, TabPage> currentChao = activeChao.Where(x => x.Key == chaoIndex).First();
-                    UpdateChao(Main.tc_Main, currentChao, chao);
+                    uc_Chao uc = new uc_Chao();
+                    TabPage tp = new TabPage();
+                    uc.chaoNumber = chaoIndex;
+                    tp.Controls.Add(uc);
+                    tp.Text = name;
+                    Main.tc_Main.TabPages.Add(tp);
+                    activeChao.Add(chaoIndex, tp);
                 }
-                else
-                {
-                    if (activeChao.ContainsKey(chaoIndex))
-                    {
-                        KeyValuePair<uint, TabPage> currentChao = activeChao.Where(x => x.Key == chaoIndex).First();
-                        Main.tc_Main.TabPages.Remove(currentChao.Value);
-                        activeChao.Remove(currentChao.Key);
-                    }
-                }
+                KeyValuePair<uint, TabPage> currentChao = activeChao.Where(x => x.Key == chaoIndex).First();
+                UpdateChao(Main.tc_Main, currentChao, chao);
                 chaoIndex++;
             }
         }
@@ -1445,106 +1656,6 @@ namespace SA2SaveUtility
                 if (character == 0xFF) { getName += " "; }
             }
             return getName;
-        }
-
-        public static void WriteChecksum(byte[] a1, bool isSA2)
-        {
-            Random rand = new Random();
-            int off = isSA2 ? 0x24C : 0;
-            a1[51229 + off] = 0;
-            a1[51224 + off] = 0;
-            a1[51231 + off] = 0;
-            a1[51226 + off] = 0;
-            a1[51227 + off] = 0;
-            a1[51225 + off] = (byte)BitConverter.DoubleToInt64Bits(rand.NextDouble() * 0.000030517578125 * 255.9998931884766);
-            a1[51228 + off] = (byte)BitConverter.DoubleToInt64Bits(rand.NextDouble() * 0.000030517578125 * 255.9998931884766);
-            a1[51230 + off] = (byte)BitConverter.DoubleToInt64Bits(rand.NextDouble() * 0.000030517578125 * 255.9998931884766);
-            uint v1 = sub_7172B0(51232 + off, a1);
-            a1[51229 + off] = (byte)v1;
-            a1[51224 + off] = (byte)(v1 >> 8);
-            a1[51231 + off] = (byte)(v1 >> 16);
-            a1[51226 + off] = (byte)(v1 >> 24);
-            a1[51227 + off] = (byte)BitConverter.DoubleToInt64Bits(rand.NextDouble() * 0.000030517578125 * 255.9998931884766);
-        }
-
-        static uint sub_7172B0(int length, byte[] data)
-        {
-            return sub_721B10(data, length, 0x6368616Fu, 0x686F6765u);
-        }
-
-
-        static uint[] dword_884D98 = new uint[] {
-            0, 0x0C9073096, 0x920E612C, 0x0A50951BA, 0x0FF6DC419, 0x0CA6AF48F,
-            0x9163A535, 0x0A66495A3, 0x0FEDB8832, 0x0CFDCB8A4, 0x94D5E91E,
-            0x0A3D2D988, 0x0F9B64C2B, 0x0CCB17CBD, 0x97B82D07, 0x0A0BF1D91,
-            0x0FDB71064, 0x0C4B020F2, 0x9FB97148, 0x0A8BE41DE, 0x0F2DAD47D,
-            0x0C7DDE4EB, 0x9CD4B551, 0x0ABD385C7, 0x0F36C9856, 0x0C26BA8C0,
-            0x9962F97A, 0x0AE65C9EC, 0x0F4015C4F, 0x0C1066CD9, 0x9A0F3D63,
-            0x0AD080DF5, 0x0FB6E20C8, 0x0D269105E, 0x896041E4, 0x0BE677172,
-            0x0E403E4D1, 0x0D104D447, 0x8A0D85FD, 0x0BD0AB56B, 0x0E5B5A8FA,
-            0x0D4B2986C, 0x8FBBC9D6, 0x0B8BCF940, 0x0E2D86CE3, 0x0D7DF5C75,
-            0x8CD60DCF, 0x0BBD13D59, 0x0E6D930AC, 0x0DFDE003A, 0x84D75180,
-            0x0B3D06116, 0x0E9B4F4B5, 0x0DCB3C423, 0x87BA9599, 0x0B0BDA50F,
-            0x0E802B89E, 0x0D9058808, 0x820CD9B2, 0x0B50BE924, 0x0EF6F7C87,
-            0x0DA684C11, 0x81611DAB, 0x0B6662D3D, 0x0F6DC4190, 0x0FFDB7106,
-            0x0A4D220BC, 0x93D5102A, 0x0C9B18589, 0x0FCB6B51F, 0x0A7BFE4A5,
-            0x90B8D433, 0x0C807C9A2, 0x0F900F934, 0x0A209A88E, 0x950E9818,
-            0x0CF6A0DBB, 0x0FA6D3D2D, 0x0A1646C97, 0x96635C01, 0x0CB6B51F4,
-            0x0F26C6162, 0x0A96530D8, 0x9E62004E, 0x0C40695ED, 0x0F101A57B,
-            0x0AA08F4C1, 0x9D0FC457, 0x0C5B0D9C6, 0x0F4B7E950, 0x0AFBEB8EA,
-            0x98B9887C, 0x0C2DD1DDF, 0x0F7DA2D49, 0x0ACD37CF3, 0x9BD44C65,
-            0x0CDB26158, 0x0E4B551CE, 0x0BFBC0074, 0x88BB30E2, 0x0D2DFA541,
-            0x0E7D895D7, 0x0BCD1C46D, 0x8BD6F4FB, 0x0D369E96A, 0x0E26ED9FC,
-            0x0B9678846, 0x8E60B8D0, 0x0D4042D73, 0x0E1031DE5, 0x0BA0A4C5F,
-            0x8D0D7CC9, 0x0D005713C, 0x0E90241AA, 0x0B20B1010, 0x850C2086,
-            0x0DF68B525, 0x0EA6F85B3, 0x0B166D409, 0x8661E49F, 0x0DEDEF90E,
-            0x0EFD9C998, 0x0B4D09822, 0x83D7A8B4, 0x0D9B33D17, 0x0ECB40D81,
-            0x0B7BD5C3B, 0x80BA6CAD, 0x0EDB88320, 0x0A4BFB3B6, 0x0FFB6E20C,
-            0x0C8B1D29A, 0x92D54739, 0x0A7D277AF, 0x0FCDB2615, 0x0CBDC1683,
-            0x93630B12, 0x0A2643B84, 0x0F96D6A3E, 0x0CE6A5AA8, 0x940ECF0B,
-            0x0A109FF9D, 0x0FA00AE27, 0x0CD079EB1, 0x900F9344, 0x0A908A3D2,
-            0x0F201F268, 0x0C506C2FE, 0x9F62575D, 0x0AA6567CB, 0x0F16C3671,
-            0x0C66B06E7, 0x9ED41B76, 0x0AFD32BE0, 0x0F4DA7A5A, 0x0C3DD4ACC,
-            0x99B9DF6F, 0x0ACBEEFF9, 0x0F7B7BE43, 0x0C0B08ED5, 0x96D6A3E8,
-            0x0BFD1937E, 0x0E4D8C2C4, 0x0D3DFF252, 0x89BB67F1, 0x0BCBC5767,
-            0x0E7B506DD, 0x0D0B2364B, 0x880D2BDA, 0x0B90A1B4C, 0x0E2034AF6,
-            0x0D5047A60, 0x8F60EFC3, 0x0BA67DF55, 0x0E16E8EEF, 0x0D669BE79,
-            0x8B61B38C, 0x0B266831A, 0x0E96FD2A0, 0x0DE68E236, 0x840C7795,
-            0x0B10B4703, 0x0EA0216B9, 0x0DD05262F, 0x85BA3BBE, 0x0B4BD0B28,
-            0x0EFB45A92, 0x0D8B36A04, 0x82D7FFA7, 0x0B7D0CF31, 0x0ECD99E8B,
-            0x0DBDEAE1D, 0x9B64C2B0, 0x9263F226, 0x0C96AA39C, 0x0FE6D930A,
-            0x0A40906A9, 0x910E363F, 0x0CA076785, 0x0FD005713, 0x0A5BF4A82,
-            0x94B87A14, 0x0CFB12BAE, 0x0F8B61B38, 0x0A2D28E9B, 0x97D5BE0D,
-            0x0CCDCEFB7, 0x0FBDBDF21, 0x0A6D3D2D4, 0x9FD4E242, 0x0C4DDB3F8,
-            0x0F3DA836E, 0x0A9BE16CD, 0x9CB9265B, 0x0C7B077E1, 0x0F0B74777,
-            0x0A8085AE6, 0x990F6A70, 0x0C2063BCA, 0x0F5010B5C, 0x0AF659EFF,
-            0x9A62AE69, 0x0C16BFFD3, 0x0F66CCF45, 0x0A00AE278, 0x890DD2EE,
-            0x0D2048354, 0x0E503B3C2, 0x0BF672661, 0x8A6016F7, 0x0D169474D,
-            0x0E66E77DB, 0x0BED16A4A, 0x8FD65ADC, 0x0D4DF0B66, 0x0E3D83BF0,
-            0x0B9BCAE53, 0x8CBB9EC5, 0x0D7B2CF7F, 0x0E0B5FFE9, 0x0BDBDF21C,
-            0x84BAC28A, 0x0DFB39330, 0x0E8B4A3A6, 0x0B2D03605, 0x87D70693,
-            0x0DCDE5729, 0x0EBD967BF, 0x0B3667A2E, 0x82614AB8, 0x0D9681B02,
-            0x0EE6F2B94, 0x0B40BBE37, 0x810C8EA1, 0x0DA05DF1B, 0x0ED02EF8D };
-
-        static uint sub_721B10(byte[] data, int length, uint a3, uint a4)
-        {
-            uint v4; // eax@1
-            int v5; // edx@1
-            int v6; // ecx@2
-
-            v5 = length;
-            v4 = a3;
-            if (length > 0)
-            {
-                v6 = 0;
-                do
-                {
-                    v4 = dword_884D98[data[v6++] ^ (byte)v4] ^ ((uint)v4 >> 8);
-                    --v5;
-                }
-                while (v5 > 0);
-            }
-            return a4 ^ v4;
         }
     }
 }

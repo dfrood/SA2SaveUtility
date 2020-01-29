@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Config>
-  <AutoUpdate>false</AutoUpdate>
-  <CheckForUpdates>false</CheckForUpdates>
+  <AutoUpdate>False</AutoUpdate>
+  <CheckForUpdates>False</CheckForUpdates>
+  <RTEUpdates>False</RTEUpdates>
+  <RTEUpdateInterval>1000</RTEUpdateInterval>
 </Config>

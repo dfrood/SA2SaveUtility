@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SA2SaveUtility
@@ -16,6 +17,50 @@ namespace SA2SaveUtility
         public uc_Main()
         {
             InitializeComponent();
+
+            //Missions
+            foreach (KeyValuePair<string, uint> keyValuePair in offsets.main.MissionOffsets)
+            {
+                uc_Mission uc = new uc_Mission();
+                TabPage tp = new TabPage();
+                uc.mainIndex = mainIndex;
+                uc.currentPair = keyValuePair;
+                tp.Controls.Add(uc);
+                tp.Text = keyValuePair.Key;
+                tc_Main.Controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tp);
+            }
+
+            //Kart
+            foreach (KeyValuePair<string, uint> keyValuePair in offsets.main.KartOffsets)
+            {
+                uc_Kart uc = new uc_Kart();
+                TabPage tp = new TabPage();
+                uc.mainIndex = mainIndex;
+                uc.currentPair = keyValuePair;
+                tp.Controls.Add(uc);
+                tp.Text = keyValuePair.Key;
+                tc_Main.Controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tp);
+            }
+
+            //Boss
+            foreach (KeyValuePair<string, KeyValuePair<uint, uint>> keyValuePair in offsets.main.BossOffsets)
+            {
+                uc_Boss uc = new uc_Boss();
+                TabPage tp = new TabPage();
+                uc.mainIndex = mainIndex;
+                uc.currentPair = keyValuePair;
+                tp.Controls.Add(uc);
+                tp.Text = keyValuePair.Key;
+                tc_Main.Controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tp);
+            }
+
+            //Chao
+            uc_MainChao ucMC = new uc_MainChao();
+            TabPage tpMC = new TabPage();
+            ucMC.mainIndex = mainIndex;
+            tpMC.Controls.Add(ucMC);
+            tpMC.Text = "Chao";
+            tc_Main.Controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tpMC);
         }
 
         private void Btn_UnlockAll_Click(object sender, EventArgs e)

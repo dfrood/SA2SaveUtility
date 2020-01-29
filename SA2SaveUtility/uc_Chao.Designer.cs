@@ -343,6 +343,7 @@
             this.lb_Fly1 = new System.Windows.Forms.Label();
             this.lb_Swim1 = new System.Windows.Forms.Label();
             this.cb_Swim1 = new System.Windows.Forms.ComboBox();
+            this.checkb_InitChao = new System.Windows.Forms.CheckBox();
             this.tc_Chao.SuspendLayout();
             this.tp_General.SuspendLayout();
             this.tc_AnimalBehaviours.SuspendLayout();
@@ -442,6 +443,7 @@
             // tp_General
             // 
             this.tp_General.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_General.Controls.Add(this.checkb_InitChao);
             this.tp_General.Controls.Add(this.tc_AnimalBehaviours);
             this.tp_General.Controls.Add(this.nud_Reincarnations);
             this.tp_General.Controls.Add(this.lb_Reincarnations);
@@ -3341,6 +3343,7 @@
             this.trackb_Lifespan2.SmallChange = 5;
             this.trackb_Lifespan2.TabIndex = 20;
             this.trackb_Lifespan2.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackb_Lifespan2.Scroll += new System.EventHandler(this.Trackb_Lifespan2_Scroll);
             this.trackb_Lifespan2.Value = 5000;
             // 
             // lb_Lifespan1
@@ -3362,6 +3365,7 @@
             this.trackb_Lifespan1.SmallChange = 5;
             this.trackb_Lifespan1.TabIndex = 18;
             this.trackb_Lifespan1.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackb_Lifespan1.Scroll += new System.EventHandler(this.Trackb_Lifespan1_Scroll);
             this.trackb_Lifespan1.Value = 5000;
             // 
             // lb_TransformationMagnitudeUpper
@@ -5795,6 +5799,17 @@
             this.cb_Swim1.TabIndex = 61;
             this.cb_Swim1.SelectedIndexChanged += new System.EventHandler(this.Cb_Swim1_SelectedIndexChanged);
             // 
+            // checkb_InitChao
+            // 
+            this.checkb_InitChao.AutoSize = true;
+            this.checkb_InitChao.Location = new System.Drawing.Point(9, 170);
+            this.checkb_InitChao.Name = "checkb_InitChao";
+            this.checkb_InitChao.Size = new System.Drawing.Size(15, 14);
+            this.checkb_InitChao.TabIndex = 29;
+            this.checkb_InitChao.UseVisualStyleBackColor = true;
+            this.checkb_InitChao.Visible = false;
+            this.checkb_InitChao.CheckedChanged += new System.EventHandler(this.Checkb_InitChao_CheckedChanged);
+            // 
             // uc_Chao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -6213,5 +6228,6 @@
         private System.Windows.Forms.CheckBox checkb_SAOtter;
         private System.Windows.Forms.CheckBox checkb_SAPenguin;
         private System.Windows.Forms.CheckBox checkb_SASeal;
+        private System.Windows.Forms.CheckBox checkb_InitChao;
     }
 }

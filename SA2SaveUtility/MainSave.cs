@@ -11,92 +11,8 @@ namespace SA2SaveUtility
         public static Offsets offsets = new Offsets();
         public static Dictionary<int, TabPage> activeMain = new Dictionary<int, TabPage>();
 
-        public static byte[] WriteChecksum(byte[] save, bool PC, bool GC, bool PS3)
-        {
-            byte[] checksum = new byte[4];
-            List<byte> newSave = new List<byte>();
-
-            if (PC || GC)
-            {
-                if (PC) { checksum = BitConverter.GetBytes(save.Skip(0x2844).ToArray().Select(x => (int)x).Sum()); }
-                if (GC) { checksum = BitConverter.GetBytes(save.Skip(0x2844).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray(); }
-                newSave.AddRange(save.Take(0x2840).ToArray());
-                newSave.AddRange(checksum);
-                newSave.AddRange(save.Skip(0x2844).ToArray());
-            }
-            if (!PC && !GC)
-            {
-                if (!PS3)
-                {
-                    foreach (byte[] splitSave in Main.SplitByteArray(save, 0x6004))
-                    {
-                        checksum = BitConverter.GetBytes(splitSave.Skip(0x2848).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray();
-                        newSave.AddRange(splitSave.Take(0x2844).ToArray());
-                        newSave.AddRange(checksum);
-                        newSave.AddRange(splitSave.Skip(0x2848).ToArray());
-                    }
-                }
-                else
-                {
-                    foreach (byte[] splitSave in Main.SplitByteArray(save, 0x6008))
-                    {
-                        checksum = BitConverter.GetBytes(splitSave.Skip(0x284C).ToArray().Select(x => (int)x).Sum()).Reverse().ToArray();
-                        newSave.AddRange(splitSave.Take(0x2848).ToArray());
-                        newSave.AddRange(checksum);
-                        newSave.AddRange(splitSave.Skip(0x284C).ToArray());
-                    }
-                }
-            }
-
-
-            return newSave.ToArray();
-        }
-
         public static void GetMain()
         {
-            offsets = new Offsets();
-            offsets.main.MissionOffsets.Add("City Escape", 0x326C);
-            offsets.main.MissionOffsets.Add("Wild Canyon", 0x34B8);
-            offsets.main.MissionOffsets.Add("Prison Lane", 0x2F5C);
-            offsets.main.MissionOffsets.Add("Metal Harbour", 0x3020);
-            offsets.main.MissionOffsets.Add("Green Forest", 0x2AC4);
-            offsets.main.MissionOffsets.Add("Pumpkin Hill", 0x2C4C);
-            offsets.main.MissionOffsets.Add("Mission Street", 0x357C);
-            offsets.main.MissionOffsets.Add("Aquatic Mine", 0x2DD4);
-            offsets.main.MissionOffsets.Add("Route 101", 0x5668);
-            offsets.main.MissionOffsets.Add("Hidden Base", 0x3A14);
-            offsets.main.MissionOffsets.Add("Pyramid Cave", 0x3DE8);
-            offsets.main.MissionOffsets.Add("Death Chamber", 0x3B9C);
-            offsets.main.MissionOffsets.Add("Eternal Engine", 0x3AD8);
-            offsets.main.MissionOffsets.Add("Meteor Herd", 0x40F8);
-            offsets.main.MissionOffsets.Add("Crazy Gadget", 0x3950);
-            offsets.main.MissionOffsets.Add("Final Rush", 0x3F70);
-
-            offsets.main.MissionOffsets.Add("Iron Gate", 0x30E4);
-            offsets.main.MissionOffsets.Add("Dry Lagoon", 0x3640);
-            offsets.main.MissionOffsets.Add("Sand Ocean", 0x388C);
-            offsets.main.MissionOffsets.Add("Radical Highway", 0x3330);
-            offsets.main.MissionOffsets.Add("Egg Quarters", 0x3C60);
-            offsets.main.MissionOffsets.Add("Lost Colony", 0x3D24);
-            offsets.main.MissionOffsets.Add("Weapons Bed", 0x31A8);
-            offsets.main.MissionOffsets.Add("Security Hall", 0x2E98);
-            offsets.main.MissionOffsets.Add("White Jungle", 0x2B88);
-            offsets.main.MissionOffsets.Add("Route 202", 0x572C);
-            offsets.main.MissionOffsets.Add("Sky Rail", 0x2D10);
-            offsets.main.MissionOffsets.Add("Mad Space", 0x4A28);
-            offsets.main.MissionOffsets.Add("Cosmic Wall", 0x4964);
-            offsets.main.MissionOffsets.Add("Final Chase", 0x4718);
-
-            offsets.main.MissionOffsets.Add("Cannon's Core", 0x4280);
-
-            offsets.main.KartOffsets.Add("Kart Racing - Beginner", 0x57F0);
-            offsets.main.KartOffsets.Add("Kart Racing - Standard", 0x57FD);
-            offsets.main.KartOffsets.Add("Kart Racing - Expert", 0x580A);
-
-            offsets.main.BossOffsets.Add("Boss Attack - Hero", new KeyValuePair<uint, uint>(0x5818, 0x5CD5));
-            offsets.main.BossOffsets.Add("Boss Attack - Dark", new KeyValuePair<uint, uint>(0x58DC, 0x5CD6));
-            offsets.main.BossOffsets.Add("Boss Attack - All", new KeyValuePair<uint, uint>(0x59A0, 0x5CD7));
-
             if (Main.isPC || Main.isGC)
             {
                 uc_Main uc = new uc_Main();
@@ -362,76 +278,111 @@ namespace SA2SaveUtility
             Control.ControlCollection controls = tc.TabPages[tc.TabPages.IndexOf(currentMain.Value)].Controls[0].Controls[0].Controls;
 
             //Main
-            controls[0].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GreenHill").First().Checked = Convert.ToBoolean(greenH);
+            CheckBox checkb_GreenHill = controls[0].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GreenHill").First();
+            checkb_GreenHill.InvokeCheck(() => checkb_GreenHill.Checked = Convert.ToBoolean(greenH));
             foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
             {
-                if (gb.Name == "gb_TotalRings") { if (gb.Controls.OfType<NumericUpDown>().First().Value != rings) { gb.Controls.OfType<NumericUpDown>().First().Value = rings; } }
-                if (gb.Name == "gb_Lives") { if (gb.Controls.OfType<NumericUpDown>().First().Value != lives) { gb.Controls.OfType<NumericUpDown>().First().Value = lives; } }
+                if (gb.Name == "gb_TotalRings")
+                {
+                    NumericUpDown nud_TotalRings = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_TotalRings").First();
+                    nud_TotalRings.InvokeCheck(() => nud_TotalRings.Value = rings);
+                }
+                if (gb.Name == "gb_Lives")
+                {
+                    NumericUpDown nud_Lives = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Lives").First();
+                    nud_Lives.InvokeCheck(() => nud_Lives.Value = lives);
+                }
                 if (gb.Name == "gb_PlayTime")
                 {
+                    NumericUpDown nud_PlayHour = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlayHour").First();
+                    NumericUpDown nud_PlayMinute = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlayMinute").First();
+                    NumericUpDown nud_PlaySecond = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlaySecond").First();
                     int hours = playTime / 216000;
                     int minutes = (playTime - (hours * 216000)) / 3600;
                     int seconds = ((playTime - (hours * 216000)) - ((playTime - (hours * 21600)) - ((playTime - (hours * 21600)) - minutes * 3600))) / 60;
-                    gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlayHour").First().Value = hours;
-                    gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlayMinute").First().Value = minutes;
-                    gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_PlaySecond").First().Value = seconds;
+                    nud_PlayHour.InvokeCheck(() => nud_PlayHour.Value = hours);
+                    nud_PlayMinute.InvokeCheck(() => nud_PlayMinute.Value = minutes);
+                    nud_PlaySecond.InvokeCheck(() => nud_PlaySecond.Value = seconds);
                 }
                 if (gb.Name == "gb_GCFileNo")
                 {
-                    if (!Main.isGC) { gb.Visible = false; }
-                    else { gb.Visible = true; }
+                    NumericUpDown nud_GCFileNumber = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_GCFileNumber").First();
+                    GroupBox gb_GCFileNo = gb;
+                    if (!Main.isGC) { gb_GCFileNo.InvokeCheck(() => gb_GCFileNo.Visible = false); }
+                    else { gb_GCFileNo.InvokeCheck(() => gb_GCFileNo.Visible = true); }
                     if (Main.isGC)
                     {
                         int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes).Replace("-", " "));
-                        gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_GCFileNumber").First().Value = fileNo;
+                        nud_GCFileNumber.InvokeCheck(() => nud_GCFileNumber.Value = fileNo);
                     }
                 }
                 if (gb.Name == "gb_Languages")
                 {
+                    ComboBox cb_Text = gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First();
+                    ComboBox cb_Voice = gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Voice").First();
                     if (Main.isPC)
                     {
-                        gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().Items.Clear();
-                        gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().Items.AddRange(new object[] {
+                        cb_Text.InvokeCheck(() => cb_Text.Items.Clear());
+                        cb_Text.InvokeCheck(() => cb_Text.Items.AddRange(new object[] {
                             "Japanese",
-                            "English"});
+                            "English"}));
                     }
 
-                    gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Text").First().SelectedIndex = textLang;
-                    gb.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_Voice").First().SelectedIndex = voiceLang;
+                    cb_Text.InvokeCheck(() => cb_Text.SelectedIndex = textLang);
+                    cb_Voice.InvokeCheck(() => cb_Voice.SelectedIndex = voiceLang);
                 }
                 if (gb.Name == "gb_EmblemTime")
                 {
+                    NumericUpDown nud_EmblemHour = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_EmblemHour").First();
+                    NumericUpDown nud_EmblemMinute = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_EmblemMinute").First();
+                    NumericUpDown nud_EmblemSecond = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_EmblemSecond").First();
                     int hours = emblemTime / 216000;
                     int minutes = (emblemTime - (hours * 216000)) / 3600;
                     int seconds = ((emblemTime - (hours * 216000)) - ((emblemTime - (hours * 21600)) - ((emblemTime - (hours * 21600)) - minutes * 3600))) / 60;
-                    gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_EmblemHour").First().Value = hours;
-                    gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_EmblemMinute").First().Value = minutes;
-                    gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_EmblemSecond").First().Value = seconds;
+                    nud_EmblemHour.InvokeCheck(() => nud_EmblemHour.Value = hours);
+                    nud_EmblemMinute.InvokeCheck(() => nud_EmblemMinute.Value = minutes);
+                    nud_EmblemSecond.InvokeCheck(() => nud_EmblemSecond.Value = seconds);
                 }
                 if (gb.Name == "gb_ChaoWorldCharacters")
                 {
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWSonic").First().Checked = Convert.ToBoolean(sonicCW);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWTails").First().Checked = Convert.ToBoolean(tailsCW);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWKnuckles").First().Checked = Convert.ToBoolean(knucklesCW);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWShadow").First().Checked = Convert.ToBoolean(shadowCW);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWEggman").First().Checked = Convert.ToBoolean(eggmanCW);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWRouge").First().Checked = Convert.ToBoolean(rougeCW);
+                    CheckBox checkb_CWSonic = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWSonic").First();
+                    CheckBox checkb_CWTails = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWTails").First();
+                    CheckBox checkb_CWKnuckles = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWKnuckles").First();
+                    CheckBox checkb_CWShadow = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWShadow").First();
+                    CheckBox checkb_CWEggman = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWEggman").First();
+                    CheckBox checkb_CWRouge = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWRouge").First();
+                    checkb_CWSonic.InvokeCheck(() => checkb_CWSonic.Checked = Convert.ToBoolean(sonicCW));
+                    checkb_CWTails.InvokeCheck(() => checkb_CWTails.Checked = Convert.ToBoolean(tailsCW));
+                    checkb_CWKnuckles.InvokeCheck(() => checkb_CWKnuckles.Checked = Convert.ToBoolean(knucklesCW));
+                    checkb_CWShadow.InvokeCheck(() => checkb_CWShadow.Checked = Convert.ToBoolean(shadowCW));
+                    checkb_CWEggman.InvokeCheck(() => checkb_CWEggman.Checked = Convert.ToBoolean(eggmanCW));
+                    checkb_CWRouge.InvokeCheck(() => checkb_CWRouge.Checked = Convert.ToBoolean(rougeCW));
                 }
                 if (gb.Name == "gb_UnlockedKarts")
                 {
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartSonic").First().Checked = Convert.ToBoolean(kartS);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartShadow").First().Checked = Convert.ToBoolean(kartSh);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartTails").First().Checked = Convert.ToBoolean(kartT);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartEggman").First().Checked = Convert.ToBoolean(kartE);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartKnuckles").First().Checked = Convert.ToBoolean(kartK);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartRouge").First().Checked = Convert.ToBoolean(kartR);
+                    CheckBox checkb_KartSonic = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartSonic").First();
+                    CheckBox checkb_KartShadow = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartShadow").First();
+                    CheckBox checkb_KartTails = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartTails").First();
+                    CheckBox checkb_KartEggman = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartEggman").First();
+                    CheckBox checkb_KartKnuckles = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartKnuckles").First();
+                    CheckBox checkb_KartRouge = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartRouge").First();
+                    checkb_KartSonic.InvokeCheck(() => checkb_KartSonic.Checked = Convert.ToBoolean(kartS));
+                    checkb_KartShadow.InvokeCheck(() => checkb_KartShadow.Checked = Convert.ToBoolean(kartSh));
+                    checkb_KartTails.InvokeCheck(() => checkb_KartTails.Checked = Convert.ToBoolean(kartT));
+                    checkb_KartEggman.InvokeCheck(() => checkb_KartEggman.Checked = Convert.ToBoolean(kartE));
+                    checkb_KartKnuckles.InvokeCheck(() => checkb_KartKnuckles.Checked = Convert.ToBoolean(kartK));
+                    checkb_KartRouge.InvokeCheck(() => checkb_KartRouge.Checked = Convert.ToBoolean(kartR));
                 }
                 if (gb.Name == "gb_UnlockedThemes")
                 {
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Amy").First().Checked = Convert.ToBoolean(themeA);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Maria").First().Checked = Convert.ToBoolean(themeM);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Secretary").First().Checked = Convert.ToBoolean(themeS);
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Omochao").First().Checked = Convert.ToBoolean(themeO);
+                    CheckBox checkb_Amy = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Amy").First();
+                    CheckBox checkb_Maria = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Maria").First();
+                    CheckBox checkb_Secretary = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Secretary").First();
+                    CheckBox checkb_Omochao = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Omochao").First();
+                    checkb_Amy.InvokeCheck(() => checkb_Amy.Checked = Convert.ToBoolean(themeA));
+                    checkb_Maria.InvokeCheck(() => checkb_Maria.Checked = Convert.ToBoolean(themeM));
+                    checkb_Secretary.InvokeCheck(() => checkb_Secretary.Checked = Convert.ToBoolean(themeS));
+                    checkb_Omochao.InvokeCheck(() => checkb_Omochao.Checked = Convert.ToBoolean(themeO));
                 }
                 if (gb.Name == "gb_Upgrades")
                 {
@@ -443,51 +394,89 @@ namespace SA2SaveUtility
                     TabPage tpEggman = tcUp.Controls.OfType<TabPage>().Where(x => x.Name == "tp_Eggman").First();
                     TabPage tpRouge = tcUp.Controls.OfType<TabPage>().Where(x => x.Name == "tp_Rouge").First();
 
-                    tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicLightShoes").First().Checked = Convert.ToBoolean(sonicLS);
-                    tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicAncientLight").First().Checked = Convert.ToBoolean(sonicAL);
-                    tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicMagicGloves").First().Checked = Convert.ToBoolean(sonicMG);
-                    tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicFlameRing").First().Checked = Convert.ToBoolean(sonicFR);
-                    tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicBounceBracelet").First().Checked = Convert.ToBoolean(sonicBB);
-                    tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicMysticMelody").First().Checked = Convert.ToBoolean(sonicMM);
+                    CheckBox checkb_SonicLightShoes = tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicLightShoes").First();
+                    CheckBox checkb_SonicAncientLight = tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicAncientLight").First();
+                    CheckBox checkb_SonicMagicGloves = tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicMagicGloves").First();
+                    CheckBox checkb_SonicFlameRing = tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicFlameRing").First();
+                    CheckBox checkb_SonicBounceBracelet = tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicBounceBracelet").First();
+                    CheckBox checkb_SonicMysticMelody = tpSonic.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_SonicMysticMelody").First();
 
-                    tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsBooster").First().Checked = Convert.ToBoolean(tailsBo);
-                    tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsBazooka").First().Checked = Convert.ToBoolean(tailsBa);
-                    tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsLaserBlaster").First().Checked = Convert.ToBoolean(tailsL);
-                    tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsMysticMelody").First().Checked = Convert.ToBoolean(tailsMM);
+                    CheckBox checkb_TailsBooster = tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsBooster").First();
+                    CheckBox checkb_TailsBazooka = tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsBazooka").First();
+                    CheckBox checkb_TailsLaserBlaster = tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsLaserBlaster").First();
+                    CheckBox checkb_TailsMysticMelody = tpTails.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_TailsMysticMelody").First();
 
-                    tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesShovelClaw").First().Checked = Convert.ToBoolean(knucklesSC);
-                    tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesSunglasses").First().Checked = Convert.ToBoolean(knucklesS);
-                    tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesHammerGloves").First().Checked = Convert.ToBoolean(knucklesHG);
-                    tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesAirNecklace").First().Checked = Convert.ToBoolean(knucklesAN);
-                    tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesMysticMelody").First().Checked = Convert.ToBoolean(knucklesMM);
+                    CheckBox checkb_KnucklesShovelClaw = tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesShovelClaw").First();
+                    CheckBox checkb_KnucklesSunglasses = tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesSunglasses").First();
+                    CheckBox checkb_KnucklesHammerGloves = tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesHammerGloves").First();
+                    CheckBox checkb_KnucklesAirNecklace = tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesAirNecklace").First();
+                    CheckBox checkb_KnucklesMysticMelody = tpKnuckles.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KnucklesMysticMelody").First();
 
-                    tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowAirShoes").First().Checked = Convert.ToBoolean(shadowAS);
-                    tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowAncientLight").First().Checked = Convert.ToBoolean(shadowAL);
-                    tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowFlameRing").First().Checked = Convert.ToBoolean(shadowFR);
-                    tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowMysticMelody").First().Checked = Convert.ToBoolean(shadowMM);
+                    CheckBox checkb_ShadowAirShoes = tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowAirShoes").First();
+                    CheckBox checkb_ShadowAncientLight = tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowAncientLight").First();
+                    CheckBox checkb_ShadowFlameRing = tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowFlameRing").First();
+                    CheckBox checkb_ShadowMysticMelody = tpShadow.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_ShadowMysticMelody").First();
 
-                    tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanJetEngine").First().Checked = Convert.ToBoolean(eggmanJE);
-                    tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanLargeCannon").First().Checked = Convert.ToBoolean(eggmanLC);
-                    tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanLaserBlaster").First().Checked = Convert.ToBoolean(eggmanLB);
-                    tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanProtectiveArmor").First().Checked = Convert.ToBoolean(eggmanPA);
-                    tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanMysticMelody").First().Checked = Convert.ToBoolean(eggmanMM);
+                    CheckBox checkb_EggmanJetEngine = tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanJetEngine").First();
+                    CheckBox checkb_EggmanLargeCannon = tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanLargeCannon").First();
+                    CheckBox checkb_EggmanLaserBlaster = tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanLaserBlaster").First();
+                    CheckBox checkb_EggmanProtectiveArmor = tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanProtectiveArmor").First();
+                    CheckBox checkb_EggmanMysticMelody = tpEggman.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_EggmanMysticMelody").First();
 
-                    tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougePickNails").First().Checked = Convert.ToBoolean(rougePN);
-                    tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeTreasureScope").First().Checked = Convert.ToBoolean(rougeTS);
-                    tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeIronBoots").First().Checked = Convert.ToBoolean(rougeIB);
-                    tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeMysticMelody").First().Checked = Convert.ToBoolean(rougeMM);
+                    CheckBox checkb_RougePickNails = tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougePickNails").First();
+                    CheckBox checkb_RougeTreasureScope = tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeTreasureScope").First();
+                    CheckBox checkb_RougeIronBoots = tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeIronBoots").First();
+                    CheckBox checkb_RougeMysticMelody = tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeMysticMelody").First();
+
+                    checkb_SonicLightShoes.InvokeCheck(() => checkb_SonicLightShoes.Checked = Convert.ToBoolean(sonicLS));
+                    checkb_SonicAncientLight.InvokeCheck(() => checkb_SonicAncientLight.Checked = Convert.ToBoolean(sonicAL));
+                    checkb_SonicMagicGloves.InvokeCheck(() => checkb_SonicMagicGloves.Checked = Convert.ToBoolean(sonicMG));
+                    checkb_SonicFlameRing.InvokeCheck(() => checkb_SonicFlameRing.Checked = Convert.ToBoolean(sonicFR));
+                    checkb_SonicBounceBracelet.InvokeCheck(() => checkb_SonicBounceBracelet.Checked = Convert.ToBoolean(sonicBB));
+                    checkb_SonicMysticMelody.InvokeCheck(() => checkb_SonicMysticMelody.Checked = Convert.ToBoolean(sonicMM));
+
+                    checkb_TailsBooster.InvokeCheck(() => checkb_TailsBooster.Checked = Convert.ToBoolean(tailsBo));
+                    checkb_TailsBazooka.InvokeCheck(() => checkb_TailsBazooka.Checked = Convert.ToBoolean(tailsBa));
+                    checkb_TailsLaserBlaster.InvokeCheck(() => checkb_TailsLaserBlaster.Checked = Convert.ToBoolean(tailsL));
+                    checkb_TailsMysticMelody.InvokeCheck(() => checkb_TailsMysticMelody.Checked = Convert.ToBoolean(tailsMM));
+
+                    checkb_KnucklesShovelClaw.InvokeCheck(() => checkb_KnucklesShovelClaw.Checked = Convert.ToBoolean(knucklesSC));
+                    checkb_KnucklesSunglasses.InvokeCheck(() => checkb_KnucklesSunglasses.Checked = Convert.ToBoolean(knucklesS));
+                    checkb_KnucklesHammerGloves.InvokeCheck(() => checkb_KnucklesHammerGloves.Checked = Convert.ToBoolean(knucklesHG));
+                    checkb_KnucklesAirNecklace.InvokeCheck(() => checkb_KnucklesAirNecklace.Checked = Convert.ToBoolean(knucklesAN));
+                    checkb_KnucklesMysticMelody.InvokeCheck(() => checkb_KnucklesMysticMelody.Checked = Convert.ToBoolean(knucklesMM));
+
+                    checkb_ShadowAirShoes.InvokeCheck(() => checkb_ShadowAirShoes.Checked = Convert.ToBoolean(shadowAS));
+                    checkb_ShadowAncientLight.InvokeCheck(() => checkb_ShadowAncientLight.Checked = Convert.ToBoolean(shadowAL));
+                    checkb_ShadowFlameRing.InvokeCheck(() => checkb_ShadowFlameRing.Checked = Convert.ToBoolean(shadowFR));
+                    checkb_ShadowMysticMelody.InvokeCheck(() => checkb_ShadowMysticMelody.Checked = Convert.ToBoolean(shadowMM));
+
+                    checkb_EggmanJetEngine.InvokeCheck(() => checkb_EggmanJetEngine.Checked = Convert.ToBoolean(eggmanJE));
+                    checkb_EggmanLargeCannon.InvokeCheck(() => checkb_EggmanLargeCannon.Checked = Convert.ToBoolean(eggmanLC));
+                    checkb_EggmanLaserBlaster.InvokeCheck(() => checkb_EggmanLaserBlaster.Checked = Convert.ToBoolean(eggmanLB));
+                    checkb_EggmanProtectiveArmor.InvokeCheck(() => checkb_EggmanProtectiveArmor.Checked = Convert.ToBoolean(eggmanPA));
+                    checkb_EggmanMysticMelody.InvokeCheck(() => checkb_EggmanMysticMelody.Checked = Convert.ToBoolean(eggmanMM));
+
+                    checkb_RougePickNails.InvokeCheck(() => checkb_RougePickNails.Checked = Convert.ToBoolean(rougePN));
+                    checkb_RougeTreasureScope.InvokeCheck(() => checkb_RougeTreasureScope.Checked = Convert.ToBoolean(rougeTS));
+                    checkb_RougeIronBoots.InvokeCheck(() => checkb_RougeIronBoots.Checked = Convert.ToBoolean(rougeIB));
+                    checkb_RougeMysticMelody.InvokeCheck(() => checkb_RougeMysticMelody.Checked = Convert.ToBoolean(rougeMM));
                 }
             }
 
-            uc_Main ucMain = (uc_Main)Main.tc_Main.Controls[Main.tc_Main.SelectedIndex].Controls[0];
+            int tcIndex = 0;
+            Main.tc_Main.InvokeCheck(() => tcIndex = Main.tc_Main.SelectedIndex);
+            uc_Main ucMain = (uc_Main)Main.tc_Main.Controls[tcIndex].Controls[0];
+            TabControl tcMain = ucMain.Controls.OfType<TabControl>().First().Controls[1].Controls.OfType<TabControl>().First();
+            IEnumerable<TabPage> tpMissions = tcMain.Controls.OfType<TabPage>();
+            uc_MainChao ucMainChao = tpMissions.Where(x => x.Text == "Chao").First().Controls.OfType<uc_MainChao>().First();
 
             //Emblems
             foreach (KeyValuePair<string, uint> keyValuePair in offsets.main.MissionOffsets)
             {
-                uc_Mission uc = new uc_Mission();
-                TabPage tp = new TabPage();
-                uc.mainIndex = ucMain.mainIndex;
-                uc.currentPair = keyValuePair;
+                TabPage currentMissionTab = tpMissions.OfType<TabPage>().Where(x => x.Text == keyValuePair.Key).First();
+                uc_Mission ucCurrentMission = currentMissionTab.Controls.OfType<uc_Mission>().First();
+
                 List<byte> currentMission = new List<byte>();
                 currentMission.AddRange(save.Skip((int)keyValuePair.Value).Take(0xAB));
 
@@ -556,55 +545,85 @@ namespace SA2SaveUtility
                 if (Main.isPC) { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M5S)).Take(4).ToArray(), 0); }
                 else { M5S = BitConverter.ToInt32(currentMission.Skip(Convert.ToInt32(offsets.mission.M5S)).Take(4).Reverse().ToArray(), 0); }
 
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_1R").First().SelectedIndex = M1;
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_2R").First().SelectedIndex = M2;
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_3R").First().SelectedIndex = M3;
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_4R").First().SelectedIndex = M4;
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_5R").First().SelectedIndex = M5;
+                ComboBox cb_1R = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_1R").First();
+                ComboBox cb_2R = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_2R").First();
+                ComboBox cb_3R = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_3R").First();
+                ComboBox cb_4R = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_4R").First();
+                ComboBox cb_5R = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_5R").First();
 
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMM").First().Value = M1MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeSS").First().Value = M1SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMS").First().Value = M1MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMM").First().Value = M2MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeSS").First().Value = M2SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMS").First().Value = M2MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMM").First().Value = M3MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeSS").First().Value = M3SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMS").First().Value = M3MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4TimeMM").First().Value = M4MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4TimeSS").First().Value = M4SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4TimeMS").First().Value = M4MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeMM").First().Value = M5MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeSS").First().Value = M5SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeMS").First().Value = M5MS;
+                NumericUpDown nud_1TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMM").First();
+                NumericUpDown nud_1TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeSS").First();
+                NumericUpDown nud_1TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMS").First();
+                NumericUpDown nud_2TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMM").First();
+                NumericUpDown nud_2TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeSS").First();
+                NumericUpDown nud_2TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMS").First();
+                NumericUpDown nud_3TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMM").First();
+                NumericUpDown nud_3TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeSS").First();
+                NumericUpDown nud_3TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMS").First();
+                NumericUpDown nud_4TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4TimeMM").First();
+                NumericUpDown nud_4TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4TimeSS").First();
+                NumericUpDown nud_4TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4TimeMS").First();
+                NumericUpDown nud_5TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeMM").First();
+                NumericUpDown nud_5TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeSS").First();
+                NumericUpDown nud_5TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5TimeMS").First();
 
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1P").First().Value = M1P;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2P").First().Value = M2P;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3P").First().Value = M3P;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4P").First().Value = M4P;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5P").First().Value = M5P;
+                NumericUpDown nud_1P = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1P").First();
+                NumericUpDown nud_2P = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2P").First();
+                NumericUpDown nud_3P = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3P").First();
+                NumericUpDown nud_4P = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4P").First();
+                NumericUpDown nud_5P = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5P").First();
 
+                NumericUpDown nud_1Rings = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1Rings").First();
+                NumericUpDown nud_4Rings = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4Rings").First();
+                NumericUpDown nud_5Rings = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5Rings").First();
 
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1Rings").First().Value = M1R;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4Rings").First().Value = M4R;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5Rings").First().Value = M5R;
+                NumericUpDown nud_1S = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1S").First();
+                NumericUpDown nud_4S = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4S").First();
+                NumericUpDown nud_5S = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5S").First();
 
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1S").First().Value = M1S;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4S").First().Value = M4S;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5S").First().Value = M5S;
+                cb_1R.InvokeCheck(() => cb_1R.SelectedIndex = M1);
+                cb_2R.InvokeCheck(() => cb_2R.SelectedIndex = M2);
+                cb_3R.InvokeCheck(() => cb_3R.SelectedIndex = M3);
+                cb_4R.InvokeCheck(() => cb_4R.SelectedIndex = M4);
+                cb_5R.InvokeCheck(() => cb_5R.SelectedIndex = M5);
 
-                tp.Controls.Add(uc);
-                tp.Text = keyValuePair.Key;
-                controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tp);
+                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value = M1MM);
+                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value = M1SS);
+                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value = M1MS);
+                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value = M2MM);
+                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value = M2SS);
+                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value = M2MS);
+                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value = M3MM);
+                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value = M3SS);
+                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value = M3MS);
+                nud_4TimeMM.InvokeCheck(() => nud_4TimeMM.Value = M4MM);
+                nud_4TimeSS.InvokeCheck(() => nud_4TimeSS.Value = M4SS);
+                nud_4TimeMS.InvokeCheck(() => nud_4TimeMS.Value = M4MS);
+                nud_5TimeMM.InvokeCheck(() => nud_5TimeMM.Value = M5MM);
+                nud_5TimeSS.InvokeCheck(() => nud_5TimeSS.Value = M5SS);
+                nud_5TimeMS.InvokeCheck(() => nud_5TimeMS.Value = M5MS);
+
+                nud_1P.InvokeCheck(() => nud_1P.Value = M1P);
+                nud_2P.InvokeCheck(() => nud_2P.Value = M2P);
+                nud_3P.InvokeCheck(() => nud_3P.Value = M3P);
+                nud_4P.InvokeCheck(() => nud_4P.Value = M4P);
+                nud_5P.InvokeCheck(() => nud_5P.Value = M5P);
+
+                nud_1Rings.InvokeCheck(() => nud_1Rings.Value = M1R);
+                nud_4Rings.InvokeCheck(() => nud_4Rings.Value = M4R);
+                nud_5Rings.InvokeCheck(() => nud_5Rings.Value = M5R);
+
+                nud_1S.InvokeCheck(() => nud_1S.Value = M1S);
+                nud_4S.InvokeCheck(() => nud_4S.Value = M4S);
+                nud_5S.InvokeCheck(() => nud_5S.Value = M5S);
             }
 
             //Kart
             foreach (KeyValuePair<string, uint> keyValuePair in offsets.main.KartOffsets)
             {
-                uc_Kart uc = new uc_Kart();
-                TabPage tp = new TabPage();
-                uc.mainIndex = ucMain.mainIndex;
-                uc.currentPair = keyValuePair;
+                TabPage currentMissionTab = tpMissions.OfType<TabPage>().Where(x => x.Text == keyValuePair.Key).First();
+                uc_Kart ucCurrentMission = currentMissionTab.Controls.OfType<uc_Kart>().First();
+
                 List<byte> currentMission = new List<byte>();
                 currentMission.AddRange(save.Skip((int)keyValuePair.Value).Take(0x29));
 
@@ -638,33 +657,45 @@ namespace SA2SaveUtility
                 int M3SS = (int)(currentMission[(int)(offsets.kart.ThirdT) + 0x01]);
                 int M3MS = (int)(currentMission[(int)(offsets.kart.ThirdT) + 0x02]);
 
-                uc.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Emblem").First().Checked = Convert.ToBoolean(E);
+                CheckBox checkb_Emblem = ucCurrentMission.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Emblem").First();
 
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_1stCharacter").First().SelectedIndex = M1C;
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_2ndCharacter").First().SelectedIndex = M2C;
-                uc.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_3rdCharacter").First().SelectedIndex = M3C;
+                ComboBox cb_1stCharacter = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_1stCharacter").First();
+                ComboBox cb_2ndCharacter = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_2ndCharacter").First();
+                ComboBox cb_3rdCharacter = ucCurrentMission.Controls.OfType<ComboBox>().Where(x => x.Name == "cb_3rdCharacter").First();
 
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMM").First().Value = M1MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeSS").First().Value = M1SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMS").First().Value = M1MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMM").First().Value = M2MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeSS").First().Value = M2SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMS").First().Value = M2MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMM").First().Value = M3MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeSS").First().Value = M3SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMS").First().Value = M3MS;
+                NumericUpDown nud_1TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMM").First();
+                NumericUpDown nud_1TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeSS").First();
+                NumericUpDown nud_1TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMS").First();
+                NumericUpDown nud_2TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMM").First();
+                NumericUpDown nud_2TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeSS").First();
+                NumericUpDown nud_2TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMS").First();
+                NumericUpDown nud_3TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMM").First();
+                NumericUpDown nud_3TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeSS").First();
+                NumericUpDown nud_3TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMS").First();
 
-                tp.Controls.Add(uc);
-                tp.Text = keyValuePair.Key;
-                controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tp);
+                checkb_Emblem.InvokeCheck(() => checkb_Emblem.Checked = Convert.ToBoolean(E));
+
+                cb_1stCharacter.InvokeCheck(() => cb_1stCharacter.SelectedIndex = M1C);
+                cb_2ndCharacter.InvokeCheck(() => cb_2ndCharacter.SelectedIndex = M2C);
+                cb_3rdCharacter.InvokeCheck(() => cb_3rdCharacter.SelectedIndex = M3C);
+
+                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value = M1MM);
+                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value = M1SS);
+                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value = M1MS);
+                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value = M2MM);
+                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value = M2SS);
+                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value = M2MS);
+                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value = M3MM);
+                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value = M3SS);
+                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value = M3MS);
             }
+
             //Boss
             foreach (KeyValuePair<string, KeyValuePair<uint, uint>> keyValuePair in offsets.main.BossOffsets)
             {
-                uc_Boss uc = new uc_Boss();
-                TabPage tp = new TabPage();
-                uc.mainIndex = ucMain.mainIndex;
-                uc.currentPair = keyValuePair;
+                TabPage currentMissionTab = tpMissions.OfType<TabPage>().Where(x => x.Text == keyValuePair.Key).First();
+                uc_Boss ucCurrentMission = currentMissionTab.Controls.OfType<uc_Boss>().First();
+
                 List<byte> currentMission = new List<byte>();
                 currentMission.AddRange(save.Skip((int)keyValuePair.Value.Key).Take(0x8D));
 
@@ -680,40 +711,51 @@ namespace SA2SaveUtility
                 int M3SS = (int)(currentMission[(int)(offsets.boss.ThirdT) + 0x01]);
                 int M3MS = (int)(currentMission[(int)(offsets.boss.ThirdT) + 0x02]);
 
-                uc.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Emblem").First().Checked = Convert.ToBoolean(E);
+                CheckBox checkb_Emblem = ucCurrentMission.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Emblem").First();
 
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMM").First().Value = M1MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeSS").First().Value = M1SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMS").First().Value = M1MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMM").First().Value = M2MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeSS").First().Value = M2SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMS").First().Value = M2MS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMM").First().Value = M3MM;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeSS").First().Value = M3SS;
-                uc.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMS").First().Value = M3MS;
+                NumericUpDown nud_1TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMM").First();
+                NumericUpDown nud_1TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeSS").First();
+                NumericUpDown nud_1TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_1TimeMS").First();
+                NumericUpDown nud_2TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMM").First();
+                NumericUpDown nud_2TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeSS").First();
+                NumericUpDown nud_2TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_2TimeMS").First();
+                NumericUpDown nud_3TimeMM = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMM").First();
+                NumericUpDown nud_3TimeSS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeSS").First();
+                NumericUpDown nud_3TimeMS = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_3TimeMS").First();
 
-                tp.Controls.Add(uc);
-                tp.Text = keyValuePair.Key;
-                controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tp);
+                checkb_Emblem.InvokeCheck(() => checkb_Emblem.Checked = Convert.ToBoolean(E));
+
+                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value = M1MM);
+                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value = M1SS);
+                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value = M1MS);
+                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value = M2MM);
+                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value = M2SS);
+                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value = M2MS);
+                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value = M3MM);
+                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value = M3SS);
+                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value = M3MS);
             }
 
             //Chao Emblems
-            uc_MainChao ucMC = new uc_MainChao();
-            TabPage tpMC = new TabPage();
-            ucMC.mainIndex = ucMain.mainIndex;
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceBeginner").First().Checked = Convert.ToBoolean(raceB);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceJewel").First().Checked = Convert.ToBoolean(raceJ);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceChallenge").First().Checked = Convert.ToBoolean(raceC);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceHero").First().Checked = Convert.ToBoolean(raceH);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceDark").First().Checked = Convert.ToBoolean(raceD);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateBeginner").First().Checked = Convert.ToBoolean(karateB);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateStandard").First().Checked = Convert.ToBoolean(karateS);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateExpert").First().Checked = Convert.ToBoolean(karateE);
-            ucMC.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateSuper").First().Checked = Convert.ToBoolean(karateSu);
-            tpMC.Controls.Add(ucMC);
-            tpMC.Text = "Chao";
-            controls[1].Controls.OfType<TabControl>().First().TabPages.Add(tpMC);
+            CheckBox checkb_RaceBeginner = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceBeginner").First();
+            CheckBox checkb_RaceJewel = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceJewel").First();
+            CheckBox checkb_RaceChallenge = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceChallenge").First();
+            CheckBox checkb_RaceHero = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceHero").First();
+            CheckBox checkb_RaceDark = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RaceDark").First();
+            CheckBox checkb_KarateBeginner = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateBeginner").First();
+            CheckBox checkb_KarateStandard = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateStandard").First();
+            CheckBox checkb_KarateExpert = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateExpert").First();
+            CheckBox checkb_KarateSuper = ucMainChao.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KarateSuper").First();
 
+            checkb_RaceBeginner.InvokeCheck(() => checkb_RaceBeginner.Checked = Convert.ToBoolean(raceB));
+            checkb_RaceJewel.InvokeCheck(() => checkb_RaceJewel.Checked = Convert.ToBoolean(raceJ));
+            checkb_RaceChallenge.InvokeCheck(() => checkb_RaceChallenge.Checked = Convert.ToBoolean(raceC));
+            checkb_RaceHero.InvokeCheck(() => checkb_RaceHero.Checked = Convert.ToBoolean(raceH));
+            checkb_RaceDark.InvokeCheck(() => checkb_RaceDark.Checked = Convert.ToBoolean(raceD));
+            checkb_KarateBeginner.InvokeCheck(() => checkb_KarateBeginner.Checked = Convert.ToBoolean(karateB));
+            checkb_KarateStandard.InvokeCheck(() => checkb_KarateStandard.Checked = Convert.ToBoolean(karateS));
+            checkb_KarateExpert.InvokeCheck(() => checkb_KarateExpert.Checked = Convert.ToBoolean(karateE));
+            checkb_KarateSuper.InvokeCheck(() => checkb_KarateSuper.Checked = Convert.ToBoolean(karateSu));
         }
 
         public static byte[] ByteSwapMain(byte[] save)
