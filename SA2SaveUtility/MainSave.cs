@@ -279,18 +279,18 @@ namespace SA2SaveUtility
 
             //Main
             CheckBox checkb_GreenHill = controls[0].Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_GreenHill").First();
-            checkb_GreenHill.InvokeCheck(() => checkb_GreenHill.Checked = Convert.ToBoolean(greenH));
+            checkb_GreenHill.InvokeCheck(() => checkb_GreenHill.Checked(Convert.ToBoolean(greenH)));
             foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
             {
                 if (gb.Name == "gb_TotalRings")
                 {
                     NumericUpDown nud_TotalRings = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_TotalRings").First();
-                    nud_TotalRings.InvokeCheck(() => nud_TotalRings.Value = rings);
+                    nud_TotalRings.InvokeCheck(() => nud_TotalRings.Value(rings));
                 }
                 if (gb.Name == "gb_Lives")
                 {
                     NumericUpDown nud_Lives = gb.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_Lives").First();
-                    nud_Lives.InvokeCheck(() => nud_Lives.Value = lives);
+                    nud_Lives.InvokeCheck(() => nud_Lives.Value(lives));
                 }
                 if (gb.Name == "gb_PlayTime")
                 {
@@ -300,9 +300,9 @@ namespace SA2SaveUtility
                     int hours = playTime / 216000;
                     int minutes = (playTime - (hours * 216000)) / 3600;
                     int seconds = ((playTime - (hours * 216000)) - ((playTime - (hours * 21600)) - ((playTime - (hours * 21600)) - minutes * 3600))) / 60;
-                    nud_PlayHour.InvokeCheck(() => nud_PlayHour.Value = hours);
-                    nud_PlayMinute.InvokeCheck(() => nud_PlayMinute.Value = minutes);
-                    nud_PlaySecond.InvokeCheck(() => nud_PlaySecond.Value = seconds);
+                    nud_PlayHour.InvokeCheck(() => nud_PlayHour.Value(hours));
+                    nud_PlayMinute.InvokeCheck(() => nud_PlayMinute.Value(minutes));
+                    nud_PlaySecond.InvokeCheck(() => nud_PlaySecond.Value(seconds));
                 }
                 if (gb.Name == "gb_GCFileNo")
                 {
@@ -313,7 +313,7 @@ namespace SA2SaveUtility
                     if (Main.isGC)
                     {
                         int fileNo = Int32.Parse(Encoding.UTF8.GetString(Main.gcFileBytes).Replace("-", " "));
-                        nud_GCFileNumber.InvokeCheck(() => nud_GCFileNumber.Value = fileNo);
+                        nud_GCFileNumber.InvokeCheck(() => nud_GCFileNumber.Value(fileNo));
                     }
                 }
                 if (gb.Name == "gb_Languages")
@@ -328,8 +328,8 @@ namespace SA2SaveUtility
                             "English"}));
                     }
 
-                    cb_Text.InvokeCheck(() => cb_Text.SelectedIndex = textLang);
-                    cb_Voice.InvokeCheck(() => cb_Voice.SelectedIndex = voiceLang);
+                    cb_Text.InvokeCheck(() => cb_Text.SelectedIndex(textLang));
+                    cb_Voice.InvokeCheck(() => cb_Voice.SelectedIndex(voiceLang));
                 }
                 if (gb.Name == "gb_EmblemTime")
                 {
@@ -339,9 +339,9 @@ namespace SA2SaveUtility
                     int hours = emblemTime / 216000;
                     int minutes = (emblemTime - (hours * 216000)) / 3600;
                     int seconds = ((emblemTime - (hours * 216000)) - ((emblemTime - (hours * 21600)) - ((emblemTime - (hours * 21600)) - minutes * 3600))) / 60;
-                    nud_EmblemHour.InvokeCheck(() => nud_EmblemHour.Value = hours);
-                    nud_EmblemMinute.InvokeCheck(() => nud_EmblemMinute.Value = minutes);
-                    nud_EmblemSecond.InvokeCheck(() => nud_EmblemSecond.Value = seconds);
+                    nud_EmblemHour.InvokeCheck(() => nud_EmblemHour.Value(hours));
+                    nud_EmblemMinute.InvokeCheck(() => nud_EmblemMinute.Value(minutes));
+                    nud_EmblemSecond.InvokeCheck(() => nud_EmblemSecond.Value(seconds));
                 }
                 if (gb.Name == "gb_ChaoWorldCharacters")
                 {
@@ -351,12 +351,12 @@ namespace SA2SaveUtility
                     CheckBox checkb_CWShadow = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWShadow").First();
                     CheckBox checkb_CWEggman = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWEggman").First();
                     CheckBox checkb_CWRouge = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_CWRouge").First();
-                    checkb_CWSonic.InvokeCheck(() => checkb_CWSonic.Checked = Convert.ToBoolean(sonicCW));
-                    checkb_CWTails.InvokeCheck(() => checkb_CWTails.Checked = Convert.ToBoolean(tailsCW));
-                    checkb_CWKnuckles.InvokeCheck(() => checkb_CWKnuckles.Checked = Convert.ToBoolean(knucklesCW));
-                    checkb_CWShadow.InvokeCheck(() => checkb_CWShadow.Checked = Convert.ToBoolean(shadowCW));
-                    checkb_CWEggman.InvokeCheck(() => checkb_CWEggman.Checked = Convert.ToBoolean(eggmanCW));
-                    checkb_CWRouge.InvokeCheck(() => checkb_CWRouge.Checked = Convert.ToBoolean(rougeCW));
+                    checkb_CWSonic.InvokeCheck(() => checkb_CWSonic.Checked(Convert.ToBoolean(sonicCW)));
+                    checkb_CWTails.InvokeCheck(() => checkb_CWTails.Checked(Convert.ToBoolean(tailsCW)));
+                    checkb_CWKnuckles.InvokeCheck(() => checkb_CWKnuckles.Checked(Convert.ToBoolean(knucklesCW)));
+                    checkb_CWShadow.InvokeCheck(() => checkb_CWShadow.Checked(Convert.ToBoolean(shadowCW)));
+                    checkb_CWEggman.InvokeCheck(() => checkb_CWEggman.Checked(Convert.ToBoolean(eggmanCW)));
+                    checkb_CWRouge.InvokeCheck(() => checkb_CWRouge.Checked(Convert.ToBoolean(rougeCW)));
                 }
                 if (gb.Name == "gb_UnlockedKarts")
                 {
@@ -366,12 +366,12 @@ namespace SA2SaveUtility
                     CheckBox checkb_KartEggman = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartEggman").First();
                     CheckBox checkb_KartKnuckles = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartKnuckles").First();
                     CheckBox checkb_KartRouge = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_KartRouge").First();
-                    checkb_KartSonic.InvokeCheck(() => checkb_KartSonic.Checked = Convert.ToBoolean(kartS));
-                    checkb_KartShadow.InvokeCheck(() => checkb_KartShadow.Checked = Convert.ToBoolean(kartSh));
-                    checkb_KartTails.InvokeCheck(() => checkb_KartTails.Checked = Convert.ToBoolean(kartT));
-                    checkb_KartEggman.InvokeCheck(() => checkb_KartEggman.Checked = Convert.ToBoolean(kartE));
-                    checkb_KartKnuckles.InvokeCheck(() => checkb_KartKnuckles.Checked = Convert.ToBoolean(kartK));
-                    checkb_KartRouge.InvokeCheck(() => checkb_KartRouge.Checked = Convert.ToBoolean(kartR));
+                    checkb_KartSonic.InvokeCheck(() => checkb_KartSonic.Checked(Convert.ToBoolean(kartS)));
+                    checkb_KartShadow.InvokeCheck(() => checkb_KartShadow.Checked(Convert.ToBoolean(kartSh)));
+                    checkb_KartTails.InvokeCheck(() => checkb_KartTails.Checked(Convert.ToBoolean(kartT)));
+                    checkb_KartEggman.InvokeCheck(() => checkb_KartEggman.Checked(Convert.ToBoolean(kartE)));
+                    checkb_KartKnuckles.InvokeCheck(() => checkb_KartKnuckles.Checked(Convert.ToBoolean(kartK)));
+                    checkb_KartRouge.InvokeCheck(() => checkb_KartRouge.Checked(Convert.ToBoolean(kartR)));
                 }
                 if (gb.Name == "gb_UnlockedThemes")
                 {
@@ -379,10 +379,10 @@ namespace SA2SaveUtility
                     CheckBox checkb_Maria = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Maria").First();
                     CheckBox checkb_Secretary = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Secretary").First();
                     CheckBox checkb_Omochao = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_Omochao").First();
-                    checkb_Amy.InvokeCheck(() => checkb_Amy.Checked = Convert.ToBoolean(themeA));
-                    checkb_Maria.InvokeCheck(() => checkb_Maria.Checked = Convert.ToBoolean(themeM));
-                    checkb_Secretary.InvokeCheck(() => checkb_Secretary.Checked = Convert.ToBoolean(themeS));
-                    checkb_Omochao.InvokeCheck(() => checkb_Omochao.Checked = Convert.ToBoolean(themeO));
+                    checkb_Amy.InvokeCheck(() => checkb_Amy.Checked(Convert.ToBoolean(themeA)));
+                    checkb_Maria.InvokeCheck(() => checkb_Maria.Checked(Convert.ToBoolean(themeM)));
+                    checkb_Secretary.InvokeCheck(() => checkb_Secretary.Checked(Convert.ToBoolean(themeS)));
+                    checkb_Omochao.InvokeCheck(() => checkb_Omochao.Checked(Convert.ToBoolean(themeO)));
                 }
                 if (gb.Name == "gb_Upgrades")
                 {
@@ -428,39 +428,39 @@ namespace SA2SaveUtility
                     CheckBox checkb_RougeIronBoots = tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeIronBoots").First();
                     CheckBox checkb_RougeMysticMelody = tpRouge.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_RougeMysticMelody").First();
 
-                    checkb_SonicLightShoes.InvokeCheck(() => checkb_SonicLightShoes.Checked = Convert.ToBoolean(sonicLS));
-                    checkb_SonicAncientLight.InvokeCheck(() => checkb_SonicAncientLight.Checked = Convert.ToBoolean(sonicAL));
-                    checkb_SonicMagicGloves.InvokeCheck(() => checkb_SonicMagicGloves.Checked = Convert.ToBoolean(sonicMG));
-                    checkb_SonicFlameRing.InvokeCheck(() => checkb_SonicFlameRing.Checked = Convert.ToBoolean(sonicFR));
-                    checkb_SonicBounceBracelet.InvokeCheck(() => checkb_SonicBounceBracelet.Checked = Convert.ToBoolean(sonicBB));
-                    checkb_SonicMysticMelody.InvokeCheck(() => checkb_SonicMysticMelody.Checked = Convert.ToBoolean(sonicMM));
+                    checkb_SonicLightShoes.InvokeCheck(() => checkb_SonicLightShoes.Checked(Convert.ToBoolean(sonicLS)));
+                    checkb_SonicAncientLight.InvokeCheck(() => checkb_SonicAncientLight.Checked(Convert.ToBoolean(sonicAL)));
+                    checkb_SonicMagicGloves.InvokeCheck(() => checkb_SonicMagicGloves.Checked(Convert.ToBoolean(sonicMG)));
+                    checkb_SonicFlameRing.InvokeCheck(() => checkb_SonicFlameRing.Checked(Convert.ToBoolean(sonicFR)));
+                    checkb_SonicBounceBracelet.InvokeCheck(() => checkb_SonicBounceBracelet.Checked(Convert.ToBoolean(sonicBB)));
+                    checkb_SonicMysticMelody.InvokeCheck(() => checkb_SonicMysticMelody.Checked(Convert.ToBoolean(sonicMM)));
 
-                    checkb_TailsBooster.InvokeCheck(() => checkb_TailsBooster.Checked = Convert.ToBoolean(tailsBo));
-                    checkb_TailsBazooka.InvokeCheck(() => checkb_TailsBazooka.Checked = Convert.ToBoolean(tailsBa));
-                    checkb_TailsLaserBlaster.InvokeCheck(() => checkb_TailsLaserBlaster.Checked = Convert.ToBoolean(tailsL));
-                    checkb_TailsMysticMelody.InvokeCheck(() => checkb_TailsMysticMelody.Checked = Convert.ToBoolean(tailsMM));
+                    checkb_TailsBooster.InvokeCheck(() => checkb_TailsBooster.Checked(Convert.ToBoolean(tailsBo)));
+                    checkb_TailsBazooka.InvokeCheck(() => checkb_TailsBazooka.Checked(Convert.ToBoolean(tailsBa)));
+                    checkb_TailsLaserBlaster.InvokeCheck(() => checkb_TailsLaserBlaster.Checked(Convert.ToBoolean(tailsL)));
+                    checkb_TailsMysticMelody.InvokeCheck(() => checkb_TailsMysticMelody.Checked(Convert.ToBoolean(tailsMM)));
 
-                    checkb_KnucklesShovelClaw.InvokeCheck(() => checkb_KnucklesShovelClaw.Checked = Convert.ToBoolean(knucklesSC));
-                    checkb_KnucklesSunglasses.InvokeCheck(() => checkb_KnucklesSunglasses.Checked = Convert.ToBoolean(knucklesS));
-                    checkb_KnucklesHammerGloves.InvokeCheck(() => checkb_KnucklesHammerGloves.Checked = Convert.ToBoolean(knucklesHG));
-                    checkb_KnucklesAirNecklace.InvokeCheck(() => checkb_KnucklesAirNecklace.Checked = Convert.ToBoolean(knucklesAN));
-                    checkb_KnucklesMysticMelody.InvokeCheck(() => checkb_KnucklesMysticMelody.Checked = Convert.ToBoolean(knucklesMM));
+                    checkb_KnucklesShovelClaw.InvokeCheck(() => checkb_KnucklesShovelClaw.Checked(Convert.ToBoolean(knucklesSC)));
+                    checkb_KnucklesSunglasses.InvokeCheck(() => checkb_KnucklesSunglasses.Checked(Convert.ToBoolean(knucklesS)));
+                    checkb_KnucklesHammerGloves.InvokeCheck(() => checkb_KnucklesHammerGloves.Checked(Convert.ToBoolean(knucklesHG)));
+                    checkb_KnucklesAirNecklace.InvokeCheck(() => checkb_KnucklesAirNecklace.Checked(Convert.ToBoolean(knucklesAN)));
+                    checkb_KnucklesMysticMelody.InvokeCheck(() => checkb_KnucklesMysticMelody.Checked(Convert.ToBoolean(knucklesMM)));
 
-                    checkb_ShadowAirShoes.InvokeCheck(() => checkb_ShadowAirShoes.Checked = Convert.ToBoolean(shadowAS));
-                    checkb_ShadowAncientLight.InvokeCheck(() => checkb_ShadowAncientLight.Checked = Convert.ToBoolean(shadowAL));
-                    checkb_ShadowFlameRing.InvokeCheck(() => checkb_ShadowFlameRing.Checked = Convert.ToBoolean(shadowFR));
-                    checkb_ShadowMysticMelody.InvokeCheck(() => checkb_ShadowMysticMelody.Checked = Convert.ToBoolean(shadowMM));
+                    checkb_ShadowAirShoes.InvokeCheck(() => checkb_ShadowAirShoes.Checked(Convert.ToBoolean(shadowAS)));
+                    checkb_ShadowAncientLight.InvokeCheck(() => checkb_ShadowAncientLight.Checked(Convert.ToBoolean(shadowAL)));
+                    checkb_ShadowFlameRing.InvokeCheck(() => checkb_ShadowFlameRing.Checked(Convert.ToBoolean(shadowFR)));
+                    checkb_ShadowMysticMelody.InvokeCheck(() => checkb_ShadowMysticMelody.Checked(Convert.ToBoolean(shadowMM)));
 
-                    checkb_EggmanJetEngine.InvokeCheck(() => checkb_EggmanJetEngine.Checked = Convert.ToBoolean(eggmanJE));
-                    checkb_EggmanLargeCannon.InvokeCheck(() => checkb_EggmanLargeCannon.Checked = Convert.ToBoolean(eggmanLC));
-                    checkb_EggmanLaserBlaster.InvokeCheck(() => checkb_EggmanLaserBlaster.Checked = Convert.ToBoolean(eggmanLB));
-                    checkb_EggmanProtectiveArmor.InvokeCheck(() => checkb_EggmanProtectiveArmor.Checked = Convert.ToBoolean(eggmanPA));
-                    checkb_EggmanMysticMelody.InvokeCheck(() => checkb_EggmanMysticMelody.Checked = Convert.ToBoolean(eggmanMM));
+                    checkb_EggmanJetEngine.InvokeCheck(() => checkb_EggmanJetEngine.Checked(Convert.ToBoolean(eggmanJE)));
+                    checkb_EggmanLargeCannon.InvokeCheck(() => checkb_EggmanLargeCannon.Checked(Convert.ToBoolean(eggmanLC)));
+                    checkb_EggmanLaserBlaster.InvokeCheck(() => checkb_EggmanLaserBlaster.Checked(Convert.ToBoolean(eggmanLB)));
+                    checkb_EggmanProtectiveArmor.InvokeCheck(() => checkb_EggmanProtectiveArmor.Checked(Convert.ToBoolean(eggmanPA)));
+                    checkb_EggmanMysticMelody.InvokeCheck(() => checkb_EggmanMysticMelody.Checked(Convert.ToBoolean(eggmanMM)));
 
-                    checkb_RougePickNails.InvokeCheck(() => checkb_RougePickNails.Checked = Convert.ToBoolean(rougePN));
-                    checkb_RougeTreasureScope.InvokeCheck(() => checkb_RougeTreasureScope.Checked = Convert.ToBoolean(rougeTS));
-                    checkb_RougeIronBoots.InvokeCheck(() => checkb_RougeIronBoots.Checked = Convert.ToBoolean(rougeIB));
-                    checkb_RougeMysticMelody.InvokeCheck(() => checkb_RougeMysticMelody.Checked = Convert.ToBoolean(rougeMM));
+                    checkb_RougePickNails.InvokeCheck(() => checkb_RougePickNails.Checked(Convert.ToBoolean(rougePN)));
+                    checkb_RougeTreasureScope.InvokeCheck(() => checkb_RougeTreasureScope.Checked(Convert.ToBoolean(rougeTS)));
+                    checkb_RougeIronBoots.InvokeCheck(() => checkb_RougeIronBoots.Checked(Convert.ToBoolean(rougeIB)));
+                    checkb_RougeMysticMelody.InvokeCheck(() => checkb_RougeMysticMelody.Checked(Convert.ToBoolean(rougeMM)));
                 }
             }
 
@@ -581,41 +581,41 @@ namespace SA2SaveUtility
                 NumericUpDown nud_4S = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_4S").First();
                 NumericUpDown nud_5S = ucCurrentMission.Controls.OfType<NumericUpDown>().Where(x => x.Name == "nud_5S").First();
 
-                cb_1R.InvokeCheck(() => cb_1R.SelectedIndex = M1);
-                cb_2R.InvokeCheck(() => cb_2R.SelectedIndex = M2);
-                cb_3R.InvokeCheck(() => cb_3R.SelectedIndex = M3);
-                cb_4R.InvokeCheck(() => cb_4R.SelectedIndex = M4);
-                cb_5R.InvokeCheck(() => cb_5R.SelectedIndex = M5);
+                cb_1R.InvokeCheck(() => cb_1R.SelectedIndex(M1));
+                cb_2R.InvokeCheck(() => cb_2R.SelectedIndex(M2));
+                cb_3R.InvokeCheck(() => cb_3R.SelectedIndex(M3));
+                cb_4R.InvokeCheck(() => cb_4R.SelectedIndex(M4));
+                cb_5R.InvokeCheck(() => cb_5R.SelectedIndex(M5));
 
-                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value = M1MM);
-                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value = M1SS);
-                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value = M1MS);
-                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value = M2MM);
-                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value = M2SS);
-                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value = M2MS);
-                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value = M3MM);
-                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value = M3SS);
-                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value = M3MS);
-                nud_4TimeMM.InvokeCheck(() => nud_4TimeMM.Value = M4MM);
-                nud_4TimeSS.InvokeCheck(() => nud_4TimeSS.Value = M4SS);
-                nud_4TimeMS.InvokeCheck(() => nud_4TimeMS.Value = M4MS);
-                nud_5TimeMM.InvokeCheck(() => nud_5TimeMM.Value = M5MM);
-                nud_5TimeSS.InvokeCheck(() => nud_5TimeSS.Value = M5SS);
-                nud_5TimeMS.InvokeCheck(() => nud_5TimeMS.Value = M5MS);
+                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value(M1MM));
+                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value(M1SS));
+                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value(M1MS));
+                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value(M2MM));
+                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value(M2SS));
+                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value(M2MS));
+                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value(M3MM));
+                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value(M3SS));
+                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value(M3MS));
+                nud_4TimeMM.InvokeCheck(() => nud_4TimeMM.Value(M4MM));
+                nud_4TimeSS.InvokeCheck(() => nud_4TimeSS.Value(M4SS));
+                nud_4TimeMS.InvokeCheck(() => nud_4TimeMS.Value(M4MS));
+                nud_5TimeMM.InvokeCheck(() => nud_5TimeMM.Value(M5MM));
+                nud_5TimeSS.InvokeCheck(() => nud_5TimeSS.Value(M5SS));
+                nud_5TimeMS.InvokeCheck(() => nud_5TimeMS.Value(M5MS));
 
-                nud_1P.InvokeCheck(() => nud_1P.Value = M1P);
-                nud_2P.InvokeCheck(() => nud_2P.Value = M2P);
-                nud_3P.InvokeCheck(() => nud_3P.Value = M3P);
-                nud_4P.InvokeCheck(() => nud_4P.Value = M4P);
-                nud_5P.InvokeCheck(() => nud_5P.Value = M5P);
+                nud_1P.InvokeCheck(() => nud_1P.Value(M1P));
+                nud_2P.InvokeCheck(() => nud_2P.Value(M2P));
+                nud_3P.InvokeCheck(() => nud_3P.Value(M3P));
+                nud_4P.InvokeCheck(() => nud_4P.Value(M4P));
+                nud_5P.InvokeCheck(() => nud_5P.Value(M5P));
 
-                nud_1Rings.InvokeCheck(() => nud_1Rings.Value = M1R);
-                nud_4Rings.InvokeCheck(() => nud_4Rings.Value = M4R);
-                nud_5Rings.InvokeCheck(() => nud_5Rings.Value = M5R);
+                nud_1Rings.InvokeCheck(() => nud_1Rings.Value(M1R));
+                nud_4Rings.InvokeCheck(() => nud_4Rings.Value(M4R));
+                nud_5Rings.InvokeCheck(() => nud_5Rings.Value(M5R));
 
-                nud_1S.InvokeCheck(() => nud_1S.Value = M1S);
-                nud_4S.InvokeCheck(() => nud_4S.Value = M4S);
-                nud_5S.InvokeCheck(() => nud_5S.Value = M5S);
+                nud_1S.InvokeCheck(() => nud_1S.Value(M1S));
+                nud_4S.InvokeCheck(() => nud_4S.Value(M4S));
+                nud_5S.InvokeCheck(() => nud_5S.Value(M5S));
             }
 
             //Kart
@@ -675,19 +675,19 @@ namespace SA2SaveUtility
 
                 checkb_Emblem.InvokeCheck(() => checkb_Emblem.Checked = Convert.ToBoolean(E));
 
-                cb_1stCharacter.InvokeCheck(() => cb_1stCharacter.SelectedIndex = M1C);
-                cb_2ndCharacter.InvokeCheck(() => cb_2ndCharacter.SelectedIndex = M2C);
-                cb_3rdCharacter.InvokeCheck(() => cb_3rdCharacter.SelectedIndex = M3C);
+                cb_1stCharacter.InvokeCheck(() => cb_1stCharacter.SelectedIndex(M1C));
+                cb_2ndCharacter.InvokeCheck(() => cb_2ndCharacter.SelectedIndex(M2C));
+                cb_3rdCharacter.InvokeCheck(() => cb_3rdCharacter.SelectedIndex(M3C));
 
-                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value = M1MM);
-                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value = M1SS);
-                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value = M1MS);
-                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value = M2MM);
-                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value = M2SS);
-                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value = M2MS);
-                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value = M3MM);
-                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value = M3SS);
-                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value = M3MS);
+                nud_1TimeMM.InvokeCheck(() => nud_1TimeMM.Value(M1MM));
+                nud_1TimeSS.InvokeCheck(() => nud_1TimeSS.Value(M1SS));
+                nud_1TimeMS.InvokeCheck(() => nud_1TimeMS.Value(M1MS));
+                nud_2TimeMM.InvokeCheck(() => nud_2TimeMM.Value(M2MM));
+                nud_2TimeSS.InvokeCheck(() => nud_2TimeSS.Value(M2SS));
+                nud_2TimeMS.InvokeCheck(() => nud_2TimeMS.Value(M2MS));
+                nud_3TimeMM.InvokeCheck(() => nud_3TimeMM.Value(M3MM));
+                nud_3TimeSS.InvokeCheck(() => nud_3TimeSS.Value(M3SS));
+                nud_3TimeMS.InvokeCheck(() => nud_3TimeMS.Value(M3MS));
             }
 
             //Boss

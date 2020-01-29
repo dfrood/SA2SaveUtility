@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomBehaviours.cs" />
     <Compile Include="InvokeChecker.cs" />
     <Compile Include="PopulateChaoMsgBox.cs">
       <SubType>Form</SubType>

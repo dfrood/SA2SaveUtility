@@ -208,8 +208,10 @@ namespace SA2SaveUtility
 
         private void Cb_RunGrade_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunGrade)] = (byte)cb_RunGrade.SelectedIndex; }
-            else { Memory.WriteByteAtAddress((int)(offsets.chaoMemoryStart + (0x800 * chaoNumber) + offsets.chao.RunGrade), (byte)cb_RunGrade.SelectedIndex); }
+            int grade = cb_RunGrade.SelectedIndex;
+            if (grade == 6) { grade = 7; }
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.RunGrade)] = (byte)grade; }
+            else { Memory.WriteByteAtAddress((int)(offsets.chaoMemoryStart + (0x800 * chaoNumber) + offsets.chao.RunGrade), (byte)grade); }
         }
 
         private void Cb_PowerGrade_SelectedIndexChanged(object sender, EventArgs e)
@@ -1100,8 +1102,10 @@ namespace SA2SaveUtility
 
         private void Cb_Run1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade1)] = (byte)cb_Run1.SelectedIndex; }
-            else { Memory.WriteByteAtAddress((int)(offsets.chaoMemoryStart + (0x800 * chaoNumber) + offsets.chao.DNARunGrade1), (byte)cb_Run1.SelectedIndex); }
+            int grade = cb_Run1.SelectedIndex;
+            if (grade == 6) { grade = 7; }
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade1)] = (byte)grade; }
+            else { Memory.WriteByteAtAddress((int)(offsets.chaoMemoryStart + (0x800 * chaoNumber) + offsets.chao.DNARunGrade1), (byte)grade); }
         }
 
         private void Cb_Power1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1130,8 +1134,10 @@ namespace SA2SaveUtility
 
         private void Cb_Run2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade2)] = (byte)cb_Run2.SelectedIndex; }
-            else { Memory.WriteByteAtAddress((int)(offsets.chaoMemoryStart + (0x800 * chaoNumber) + offsets.chao.DNARunGrade2), (byte)cb_Run2.SelectedIndex); }
+            int grade = cb_Run2.SelectedIndex;
+            if (grade == 6) { grade = 7; }
+            if (!Main.isRTE) { Main.loadedSave[(int)(chaoBeginning + (0x800 * chaoNumber) + offsets.chao.DNARunGrade2)] = (byte)grade; }
+            else { Memory.WriteByteAtAddress((int)(offsets.chaoMemoryStart + (0x800 * chaoNumber) + offsets.chao.DNARunGrade2), (byte)grade); }
         }
 
         private void Cb_Power2_SelectedIndexChanged(object sender, EventArgs e)

@@ -30,6 +30,7 @@
         {
             this.tc_Chao = new System.Windows.Forms.TabControl();
             this.tp_General = new System.Windows.Forms.TabPage();
+            this.checkb_InitChao = new System.Windows.Forms.CheckBox();
             this.tc_AnimalBehaviours = new System.Windows.Forms.TabControl();
             this.tp_SAAnimalBehaviours = new System.Windows.Forms.TabPage();
             this.checkb_SASkunk = new System.Windows.Forms.CheckBox();
@@ -343,7 +344,6 @@
             this.lb_Fly1 = new System.Windows.Forms.Label();
             this.lb_Swim1 = new System.Windows.Forms.Label();
             this.cb_Swim1 = new System.Windows.Forms.ComboBox();
-            this.checkb_InitChao = new System.Windows.Forms.CheckBox();
             this.tc_Chao.SuspendLayout();
             this.tp_General.SuspendLayout();
             this.tc_AnimalBehaviours.SuspendLayout();
@@ -461,6 +461,17 @@
             this.tp_General.Size = new System.Drawing.Size(560, 190);
             this.tp_General.TabIndex = 0;
             this.tp_General.Text = "General";
+            // 
+            // checkb_InitChao
+            // 
+            this.checkb_InitChao.AutoSize = true;
+            this.checkb_InitChao.Location = new System.Drawing.Point(9, 170);
+            this.checkb_InitChao.Name = "checkb_InitChao";
+            this.checkb_InitChao.Size = new System.Drawing.Size(15, 14);
+            this.checkb_InitChao.TabIndex = 29;
+            this.checkb_InitChao.UseVisualStyleBackColor = true;
+            this.checkb_InitChao.Visible = false;
+            this.checkb_InitChao.CheckedChanged += new System.EventHandler(this.Checkb_InitChao_CheckedChanged);
             // 
             // tc_AnimalBehaviours
             // 
@@ -1540,10 +1551,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_StaminaGrade.Location = new System.Drawing.Point(312, 156);
             this.cb_StaminaGrade.Name = "cb_StaminaGrade";
-            this.cb_StaminaGrade.Size = new System.Drawing.Size(35, 21);
+            this.cb_StaminaGrade.Size = new System.Drawing.Size(70, 21);
             this.cb_StaminaGrade.TabIndex = 58;
             this.cb_StaminaGrade.SelectedIndexChanged += new System.EventHandler(this.Cb_StaminaGrade_SelectedIndexChanged);
             // 
@@ -1557,10 +1569,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_PowerGrade.Location = new System.Drawing.Point(235, 156);
             this.cb_PowerGrade.Name = "cb_PowerGrade";
-            this.cb_PowerGrade.Size = new System.Drawing.Size(35, 21);
+            this.cb_PowerGrade.Size = new System.Drawing.Size(70, 21);
             this.cb_PowerGrade.TabIndex = 57;
             this.cb_PowerGrade.SelectedIndexChanged += new System.EventHandler(this.Cb_PowerGrade_SelectedIndexChanged);
             // 
@@ -1574,10 +1587,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_RunGrade.Location = new System.Drawing.Point(161, 156);
             this.cb_RunGrade.Name = "cb_RunGrade";
-            this.cb_RunGrade.Size = new System.Drawing.Size(35, 21);
+            this.cb_RunGrade.Size = new System.Drawing.Size(70, 21);
             this.cb_RunGrade.TabIndex = 56;
             this.cb_RunGrade.SelectedIndexChanged += new System.EventHandler(this.Cb_RunGrade_SelectedIndexChanged);
             // 
@@ -1591,10 +1605,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_FlyGrade.Location = new System.Drawing.Point(85, 156);
             this.cb_FlyGrade.Name = "cb_FlyGrade";
-            this.cb_FlyGrade.Size = new System.Drawing.Size(35, 21);
+            this.cb_FlyGrade.Size = new System.Drawing.Size(70, 21);
             this.cb_FlyGrade.TabIndex = 55;
             this.cb_FlyGrade.SelectedIndexChanged += new System.EventHandler(this.Cb_FlyGrade_SelectedIndexChanged);
             // 
@@ -1671,10 +1686,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_SwimGrade.Location = new System.Drawing.Point(9, 156);
             this.cb_SwimGrade.Name = "cb_SwimGrade";
-            this.cb_SwimGrade.Size = new System.Drawing.Size(35, 21);
+            this.cb_SwimGrade.Size = new System.Drawing.Size(70, 21);
             this.cb_SwimGrade.TabIndex = 47;
             this.cb_SwimGrade.SelectedIndexChanged += new System.EventHandler(this.Cb_SwimGrade_SelectedIndexChanged);
             // 
@@ -3343,8 +3359,8 @@
             this.trackb_Lifespan2.SmallChange = 5;
             this.trackb_Lifespan2.TabIndex = 20;
             this.trackb_Lifespan2.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackb_Lifespan2.Scroll += new System.EventHandler(this.Trackb_Lifespan2_Scroll);
             this.trackb_Lifespan2.Value = 5000;
+            this.trackb_Lifespan2.Scroll += new System.EventHandler(this.Trackb_Lifespan2_Scroll);
             // 
             // lb_Lifespan1
             // 
@@ -3365,8 +3381,8 @@
             this.trackb_Lifespan1.SmallChange = 5;
             this.trackb_Lifespan1.TabIndex = 18;
             this.trackb_Lifespan1.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackb_Lifespan1.Scroll += new System.EventHandler(this.Trackb_Lifespan1_Scroll);
             this.trackb_Lifespan1.Value = 5000;
+            this.trackb_Lifespan1.Scroll += new System.EventHandler(this.Trackb_Lifespan1_Scroll);
             // 
             // lb_TransformationMagnitudeUpper
             // 
@@ -5513,10 +5529,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Stamina2.Location = new System.Drawing.Point(186, 67);
             this.cb_Stamina2.Name = "cb_Stamina2";
-            this.cb_Stamina2.Size = new System.Drawing.Size(35, 21);
+            this.cb_Stamina2.Size = new System.Drawing.Size(70, 21);
             this.cb_Stamina2.TabIndex = 86;
             this.cb_Stamina2.SelectedIndexChanged += new System.EventHandler(this.Cb_Stamina2_SelectedIndexChanged);
             // 
@@ -5557,10 +5574,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Power2.Location = new System.Drawing.Point(91, 159);
             this.cb_Power2.Name = "cb_Power2";
-            this.cb_Power2.Size = new System.Drawing.Size(35, 21);
+            this.cb_Power2.Size = new System.Drawing.Size(70, 21);
             this.cb_Power2.TabIndex = 82;
             this.cb_Power2.SelectedIndexChanged += new System.EventHandler(this.Cb_Power2_SelectedIndexChanged);
             // 
@@ -5574,10 +5592,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Run2.Location = new System.Drawing.Point(91, 67);
             this.cb_Run2.Name = "cb_Run2";
-            this.cb_Run2.Size = new System.Drawing.Size(35, 21);
+            this.cb_Run2.Size = new System.Drawing.Size(70, 21);
             this.cb_Run2.TabIndex = 81;
             this.cb_Run2.SelectedIndexChanged += new System.EventHandler(this.Cb_Run2_SelectedIndexChanged);
             // 
@@ -5591,10 +5610,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Fly2.Location = new System.Drawing.Point(6, 159);
             this.cb_Fly2.Name = "cb_Fly2";
-            this.cb_Fly2.Size = new System.Drawing.Size(35, 21);
+            this.cb_Fly2.Size = new System.Drawing.Size(70, 21);
             this.cb_Fly2.TabIndex = 80;
             this.cb_Fly2.SelectedIndexChanged += new System.EventHandler(this.Cb_Fly2_SelectedIndexChanged);
             // 
@@ -5644,10 +5664,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Swim2.Location = new System.Drawing.Point(6, 67);
             this.cb_Swim2.Name = "cb_Swim2";
-            this.cb_Swim2.Size = new System.Drawing.Size(35, 21);
+            this.cb_Swim2.Size = new System.Drawing.Size(70, 21);
             this.cb_Swim2.TabIndex = 75;
             this.cb_Swim2.SelectedIndexChanged += new System.EventHandler(this.Cb_Swim2_SelectedIndexChanged);
             // 
@@ -5661,10 +5682,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Stamina1.Location = new System.Drawing.Point(186, 21);
             this.cb_Stamina1.Name = "cb_Stamina1";
-            this.cb_Stamina1.Size = new System.Drawing.Size(35, 21);
+            this.cb_Stamina1.Size = new System.Drawing.Size(70, 21);
             this.cb_Stamina1.TabIndex = 72;
             this.cb_Stamina1.SelectedIndexChanged += new System.EventHandler(this.Cb_Stamina1_SelectedIndexChanged);
             // 
@@ -5678,10 +5700,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Power1.Location = new System.Drawing.Point(91, 113);
             this.cb_Power1.Name = "cb_Power1";
-            this.cb_Power1.Size = new System.Drawing.Size(35, 21);
+            this.cb_Power1.Size = new System.Drawing.Size(70, 21);
             this.cb_Power1.TabIndex = 71;
             this.cb_Power1.SelectedIndexChanged += new System.EventHandler(this.Cb_Power1_SelectedIndexChanged);
             // 
@@ -5695,10 +5718,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Run1.Location = new System.Drawing.Point(91, 21);
             this.cb_Run1.Name = "cb_Run1";
-            this.cb_Run1.Size = new System.Drawing.Size(35, 21);
+            this.cb_Run1.Size = new System.Drawing.Size(70, 21);
             this.cb_Run1.TabIndex = 70;
             this.cb_Run1.SelectedIndexChanged += new System.EventHandler(this.Cb_Run1_SelectedIndexChanged);
             // 
@@ -5712,10 +5736,11 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Fly1.Location = new System.Drawing.Point(6, 113);
             this.cb_Fly1.Name = "cb_Fly1";
-            this.cb_Fly1.Size = new System.Drawing.Size(35, 21);
+            this.cb_Fly1.Size = new System.Drawing.Size(70, 21);
             this.cb_Fly1.TabIndex = 69;
             this.cb_Fly1.SelectedIndexChanged += new System.EventHandler(this.Cb_Fly1_SelectedIndexChanged);
             // 
@@ -5792,23 +5817,13 @@
             "C",
             "B",
             "A",
-            "S"});
+            "S",
+            "X [CWE]"});
             this.cb_Swim1.Location = new System.Drawing.Point(6, 21);
             this.cb_Swim1.Name = "cb_Swim1";
-            this.cb_Swim1.Size = new System.Drawing.Size(35, 21);
+            this.cb_Swim1.Size = new System.Drawing.Size(70, 21);
             this.cb_Swim1.TabIndex = 61;
             this.cb_Swim1.SelectedIndexChanged += new System.EventHandler(this.Cb_Swim1_SelectedIndexChanged);
-            // 
-            // checkb_InitChao
-            // 
-            this.checkb_InitChao.AutoSize = true;
-            this.checkb_InitChao.Location = new System.Drawing.Point(9, 170);
-            this.checkb_InitChao.Name = "checkb_InitChao";
-            this.checkb_InitChao.Size = new System.Drawing.Size(15, 14);
-            this.checkb_InitChao.TabIndex = 29;
-            this.checkb_InitChao.UseVisualStyleBackColor = true;
-            this.checkb_InitChao.Visible = false;
-            this.checkb_InitChao.CheckedChanged += new System.EventHandler(this.Checkb_InitChao_CheckedChanged);
             // 
             // uc_Chao
             // 
