@@ -108,7 +108,12 @@ namespace SA2SaveUtility
             { "Red Fruit", 19 },
             { "Smart Fruit", 12 },
             { "Mint Candy", 22 },
-            { "Grapes", 23 }
+            { "Grapes", 23 },
+            { "Hyper Swim Fruit [CWE]", 29 },
+            { "Hyper Fly Fruit [CWE]", 30 },
+            { "Hyper Run Fruit [CWE]", 31 },
+            { "Hyper Power Fruit [CWE]", 32 },
+            { "Shiny Fruit [CWE]", 33 }
         };
 
         public List<string> Seed = new List<string>(new string[]{
@@ -205,7 +210,19 @@ namespace SA2SaveUtility
             "Pearl Egg Shell",
             "Metal 1 Egg Shell",
             "Metal 2 Egg Shell",
-            "Glass Egg Shell"
+            "Glass Egg Shell",
+            "Default Lens [CWE]",
+            "Neutral Lens [CWE]",
+            "Hero Lens [CWE]",
+            "Dark Lens [CWE]",
+            "Green Lens [CWE]",
+            "Magenta Lens [CWE]",
+            "Purple Lens [CWE]",
+            "Red Lens [CWE]",
+            "Yellow Lens [CWE]",
+            "Spartoi Lens [CWE]",
+            "Snake Lens [CWE]",
+            "Robot Lens [CWE]"
         });
 
         public List<string> Themes = new List<string>(new string[]{
@@ -217,807 +234,1617 @@ namespace SA2SaveUtility
         public MarketItems()
         {
             InitializeComponent();
-            if (Main.isPC) { itemCount = Main.loadedSave[offsets.chaoSave.MarketCount]; }
+            if (Main.isPC)
+            {
+                if (Main.isRTE) { itemCount = Memory.ReadBytes((int)offsets.chaoSave.MarketCountRTE, 1)[0]; }
+                else { itemCount = Main.loadedSave[offsets.chaoSave.MarketCount]; }
+            }
             else { itemCount = Main.loadedSave[offsets.chaoSave.MarketCount + 3]; }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart])
+            if (Main.isRTE)
             {
-                case 255:
-                    cb_Category1.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = 0;
-                    break;
-                case 0:
-                    cb_Category1.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category1.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category1.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category1.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category1.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category1.SelectedIndex = 4;
-                    break;
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE, 1)[0])
+                {
+                    case 255:
+                        cb_Category1.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 1, 0);
+                        break;
+                    case 0:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category1.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category1.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category1.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category1.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 2, 1)[0])
+                {
+                    case 255:
+                        cb_Category2.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 3, 0);
+                        break;
+                    case 0:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category2.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category2.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category2.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category2.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 4, 1)[0])
+                {
+                    case 255:
+                        cb_Category3.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 5, 0);
+                        break;
+                    case 0:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category3.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category3.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category3.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category3.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 6, 1)[0])
+                {
+                    case 255:
+                        cb_Category4.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 7, 0);
+                        break;
+                    case 0:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category4.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category4.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category4.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category4.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 8, 1)[0])
+                {
+                    case 255:
+                        cb_Category5.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 9, 0);
+                        break;
+                    case 0:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category5.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category5.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category5.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category5.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 10, 1)[0])
+                {
+                    case 255:
+                        cb_Category6.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 11, 0);
+                        break;
+                    case 0:
+                        cb_Category6.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category6.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category6.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category6.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category6.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category6.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 12, 1)[0])
+                {
+                    case 255:
+                        cb_Category7.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 13, 0);
+                        break;
+                    case 0:
+                        cb_Category7.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category7.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category7.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category7.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category7.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category7.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 14, 1)[0])
+                {
+                    case 255:
+                        cb_Category8.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 15, 0);
+                        break;
+                    case 0:
+                        cb_Category8.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category8.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category8.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category8.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category8.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category8.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 16, 1)[0])
+                {
+                    case 255:
+                        cb_Category9.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 17, 0);
+                        break;
+                    case 0:
+                        cb_Category9.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category9.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category9.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category9.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category9.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category9.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 18, 1)[0])
+                {
+                    case 255:
+                        cb_Category10.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 19, 0);
+                        break;
+                    case 0:
+                        cb_Category10.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category10.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category10.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category10.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category10.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category10.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 20, 1)[0])
+                {
+                    case 255:
+                        cb_Category11.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 21, 0);
+                        break;
+                    case 0:
+                        cb_Category11.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category11.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category11.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category11.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category11.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category11.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 22, 1)[0])
+                {
+                    case 255:
+                        cb_Category12.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 23, 0);
+                        break;
+                    case 0:
+                        cb_Category12.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category12.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category12.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category12.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category12.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category12.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 24, 1)[0])
+                {
+                    case 255:
+                        cb_Category13.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 25, 0);
+                        break;
+                    case 0:
+                        cb_Category13.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category13.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category13.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category13.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category13.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category13.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 26, 1)[0])
+                {
+                    case 255:
+                        cb_Category14.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 27, 0);
+                        break;
+                    case 0:
+                        cb_Category14.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category14.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category14.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category14.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category14.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category14.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 28, 1)[0])
+                {
+                    case 255:
+                        cb_Category15.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 29, 0);
+                        break;
+                    case 0:
+                        cb_Category15.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category15.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category15.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category15.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category15.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category15.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 30, 1)[0])
+                {
+                    case 255:
+                        cb_Category16.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 31, 0);
+                        break;
+                    case 0:
+                        cb_Category16.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category16.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category16.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category16.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category16.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category16.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 32, 1)[0])
+                {
+                    case 255:
+                        cb_Category17.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 33, 0);
+                        break;
+                    case 0:
+                        cb_Category17.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category17.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category17.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category17.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category17.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category17.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 34, 1)[0])
+                {
+                    case 255:
+                        cb_Category18.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 35, 0);
+                        break;
+                    case 0:
+                        cb_Category18.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category18.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category18.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category18.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category18.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category18.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 36, 1)[0])
+                {
+                    case 255:
+                        cb_Category19.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 37, 0);
+                        break;
+                    case 0:
+                        cb_Category19.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category19.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category19.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category19.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category19.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category19.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 38, 1)[0])
+                {
+                    case 255:
+                        cb_Category20.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 39, 0);
+                        break;
+                    case 0:
+                        cb_Category20.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category20.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category20.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category20.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category20.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category20.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 40, 1)[0])
+                {
+                    case 255:
+                        cb_Category21.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 41, 0);
+                        break;
+                    case 0:
+                        cb_Category21.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category21.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category21.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category21.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category21.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category21.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 42, 1)[0])
+                {
+                    case 255:
+                        cb_Category22.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 43, 0);
+                        break;
+                    case 0:
+                        cb_Category22.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category22.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category22.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category22.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category22.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category22.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 44, 1)[0])
+                {
+                    case 255:
+                        cb_Category23.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 45, 0);
+                        break;
+                    case 0:
+                        cb_Category23.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category23.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category23.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category23.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category23.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category23.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 46, 1)[0])
+                {
+                    case 255:
+                        cb_Category24.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 47, 0);
+                        break;
+                    case 0:
+                        cb_Category24.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category24.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category24.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category24.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category24.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category24.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 48, 1)[0])
+                {
+                    case 255:
+                        cb_Category25.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 49, 0);
+                        break;
+                    case 0:
+                        cb_Category25.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category25.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category25.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category25.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category25.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category25.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 50, 1)[0])
+                {
+                    case 255:
+                        cb_Category26.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 51, 0);
+                        break;
+                    case 0:
+                        cb_Category26.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category26.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category26.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category26.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category26.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category26.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 52, 1)[0])
+                {
+                    case 255:
+                        cb_Category27.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 53, 0);
+                        break;
+                    case 0:
+                        cb_Category27.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category27.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category27.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category27.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category27.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category27.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 54, 1)[0])
+                {
+                    case 255:
+                        cb_Category28.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 55, 0);
+                        break;
+                    case 0:
+                        cb_Category28.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category28.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category28.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category28.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category28.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category28.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 56, 1)[0])
+                {
+                    case 255:
+                        cb_Category29.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 57, 0);
+                        break;
+                    case 0:
+                        cb_Category29.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category29.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category29.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category29.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category29.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category29.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 58, 1)[0])
+                {
+                    case 255:
+                        cb_Category30.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 59, 0);
+                        break;
+                    case 0:
+                        cb_Category30.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category30.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category30.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category30.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category30.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category30.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 60, 1)[0])
+                {
+                    case 255:
+                        cb_Category31.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 61, 0);
+                        break;
+                    case 0:
+                        cb_Category31.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category31.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category31.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category31.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category31.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category31.SelectedIndex = 4;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 62, 1)[0])
+                {
+                    case 255:
+                        cb_Category32.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 63, 0);
+                        break;
+                    case 0:
+                        cb_Category32.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category32.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category32.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category32.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category32.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category32.SelectedIndex = 4;
+                        break;
+                }
             }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2])
+            else
             {
-                case 255:
-                    cb_Category2.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = 0;
-                    break;
-                case 0:
-                    cb_Category2.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category2.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category2.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category2.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category2.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category2.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4])
-            {
-                case 255:
-                    cb_Category3.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = 0;
-                    break;
-                case 0:
-                    cb_Category3.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category3.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category3.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category3.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category3.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category3.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6])
-            {
-                case 255:
-                    cb_Category4.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = 0;
-                    break;
-                case 0:
-                    cb_Category4.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category4.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category4.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category4.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category4.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category4.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8])
-            {
-                case 255:
-                    cb_Category5.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = 0;
-                    break;
-                case 0:
-                    cb_Category5.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category5.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category5.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category5.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category5.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category5.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10])
-            {
-                case 255:
-                    cb_Category6.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = 0;
-                    break;
-                case 0:
-                    cb_Category6.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category6.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category6.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category6.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category6.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category6.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12])
-            {
-                case 255:
-                    cb_Category7.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = 0;
-                    break;
-                case 0:
-                    cb_Category7.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category7.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category7.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category7.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category7.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category7.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14])
-            {
-                case 255:
-                    cb_Category8.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = 0;
-                    break;
-                case 0:
-                    cb_Category8.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category8.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category8.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category8.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category8.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category8.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16])
-            {
-                case 255:
-                    cb_Category9.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = 0;
-                    break;
-                case 0:
-                    cb_Category9.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category9.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category9.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category9.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category9.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category9.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18])
-            {
-                case 255:
-                    cb_Category10.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = 0;
-                    break;
-                case 0:
-                    cb_Category10.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category10.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category10.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category10.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category10.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category10.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20])
-            {
-                case 255:
-                    cb_Category11.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = 0;
-                    break;
-                case 0:
-                    cb_Category11.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category11.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category11.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category11.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category11.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category11.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22])
-            {
-                case 255:
-                    cb_Category12.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 0;
-                    break;
-                case 0:
-                    cb_Category12.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category12.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category12.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category12.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category12.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category12.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24])
-            {
-                case 255:
-                    cb_Category13.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = 0;
-                    break;
-                case 0:
-                    cb_Category13.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category13.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category13.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category13.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category13.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category13.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26])
-            {
-                case 255:
-                    cb_Category14.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = 0;
-                    break;
-                case 0:
-                    cb_Category14.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category14.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category14.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category14.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category14.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category14.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28])
-            {
-                case 255:
-                    cb_Category15.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = 0;
-                    break;
-                case 0:
-                    cb_Category15.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category15.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category15.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category15.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category15.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category15.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30])
-            {
-                case 255:
-                    cb_Category16.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = 0;
-                    break;
-                case 0:
-                    cb_Category16.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category16.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category16.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category16.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category16.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category16.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32])
-            {
-                case 255:
-                    cb_Category17.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = 0;
-                    break;
-                case 0:
-                    cb_Category17.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category17.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category17.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category17.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category17.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category17.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34])
-            {
-                case 255:
-                    cb_Category18.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = 0;
-                    break;
-                case 0:
-                    cb_Category18.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category18.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category18.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category18.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category18.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category18.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36])
-            {
-                case 255:
-                    cb_Category19.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = 0;
-                    break;
-                case 0:
-                    cb_Category19.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category19.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category19.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category19.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category19.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category19.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38])
-            {
-                case 255:
-                    cb_Category20.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = 0;
-                    break;
-                case 0:
-                    cb_Category20.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category20.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category20.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category20.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category20.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category20.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40])
-            {
-                case 255:
-                    cb_Category21.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = 0;
-                    break;
-                case 0:
-                    cb_Category21.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category21.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category21.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category21.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category21.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category21.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42])
-            {
-                case 255:
-                    cb_Category22.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = 0;
-                    break;
-                case 0:
-                    cb_Category22.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category22.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category22.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category22.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category22.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category22.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44])
-            {
-                case 255:
-                    cb_Category23.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = 0;
-                    break;
-                case 0:
-                    cb_Category23.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category23.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category23.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category23.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category23.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category23.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46])
-            {
-                case 255:
-                    cb_Category24.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = 0;
-                    break;
-                case 0:
-                    cb_Category24.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category24.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category24.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category24.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category24.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category24.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48])
-            {
-                case 255:
-                    cb_Category25.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = 0;
-                    break;
-                case 0:
-                    cb_Category25.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category25.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category25.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category25.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category25.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category25.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50])
-            {
-                case 255:
-                    cb_Category26.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = 0;
-                    break;
-                case 0:
-                    cb_Category26.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category26.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category26.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category26.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category26.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category26.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52])
-            {
-                case 255:
-                    cb_Category27.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = 0;
-                    break;
-                case 0:
-                    cb_Category27.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category27.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category27.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category27.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category27.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category27.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54])
-            {
-                case 255:
-                    cb_Category28.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = 0;
-                    break;
-                case 0:
-                    cb_Category28.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category28.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category28.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category28.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category28.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category28.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56])
-            {
-                case 255:
-                    cb_Category29.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = 0;
-                    break;
-                case 0:
-                    cb_Category29.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category29.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category29.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category29.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category29.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category29.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58])
-            {
-                case 255:
-                    cb_Category30.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = 0;
-                    break;
-                case 0:
-                    cb_Category30.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category30.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category30.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category30.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category30.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category30.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60])
-            {
-                case 255:
-                    cb_Category31.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = 0;
-                    break;
-                case 0:
-                    cb_Category31.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category31.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category31.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category31.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category31.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category31.SelectedIndex = 4;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62])
-            {
-                case 255:
-                    cb_Category32.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = 0;
-                    break;
-                case 0:
-                    cb_Category32.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category32.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category32.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category32.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category32.SelectedIndex = 3;
-                    break;
-                case 16:
-                    cb_Category32.SelectedIndex = 4;
-                    break;
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart])
+                {
+                    case 255:
+                        cb_Category1.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = 0;
+                        break;
+                    case 0:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category1.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category1.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category1.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category1.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2])
+                {
+                    case 255:
+                        cb_Category2.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = 0;
+                        break;
+                    case 0:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category2.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category2.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category2.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category2.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4])
+                {
+                    case 255:
+                        cb_Category3.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = 0;
+                        break;
+                    case 0:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category3.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category3.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category3.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category3.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6])
+                {
+                    case 255:
+                        cb_Category4.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = 0;
+                        break;
+                    case 0:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category4.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category4.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category4.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category4.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8])
+                {
+                    case 255:
+                        cb_Category5.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = 0;
+                        break;
+                    case 0:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category5.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category5.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category5.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category5.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10])
+                {
+                    case 255:
+                        cb_Category6.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = 0;
+                        break;
+                    case 0:
+                        cb_Category6.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category6.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category6.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category6.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category6.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category6.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12])
+                {
+                    case 255:
+                        cb_Category7.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = 0;
+                        break;
+                    case 0:
+                        cb_Category7.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category7.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category7.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category7.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category7.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category7.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14])
+                {
+                    case 255:
+                        cb_Category8.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = 0;
+                        break;
+                    case 0:
+                        cb_Category8.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category8.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category8.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category8.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category8.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category8.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16])
+                {
+                    case 255:
+                        cb_Category9.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = 0;
+                        break;
+                    case 0:
+                        cb_Category9.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category9.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category9.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category9.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category9.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category9.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18])
+                {
+                    case 255:
+                        cb_Category10.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = 0;
+                        break;
+                    case 0:
+                        cb_Category10.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category10.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category10.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category10.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category10.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category10.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20])
+                {
+                    case 255:
+                        cb_Category11.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = 0;
+                        break;
+                    case 0:
+                        cb_Category11.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category11.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category11.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category11.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category11.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category11.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22])
+                {
+                    case 255:
+                        cb_Category12.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = 0;
+                        break;
+                    case 0:
+                        cb_Category12.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category12.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category12.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category12.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category12.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category12.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24])
+                {
+                    case 255:
+                        cb_Category13.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = 0;
+                        break;
+                    case 0:
+                        cb_Category13.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category13.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category13.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category13.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category13.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category13.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26])
+                {
+                    case 255:
+                        cb_Category14.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = 0;
+                        break;
+                    case 0:
+                        cb_Category14.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category14.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category14.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category14.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category14.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category14.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28])
+                {
+                    case 255:
+                        cb_Category15.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = 0;
+                        break;
+                    case 0:
+                        cb_Category15.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category15.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category15.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category15.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category15.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category15.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30])
+                {
+                    case 255:
+                        cb_Category16.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = 0;
+                        break;
+                    case 0:
+                        cb_Category16.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category16.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category16.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category16.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category16.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category16.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32])
+                {
+                    case 255:
+                        cb_Category17.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = 0;
+                        break;
+                    case 0:
+                        cb_Category17.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category17.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category17.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category17.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category17.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category17.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34])
+                {
+                    case 255:
+                        cb_Category18.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = 0;
+                        break;
+                    case 0:
+                        cb_Category18.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category18.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category18.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category18.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category18.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category18.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36])
+                {
+                    case 255:
+                        cb_Category19.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = 0;
+                        break;
+                    case 0:
+                        cb_Category19.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category19.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category19.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category19.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category19.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category19.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38])
+                {
+                    case 255:
+                        cb_Category20.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = 0;
+                        break;
+                    case 0:
+                        cb_Category20.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category20.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category20.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category20.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category20.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category20.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40])
+                {
+                    case 255:
+                        cb_Category21.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = 0;
+                        break;
+                    case 0:
+                        cb_Category21.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category21.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category21.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category21.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category21.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category21.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42])
+                {
+                    case 255:
+                        cb_Category22.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = 0;
+                        break;
+                    case 0:
+                        cb_Category22.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category22.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category22.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category22.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category22.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category22.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44])
+                {
+                    case 255:
+                        cb_Category23.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = 0;
+                        break;
+                    case 0:
+                        cb_Category23.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category23.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category23.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category23.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category23.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category23.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46])
+                {
+                    case 255:
+                        cb_Category24.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = 0;
+                        break;
+                    case 0:
+                        cb_Category24.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category24.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category24.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category24.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category24.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category24.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48])
+                {
+                    case 255:
+                        cb_Category25.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = 0;
+                        break;
+                    case 0:
+                        cb_Category25.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category25.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category25.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category25.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category25.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category25.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50])
+                {
+                    case 255:
+                        cb_Category26.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = 0;
+                        break;
+                    case 0:
+                        cb_Category26.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category26.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category26.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category26.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category26.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category26.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52])
+                {
+                    case 255:
+                        cb_Category27.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = 0;
+                        break;
+                    case 0:
+                        cb_Category27.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category27.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category27.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category27.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category27.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category27.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54])
+                {
+                    case 255:
+                        cb_Category28.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = 0;
+                        break;
+                    case 0:
+                        cb_Category28.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category28.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category28.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category28.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category28.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category28.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56])
+                {
+                    case 255:
+                        cb_Category29.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = 0;
+                        break;
+                    case 0:
+                        cb_Category29.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category29.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category29.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category29.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category29.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category29.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58])
+                {
+                    case 255:
+                        cb_Category30.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = 0;
+                        break;
+                    case 0:
+                        cb_Category30.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category30.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category30.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category30.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category30.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category30.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60])
+                {
+                    case 255:
+                        cb_Category31.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = 0;
+                        break;
+                    case 0:
+                        cb_Category31.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category31.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category31.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category31.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category31.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category31.SelectedIndex = 4;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62])
+                {
+                    case 255:
+                        cb_Category32.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = 0;
+                        break;
+                    case 0:
+                        cb_Category32.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category32.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category32.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category32.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category32.SelectedIndex = 3;
+                        break;
+                    case 16:
+                        cb_Category32.SelectedIndex = 4;
+                        break;
+                }
             }
             SetSize();
             loaded = true;
@@ -4600,7 +5427,11 @@ namespace SA2SaveUtility
             if (itemCount == 32) { btn_AddItem.Enabled = false; }
             if (itemCount > 0) { btn_RemoveItem.Enabled = true; }
             SetSize();
-            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
+            if (Main.isPC)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketCountRTE, (byte)itemCount); }
+                else { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
+            }
             else { Main.loadedSave[offsets.chaoSave.MarketCount + 3] = (byte)itemCount; }
         }
 
@@ -4610,7 +5441,11 @@ namespace SA2SaveUtility
             if (itemCount == 0) { btn_RemoveItem.Enabled = false; }
             if (itemCount < 32) { btn_AddItem.Enabled = true; }
             SetSize();
-            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
+            if (Main.isPC)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketCountRTE, (byte)itemCount); }
+                else { Main.loadedSave[offsets.chaoSave.MarketCount] = (byte)itemCount; }
+            }
             else { Main.loadedSave[offsets.chaoSave.MarketCount + 3] = (byte)itemCount; }
         }
 
@@ -4621,33 +5456,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item1.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 1; }
                     break;
                 case 1:
                     cb_Item1.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 3; }
                     break;
                 case 2:
                     cb_Item1.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 7; }
                     break;
                 case 3:
                     cb_Item1.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 9; }
                     break;
                 case 4:
                     cb_Item1.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = 0; }
-            if (cb_Category1.SelectedIndex == 1) { cb_Item1.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 1, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = 0; }
+            }
+            if (cb_Category1.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item1.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 1, 1)[0]).First().Key; }
+                else { cb_Item1.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1]).First().Key; }
+            }
             if (cb_Category1.SelectedIndex == 3)
             {
-                cb_Item1.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] - 1);
+                if (Main.isRTE) { cb_Item1.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 1, 1)[0] - 1; }
+                else { cb_Item1.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] - 1); }
                 if (cb_Item1.SelectedItem == null) { cb_Item1.SelectedIndex = 0; }
             }
-            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3) { cb_Item1.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1]; }
+            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item1.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 1, 1)[0]; }
+                else { cb_Item1.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1]; }
+            }
         }
 
         private void Cb_Category2_SelectedIndexChanged(object sender, EventArgs e)
@@ -4657,33 +5510,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item2.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 2, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 1; }
                     break;
                 case 1:
                     cb_Item2.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 2, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 3; }
                     break;
                 case 2:
                     cb_Item2.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 2, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 7; }
                     break;
                 case 3:
                     cb_Item2.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 2, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 9; }
                     break;
                 case 4:
                     cb_Item2.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 2, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 2] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = 0; }
-            if (cb_Category2.SelectedIndex == 1) { cb_Item2.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 3, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = 0; }
+            }
+            if (cb_Category2.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item2.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 3, 1)[0]).First().Key; }
+                else { cb_Item2.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3]).First().Key; }
+            }
             if (cb_Category2.SelectedIndex == 3)
             {
-                cb_Item2.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] - 1);
+                if (Main.isRTE) { cb_Item2.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 3, 1)[0] - 1; }
+                else { cb_Item2.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] - 1); }
                 if (cb_Item2.SelectedItem == null) { cb_Item2.SelectedIndex = 0; }
             }
-            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3) { cb_Item2.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3]; }
+            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item2.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 3, 1)[0]; }
+                else { cb_Item2.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3]; }
+            }
         }
 
         private void Cb_Category3_SelectedIndexChanged(object sender, EventArgs e)
@@ -4693,33 +5564,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item3.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 4, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 1; }
                     break;
                 case 1:
                     cb_Item3.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 4, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 3; }
                     break;
                 case 2:
                     cb_Item3.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 4, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 7; }
                     break;
                 case 3:
                     cb_Item3.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 4, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 9; }
                     break;
                 case 4:
                     cb_Item3.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 4, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 4] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = 0; }
-            if (cb_Category3.SelectedIndex == 1) { cb_Item3.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 5, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = 0; }
+            }
+            if (cb_Category3.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item3.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 5, 1)[0]).First().Key; }
+                else { cb_Item3.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5]).First().Key; }
+            }
             if (cb_Category3.SelectedIndex == 3)
             {
-                cb_Item3.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] - 1);
+                if (Main.isRTE) { cb_Item3.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 5, 1)[0] - 1; }
+                else { cb_Item3.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] - 1); }
                 if (cb_Item3.SelectedItem == null) { cb_Item3.SelectedIndex = 0; }
             }
-            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3) { cb_Item3.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5]; }
+            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item3.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 5, 1)[0]; }
+                else { cb_Item3.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5]; }
+            }
         }
 
         private void Cb_Category4_SelectedIndexChanged(object sender, EventArgs e)
@@ -4729,33 +5618,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item4.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 6, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 1; }
                     break;
                 case 1:
                     cb_Item4.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 6, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 3; }
                     break;
                 case 2:
                     cb_Item4.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 6, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 7; }
                     break;
                 case 3:
                     cb_Item4.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 6, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 9; }
                     break;
                 case 4:
                     cb_Item4.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 6, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 6] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = 0; }
-            if (cb_Category4.SelectedIndex == 1) { cb_Item4.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 7, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = 0; }
+            }
+            if (cb_Category4.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item4.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 7, 1)[0]).First().Key; }
+                else { cb_Item4.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7]).First().Key; }
+            }
             if (cb_Category4.SelectedIndex == 3)
             {
-                cb_Item4.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] - 1);
+                if (Main.isRTE) { cb_Item4.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 7, 1)[0] - 1; }
+                else { cb_Item4.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] - 1); }
                 if (cb_Item4.SelectedItem == null) { cb_Item4.SelectedIndex = 0; }
             }
-            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3) { cb_Item4.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7]; }
+            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item4.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 7, 1)[0]; }
+                else { cb_Item4.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7]; }
+            }
         }
 
         private void Cb_Category5_SelectedIndexChanged(object sender, EventArgs e)
@@ -4766,33 +5673,51 @@ namespace SA2SaveUtility
 
                 case 0:
                     cb_Item5.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 8, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 1; }
                     break;
                 case 1:
                     cb_Item5.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 8, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 3; }
                     break;
                 case 2:
                     cb_Item5.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 8, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 7; }
                     break;
                 case 3:
                     cb_Item5.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 8, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 9; }
                     break;
                 case 4:
                     cb_Item5.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 8, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 8] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = 0; }
-            if (cb_Category5.SelectedIndex == 1) { cb_Item5.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 9, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = 0; }
+            }
+            if (cb_Category5.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item5.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 9, 1)[0]).First().Key; }
+                else { cb_Item5.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9]).First().Key; }
+            }
             if (cb_Category5.SelectedIndex == 3)
             {
-                cb_Item5.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] - 1);
+                if (Main.isRTE) { cb_Item5.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 9, 1)[0] - 1; }
+                else { cb_Item5.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] - 1); }
                 if (cb_Item5.SelectedItem == null) { cb_Item5.SelectedIndex = 0; }
             }
-            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3) { cb_Item5.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9]; }
+            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item5.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 9, 1)[0]; }
+                else { cb_Item5.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9]; }
+            }
         }
 
         private void Cb_Category6_SelectedIndexChanged(object sender, EventArgs e)
@@ -4802,33 +5727,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item6.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 10, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 1; }
                     break;
                 case 1:
                     cb_Item6.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 10, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 3; }
                     break;
                 case 2:
                     cb_Item6.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 10, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 7; }
                     break;
                 case 3:
                     cb_Item6.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 10, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 9; }
                     break;
                 case 4:
                     cb_Item6.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 10, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 10] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = 0; }
-            if (cb_Category6.SelectedIndex == 1) { cb_Item6.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 11, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = 0; }
+            }
+            if (cb_Category6.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item6.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 11, 1)[0]).First().Key; }
+                else { cb_Item6.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11]).First().Key; }
+            }
             if (cb_Category6.SelectedIndex == 3)
             {
-                cb_Item6.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] - 1);
+                if (Main.isRTE) { cb_Item6.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 11, 1)[0] - 1; }
+                else { cb_Item6.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] - 1); }
                 if (cb_Item6.SelectedItem == null) { cb_Item6.SelectedIndex = 0; }
             }
-            if (cb_Category6.SelectedIndex != 1 && cb_Category6.SelectedIndex != 3) { cb_Item6.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11]; }
+            if (cb_Category6.SelectedIndex != 1 && cb_Category6.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item6.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 11, 1)[0]; }
+                else { cb_Item6.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11]; }
+            }
         }
 
         private void Cb_Category7_SelectedIndexChanged(object sender, EventArgs e)
@@ -4838,33 +5781,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item7.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 12, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 1; }
                     break;
                 case 1:
                     cb_Item7.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 12, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 3; }
                     break;
                 case 2:
                     cb_Item7.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 12, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 7; }
                     break;
                 case 3:
                     cb_Item7.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 12, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 9; }
                     break;
                 case 4:
                     cb_Item7.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 12, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 12] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = 0; }
-            if (cb_Category7.SelectedIndex == 1) { cb_Item7.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 13, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = 0; }
+            }
+            if (cb_Category7.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item7.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 13, 1)[0]).First().Key; }
+                else { cb_Item7.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13]).First().Key; }
+            }
             if (cb_Category7.SelectedIndex == 3)
             {
-                cb_Item7.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] - 1);
+                if (Main.isRTE) { cb_Item7.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 13, 1)[0] - 1; }
+                else { cb_Item7.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] - 1); }
                 if (cb_Item7.SelectedItem == null) { cb_Item7.SelectedIndex = 0; }
             }
-            if (cb_Category7.SelectedIndex != 1 && cb_Category7.SelectedIndex != 3) { cb_Item7.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13]; }
+            if (cb_Category7.SelectedIndex != 1 && cb_Category7.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item7.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 13, 1)[0]; }
+                else { cb_Item7.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13]; }
+            }
         }
 
         private void Cb_Category8_SelectedIndexChanged(object sender, EventArgs e)
@@ -4874,33 +5835,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item8.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 14, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 1; }
                     break;
                 case 1:
                     cb_Item8.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 14, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 3; }
                     break;
                 case 2:
                     cb_Item8.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 14, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 7; }
                     break;
                 case 3:
                     cb_Item8.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 14, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 9; }
                     break;
                 case 4:
                     cb_Item8.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 14, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 14] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = 0; }
-            if (cb_Category8.SelectedIndex == 1) { cb_Item8.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 15, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = 0; }
+            }
+            if (cb_Category8.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item8.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 15, 1)[0]).First().Key; }
+                else { cb_Item8.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15]).First().Key; }
+            }
             if (cb_Category8.SelectedIndex == 3)
             {
-                cb_Item8.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] - 1);
+                if (Main.isRTE) { cb_Item8.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 15, 1)[0] - 1; }
+                else { cb_Item8.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] - 1); }
                 if (cb_Item8.SelectedItem == null) { cb_Item8.SelectedIndex = 0; }
             }
-            if (cb_Category8.SelectedIndex != 1 && cb_Category8.SelectedIndex != 3) { cb_Item8.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15]; }
+            if (cb_Category8.SelectedIndex != 1 && cb_Category8.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item8.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 15, 1)[0]; }
+                else { cb_Item8.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15]; }
+            }
         }
 
         private void Cb_Category9_SelectedIndexChanged(object sender, EventArgs e)
@@ -4910,33 +5889,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item9.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 16, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 1; }
                     break;
                 case 1:
                     cb_Item9.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 16, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 3; }
                     break;
                 case 2:
                     cb_Item9.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 16, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 7; }
                     break;
                 case 3:
                     cb_Item9.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 16, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 9; }
                     break;
                 case 4:
                     cb_Item9.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 16, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 16] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = 0; }
-            if (cb_Category9.SelectedIndex == 1) { cb_Item9.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 17, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = 0; }
+            }
+            if (cb_Category9.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item9.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 17, 1)[0]).First().Key; }
+                else { cb_Item9.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17]).First().Key; }
+            }
             if (cb_Category9.SelectedIndex == 3)
             {
-                cb_Item9.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] - 1);
+                if (Main.isRTE) { cb_Item9.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 17, 1)[0] - 1; }
+                else { cb_Item9.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] - 1); }
                 if (cb_Item9.SelectedItem == null) { cb_Item9.SelectedIndex = 0; }
             }
-            if (cb_Category9.SelectedIndex != 1 && cb_Category9.SelectedIndex != 3) { cb_Item9.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17]; }
+            if (cb_Category9.SelectedIndex != 1 && cb_Category9.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item9.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 17, 1)[0]; }
+                else { cb_Item9.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17]; }
+            }
         }
 
         private void Cb_Category10_SelectedIndexChanged(object sender, EventArgs e)
@@ -4946,33 +5943,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item10.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 18, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 1; }
                     break;
                 case 1:
                     cb_Item10.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 18, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 3; }
                     break;
                 case 2:
                     cb_Item10.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 18, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 7; }
                     break;
                 case 3:
                     cb_Item10.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 18, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 9; }
                     break;
                 case 4:
                     cb_Item10.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 18, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 18] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = 0; }
-            if (cb_Category10.SelectedIndex == 1) { cb_Item10.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 19, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = 0; }
+            }
+            if (cb_Category10.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item10.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 19, 1)[0]).First().Key; }
+                else { cb_Item10.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19]).First().Key; }
+            }
             if (cb_Category10.SelectedIndex == 3)
             {
-                cb_Item10.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] - 1);
+                if (Main.isRTE) { cb_Item10.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 19, 1)[0] - 1; }
+                else { cb_Item10.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] - 1); }
                 if (cb_Item10.SelectedItem == null) { cb_Item10.SelectedIndex = 0; }
             }
-            if (cb_Category10.SelectedIndex != 1 && cb_Category10.SelectedIndex != 3) { cb_Item10.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19]; }
+            if (cb_Category10.SelectedIndex != 1 && cb_Category10.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item10.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 19, 1)[0]; }
+                else { cb_Item10.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19]; }
+            }
         }
 
         private void Cb_Category11_SelectedIndexChanged(object sender, EventArgs e)
@@ -4982,33 +5997,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item11.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 20, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 1; }
                     break;
                 case 1:
                     cb_Item11.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 20, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 3; }
                     break;
                 case 2:
                     cb_Item11.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 20, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 7; }
                     break;
                 case 3:
                     cb_Item11.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 20, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 9; }
                     break;
                 case 4:
                     cb_Item11.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 20, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 20] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = 0; }
-            if (cb_Category11.SelectedIndex == 1) { cb_Item11.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 21, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = 0; }
+            }
+            if (cb_Category11.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item11.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 21, 1)[0]).First().Key; }
+                else { cb_Item11.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21]).First().Key; }
+            }
             if (cb_Category11.SelectedIndex == 3)
             {
-                cb_Item11.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] - 1);
+                if (Main.isRTE) { cb_Item11.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 21, 1)[0] - 1; }
+                else { cb_Item11.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] - 1); }
                 if (cb_Item11.SelectedItem == null) { cb_Item11.SelectedIndex = 0; }
             }
-            if (cb_Category11.SelectedIndex != 1 && cb_Category11.SelectedIndex != 3) { cb_Item11.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21]; }
+            if (cb_Category11.SelectedIndex != 1 && cb_Category11.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item11.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 21, 1)[0]; }
+                else { cb_Item11.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21]; }
+            }
         }
 
         private void Cb_Category12_SelectedIndexChanged(object sender, EventArgs e)
@@ -5018,33 +6051,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item12.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 22, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 1; }
                     break;
                 case 1:
                     cb_Item12.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 22, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 3; }
                     break;
                 case 2:
                     cb_Item12.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 22, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 7; }
                     break;
                 case 3:
                     cb_Item12.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 22, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 9; }
                     break;
                 case 4:
                     cb_Item12.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 22, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 22] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = 0; }
-            if (cb_Category12.SelectedIndex == 1) { cb_Item12.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 23, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = 0; }
+            }
+            if (cb_Category12.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item12.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 23, 1)[0]).First().Key; }
+                else { cb_Item12.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23]).First().Key; }
+            }
             if (cb_Category12.SelectedIndex == 3)
             {
-                cb_Item12.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] - 1);
+                if (Main.isRTE) { cb_Item12.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 23, 1)[0] - 1; }
+                else { cb_Item12.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] - 1); }
                 if (cb_Item12.SelectedItem == null) { cb_Item12.SelectedIndex = 0; }
             }
-            if (cb_Category12.SelectedIndex != 1 && cb_Category12.SelectedIndex != 3) { cb_Item12.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23]; }
+            if (cb_Category12.SelectedIndex != 1 && cb_Category12.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item12.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 23, 1)[0]; }
+                else { cb_Item12.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23]; }
+            }
         }
 
         private void Cb_Category13_SelectedIndexChanged(object sender, EventArgs e)
@@ -5054,33 +6105,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item13.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 24, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 1; }
                     break;
                 case 1:
                     cb_Item13.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 24, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 3; }
                     break;
                 case 2:
                     cb_Item13.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 24, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 7; }
                     break;
                 case 3:
                     cb_Item13.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 24, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 9; }
                     break;
                 case 4:
                     cb_Item13.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 24, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 24] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = 0; }
-            if (cb_Category13.SelectedIndex == 1) { cb_Item13.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 25, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = 0; }
+            }
+            if (cb_Category13.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item13.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 25, 1)[0]).First().Key; }
+                else { cb_Item13.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25]).First().Key; }
+            }
             if (cb_Category13.SelectedIndex == 3)
             {
-                cb_Item13.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] - 1);
+                if (Main.isRTE) { cb_Item13.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 25, 1)[0] - 1; }
+                else { cb_Item13.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] - 1); }
                 if (cb_Item13.SelectedItem == null) { cb_Item13.SelectedIndex = 0; }
             }
-            if (cb_Category13.SelectedIndex != 1 && cb_Category13.SelectedIndex != 3) { cb_Item13.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25]; }
+            if (cb_Category13.SelectedIndex != 1 && cb_Category13.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item13.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 25, 1)[0]; }
+                else { cb_Item13.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25]; }
+            }
         }
 
         private void Cb_Category14_SelectedIndexChanged(object sender, EventArgs e)
@@ -5090,33 +6159,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item14.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 26, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 1; }
                     break;
                 case 1:
                     cb_Item14.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 26, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 3; }
                     break;
                 case 2:
                     cb_Item14.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 26, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 7; }
                     break;
                 case 3:
                     cb_Item14.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 26, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 9; }
                     break;
                 case 4:
                     cb_Item14.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 26, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 26] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = 0; }
-            if (cb_Category14.SelectedIndex == 1) { cb_Item14.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 27, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = 0; }
+            }
+            if (cb_Category14.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item14.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 27, 1)[0]).First().Key; }
+                else { cb_Item14.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27]).First().Key; }
+            }
             if (cb_Category14.SelectedIndex == 3)
             {
-                cb_Item14.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] - 1);
+                if (Main.isRTE) { cb_Item14.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 27, 1)[0] - 1; }
+                else { cb_Item14.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] - 1); }
                 if (cb_Item14.SelectedItem == null) { cb_Item14.SelectedIndex = 0; }
             }
-            if (cb_Category14.SelectedIndex != 1 && cb_Category14.SelectedIndex != 3) { cb_Item14.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27]; }
+            if (cb_Category14.SelectedIndex != 1 && cb_Category14.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item14.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 27, 1)[0]; }
+                else { cb_Item14.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27]; }
+            }
         }
 
         private void Cb_Category15_SelectedIndexChanged(object sender, EventArgs e)
@@ -5126,33 +6213,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item15.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 28, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 1; }
                     break;
                 case 1:
                     cb_Item15.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 28, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 3; }
                     break;
                 case 2:
                     cb_Item15.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 28, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 7; }
                     break;
                 case 3:
                     cb_Item15.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 28, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 9; }
                     break;
                 case 4:
                     cb_Item15.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 28, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 28] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = 0; }
-            if (cb_Category15.SelectedIndex == 1) { cb_Item15.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 29, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = 0; }
+            }
+            if (cb_Category15.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item15.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 29, 1)[0]).First().Key; }
+                else { cb_Item15.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29]).First().Key; }
+            }
             if (cb_Category15.SelectedIndex == 3)
             {
-                cb_Item15.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] - 1);
+                if (Main.isRTE) { cb_Item15.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 29, 1)[0] - 1; }
+                else { cb_Item15.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] - 1); }
                 if (cb_Item15.SelectedItem == null) { cb_Item15.SelectedIndex = 0; }
             }
-            if (cb_Category15.SelectedIndex != 1 && cb_Category15.SelectedIndex != 3) { cb_Item15.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29]; }
+            if (cb_Category15.SelectedIndex != 1 && cb_Category15.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item15.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 29, 1)[0]; }
+                else { cb_Item15.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29]; }
+            }
         }
 
         private void Cb_Category16_SelectedIndexChanged(object sender, EventArgs e)
@@ -5162,33 +6267,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item16.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 30, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 1; }
                     break;
                 case 1:
                     cb_Item16.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 30, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 3; }
                     break;
                 case 2:
                     cb_Item16.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 30, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 7; }
                     break;
                 case 3:
                     cb_Item16.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 30, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 9; }
                     break;
                 case 4:
                     cb_Item16.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 30, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 30] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = 0; }
-            if (cb_Category16.SelectedIndex == 1) { cb_Item16.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 31, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = 0; }
+            }
+            if (cb_Category16.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item16.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 31, 1)[0]).First().Key; }
+                else { cb_Item16.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31]).First().Key; }
+            }
             if (cb_Category16.SelectedIndex == 3)
             {
-                cb_Item16.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] - 1);
+                if (Main.isRTE) { cb_Item16.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 31, 1)[0] - 1; }
+                else { cb_Item16.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] - 1); }
                 if (cb_Item16.SelectedItem == null) { cb_Item16.SelectedIndex = 0; }
             }
-            if (cb_Category16.SelectedIndex != 1 && cb_Category16.SelectedIndex != 3) { cb_Item16.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31]; }
+            if (cb_Category16.SelectedIndex != 1 && cb_Category16.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item16.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 31, 1)[0]; }
+                else { cb_Item16.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31]; }
+            }
         }
 
         private void Cb_Category17_SelectedIndexChanged(object sender, EventArgs e)
@@ -5198,33 +6321,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item17.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 32, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 1; }
                     break;
                 case 1:
                     cb_Item17.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 32, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 3; }
                     break;
                 case 2:
                     cb_Item17.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 32, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 7; }
                     break;
                 case 3:
                     cb_Item17.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 32, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 9; }
                     break;
                 case 4:
                     cb_Item17.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 32, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 32] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = 0; }
-            if (cb_Category17.SelectedIndex == 1) { cb_Item17.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 33, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = 0; }
+            }
+            if (cb_Category17.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item17.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 33, 1)[0]).First().Key; }
+                else { cb_Item17.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33]).First().Key; }
+            }
             if (cb_Category17.SelectedIndex == 3)
             {
-                cb_Item17.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] - 1);
+                if (Main.isRTE) { cb_Item17.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 33, 1)[0] - 1; }
+                else { cb_Item17.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] - 1); }
                 if (cb_Item17.SelectedItem == null) { cb_Item17.SelectedIndex = 0; }
             }
-            if (cb_Category17.SelectedIndex != 1 && cb_Category17.SelectedIndex != 3) { cb_Item17.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33]; }
+            if (cb_Category17.SelectedIndex != 1 && cb_Category17.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item17.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 33, 1)[0]; }
+                else { cb_Item17.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33]; }
+            }
         }
 
         private void Cb_Category18_SelectedIndexChanged(object sender, EventArgs e)
@@ -5234,33 +6375,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item18.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 34, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 1; }
                     break;
                 case 1:
                     cb_Item18.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 34, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 3; }
                     break;
                 case 2:
                     cb_Item18.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 34, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 7; }
                     break;
                 case 3:
                     cb_Item18.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 34, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 9; }
                     break;
                 case 4:
                     cb_Item18.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 34, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 34] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = 0; }
-            if (cb_Category18.SelectedIndex == 1) { cb_Item18.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 35, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = 0; }
+            }
+            if (cb_Category18.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item18.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 35, 1)[0]).First().Key; }
+                else { cb_Item18.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35]).First().Key; }
+            }
             if (cb_Category18.SelectedIndex == 3)
             {
-                cb_Item18.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] - 1);
+                if (Main.isRTE) { cb_Item18.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 35, 1)[0] - 1; }
+                else { cb_Item18.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] - 1); }
                 if (cb_Item18.SelectedItem == null) { cb_Item18.SelectedIndex = 0; }
             }
-            if (cb_Category18.SelectedIndex != 1 && cb_Category18.SelectedIndex != 3) { cb_Item18.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35]; }
+            if (cb_Category18.SelectedIndex != 1 && cb_Category18.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item18.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 35, 1)[0]; }
+                else { cb_Item18.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35]; }
+            }
         }
 
         private void Cb_Category19_SelectedIndexChanged(object sender, EventArgs e)
@@ -5270,33 +6429,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item19.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 36, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 1; }
                     break;
                 case 1:
                     cb_Item19.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 36, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 3; }
                     break;
                 case 2:
                     cb_Item19.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 36, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 7; }
                     break;
                 case 3:
                     cb_Item19.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 36, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 9; }
                     break;
                 case 4:
                     cb_Item19.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 36, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 36] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = 0; }
-            if (cb_Category19.SelectedIndex == 1) { cb_Item19.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 37, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = 0; }
+            }
+            if (cb_Category19.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item19.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 37, 1)[0]).First().Key; }
+                else { cb_Item19.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37]).First().Key; }
+            }
             if (cb_Category19.SelectedIndex == 3)
             {
-                cb_Item19.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] - 1);
+                if (Main.isRTE) { cb_Item19.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 37, 1)[0] - 1; }
+                else { cb_Item19.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] - 1); }
                 if (cb_Item19.SelectedItem == null) { cb_Item19.SelectedIndex = 0; }
             }
-            if (cb_Category19.SelectedIndex != 1 && cb_Category19.SelectedIndex != 3) { cb_Item19.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37]; }
+            if (cb_Category19.SelectedIndex != 1 && cb_Category19.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item19.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 37, 1)[0]; }
+                else { cb_Item19.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37]; }
+            }
         }
 
         private void Cb_Category20_SelectedIndexChanged(object sender, EventArgs e)
@@ -5306,33 +6483,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item20.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 38, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 1; }
                     break;
                 case 1:
                     cb_Item20.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 38, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 3; }
                     break;
                 case 2:
                     cb_Item20.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 38, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 7; }
                     break;
                 case 3:
                     cb_Item20.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 38, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 9; }
                     break;
                 case 4:
                     cb_Item20.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 38, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 38] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = 0; }
-            if (cb_Category20.SelectedIndex == 1) { cb_Item20.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 39, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = 0; }
+            }
+            if (cb_Category20.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item20.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 39, 1)[0]).First().Key; }
+                else { cb_Item20.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39]).First().Key; }
+            }
             if (cb_Category20.SelectedIndex == 3)
             {
-                cb_Item20.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] - 1);
+                if (Main.isRTE) { cb_Item20.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 39, 1)[0] - 1; }
+                else { cb_Item20.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] - 1); }
                 if (cb_Item20.SelectedItem == null) { cb_Item20.SelectedIndex = 0; }
             }
-            if (cb_Category20.SelectedIndex != 1 && cb_Category20.SelectedIndex != 3) { cb_Item20.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39]; }
+            if (cb_Category20.SelectedIndex != 1 && cb_Category20.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item20.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 39, 1)[0]; }
+                else { cb_Item20.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39]; }
+            }
         }
 
         private void Cb_Category21_SelectedIndexChanged(object sender, EventArgs e)
@@ -5342,33 +6537,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item21.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 40, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 1; }
                     break;
                 case 1:
                     cb_Item21.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 40, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 3; }
                     break;
                 case 2:
                     cb_Item21.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 40, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 7; }
                     break;
                 case 3:
                     cb_Item21.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 40, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 9; }
                     break;
                 case 4:
                     cb_Item21.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 40, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 40] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = 0; }
-            if (cb_Category21.SelectedIndex == 1) { cb_Item21.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 41, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = 0; }
+            }
+            if (cb_Category21.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item21.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 41, 1)[0]).First().Key; }
+                else { cb_Item21.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41]).First().Key; }
+            }
             if (cb_Category21.SelectedIndex == 3)
             {
-                cb_Item21.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] - 1);
+                if (Main.isRTE) { cb_Item21.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 41, 1)[0] - 1; }
+                else { cb_Item21.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] - 1); }
                 if (cb_Item21.SelectedItem == null) { cb_Item21.SelectedIndex = 0; }
             }
-            if (cb_Category21.SelectedIndex != 1 && cb_Category21.SelectedIndex != 3) { cb_Item21.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41]; }
+            if (cb_Category21.SelectedIndex != 1 && cb_Category21.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item21.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 41, 1)[0]; }
+                else { cb_Item21.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41]; }
+            }
         }
 
         private void Cb_Category22_SelectedIndexChanged(object sender, EventArgs e)
@@ -5378,33 +6591,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item22.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 42, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 1; }
                     break;
                 case 1:
                     cb_Item22.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 42, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 3; }
                     break;
                 case 2:
                     cb_Item22.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 42, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 7; }
                     break;
                 case 3:
                     cb_Item22.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 42, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 9; }
                     break;
                 case 4:
                     cb_Item22.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 42, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 42] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = 0; }
-            if (cb_Category22.SelectedIndex == 1) { cb_Item22.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 43, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = 0; }
+            }
+            if (cb_Category22.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item22.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 43, 1)[0]).First().Key; }
+                else { cb_Item22.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43]).First().Key; }
+            }
             if (cb_Category22.SelectedIndex == 3)
             {
-                cb_Item22.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] - 1);
+                if (Main.isRTE) { cb_Item22.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 43, 1)[0] - 1; }
+                else { cb_Item22.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] - 1); }
                 if (cb_Item22.SelectedItem == null) { cb_Item22.SelectedIndex = 0; }
             }
-            if (cb_Category22.SelectedIndex != 1 && cb_Category22.SelectedIndex != 3) { cb_Item22.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43]; }
+            if (cb_Category22.SelectedIndex != 1 && cb_Category22.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item22.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 43, 1)[0]; }
+                else { cb_Item22.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43]; }
+            }
         }
 
         private void Cb_Category23_SelectedIndexChanged(object sender, EventArgs e)
@@ -5414,33 +6645,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item23.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 44, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 1; }
                     break;
                 case 1:
                     cb_Item23.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 44, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 3; }
                     break;
                 case 2:
                     cb_Item23.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 44, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 7; }
                     break;
                 case 3:
                     cb_Item23.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 44, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 9; }
                     break;
                 case 4:
                     cb_Item23.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 44, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 44] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = 0; }
-            if (cb_Category23.SelectedIndex == 1) { cb_Item23.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 45, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = 0; }
+            }
+            if (cb_Category23.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item23.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 45, 1)[0]).First().Key; }
+                else { cb_Item23.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45]).First().Key; }
+            }
             if (cb_Category23.SelectedIndex == 3)
             {
-                cb_Item23.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] - 1);
+                if (Main.isRTE) { cb_Item23.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 45, 1)[0] - 1; }
+                else { cb_Item23.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] - 1); }
                 if (cb_Item23.SelectedItem == null) { cb_Item23.SelectedIndex = 0; }
             }
-            if (cb_Category23.SelectedIndex != 1 && cb_Category23.SelectedIndex != 3) { cb_Item23.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45]; }
+            if (cb_Category23.SelectedIndex != 1 && cb_Category23.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item23.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 45, 1)[0]; }
+                else { cb_Item23.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45]; }
+            }
         }
 
         private void Cb_Category24_SelectedIndexChanged(object sender, EventArgs e)
@@ -5450,33 +6699,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item24.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 46, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 1; }
                     break;
                 case 1:
                     cb_Item24.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 46, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 3; }
                     break;
                 case 2:
                     cb_Item24.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 46, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 7; }
                     break;
                 case 3:
                     cb_Item24.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 46, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 9; }
                     break;
                 case 4:
                     cb_Item24.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 46, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 46] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = 0; }
-            if (cb_Category24.SelectedIndex == 1) { cb_Item24.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 47, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = 0; }
+            }
+            if (cb_Category24.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item24.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 47, 1)[0]).First().Key; }
+                else { cb_Item24.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47]).First().Key; }
+            }
             if (cb_Category24.SelectedIndex == 3)
             {
-                cb_Item24.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] - 1);
+                if (Main.isRTE) { cb_Item24.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 47, 1)[0] - 1; }
+                else { cb_Item24.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] - 1); }
                 if (cb_Item24.SelectedItem == null) { cb_Item24.SelectedIndex = 0; }
             }
-            if (cb_Category24.SelectedIndex != 1 && cb_Category24.SelectedIndex != 3) { cb_Item24.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47]; }
+            if (cb_Category24.SelectedIndex != 1 && cb_Category24.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item24.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 47, 1)[0]; }
+                else { cb_Item24.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47]; }
+            }
         }
 
         private void Cb_Category25_SelectedIndexChanged(object sender, EventArgs e)
@@ -5486,33 +6753,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item25.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 48, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 1; }
                     break;
                 case 1:
                     cb_Item25.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 48, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 3; }
                     break;
                 case 2:
                     cb_Item25.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 48, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 7; }
                     break;
                 case 3:
                     cb_Item25.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 48, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 9; }
                     break;
                 case 4:
                     cb_Item25.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 48, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 48] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = 0; }
-            if (cb_Category25.SelectedIndex == 1) { cb_Item25.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 49, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = 0; }
+            }
+            if (cb_Category25.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item25.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 49, 1)[0]).First().Key; }
+                else { cb_Item25.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49]).First().Key; }
+            }
             if (cb_Category25.SelectedIndex == 3)
             {
-                cb_Item25.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] - 1);
+                if (Main.isRTE) { cb_Item25.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 49, 1)[0] - 1; }
+                else { cb_Item25.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] - 1); }
                 if (cb_Item25.SelectedItem == null) { cb_Item25.SelectedIndex = 0; }
             }
-            if (cb_Category25.SelectedIndex != 1 && cb_Category25.SelectedIndex != 3) { cb_Item25.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49]; }
+            if (cb_Category25.SelectedIndex != 1 && cb_Category25.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item25.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 49, 1)[0]; }
+                else { cb_Item25.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49]; }
+            }
         }
 
         private void Cb_Category26_SelectedIndexChanged(object sender, EventArgs e)
@@ -5522,33 +6807,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item26.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 50, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 1; }
                     break;
                 case 1:
                     cb_Item26.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 50, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 3; }
                     break;
                 case 2:
                     cb_Item26.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 50, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 7; }
                     break;
                 case 3:
                     cb_Item26.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 50, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 9; }
                     break;
                 case 4:
                     cb_Item26.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 50, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 50] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = 0; }
-            if (cb_Category26.SelectedIndex == 1) { cb_Item26.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 51, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = 0; }
+            }
+            if (cb_Category26.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item26.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 51, 1)[0]).First().Key; }
+                else { cb_Item26.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51]).First().Key; }
+            }
             if (cb_Category26.SelectedIndex == 3)
             {
-                cb_Item26.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] - 1);
+                if (Main.isRTE) { cb_Item26.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 51, 1)[0] - 1; }
+                else { cb_Item26.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] - 1); }
                 if (cb_Item26.SelectedItem == null) { cb_Item26.SelectedIndex = 0; }
             }
-            if (cb_Category26.SelectedIndex != 1 && cb_Category26.SelectedIndex != 3) { cb_Item26.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51]; }
+            if (cb_Category26.SelectedIndex != 1 && cb_Category26.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item26.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 51, 1)[0]; }
+                else { cb_Item26.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51]; }
+            }
         }
 
         private void Cb_Category27_SelectedIndexChanged(object sender, EventArgs e)
@@ -5558,33 +6861,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item27.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 52, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 1; }
                     break;
                 case 1:
                     cb_Item27.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 52, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 3; }
                     break;
                 case 2:
                     cb_Item27.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 52, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 7; }
                     break;
                 case 3:
                     cb_Item27.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 52, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 9; }
                     break;
                 case 4:
                     cb_Item27.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 52, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 52] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = 0; }
-            if (cb_Category27.SelectedIndex == 1) { cb_Item27.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 53, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = 0; }
+            }
+            if (cb_Category27.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item27.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 53, 1)[0]).First().Key; }
+                else { cb_Item27.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53]).First().Key; }
+            }
             if (cb_Category27.SelectedIndex == 3)
             {
-                cb_Item27.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] - 1);
+                if (Main.isRTE) { cb_Item27.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 53, 1)[0] - 1; }
+                else { cb_Item27.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] - 1); }
                 if (cb_Item27.SelectedItem == null) { cb_Item27.SelectedIndex = 0; }
             }
-            if (cb_Category27.SelectedIndex != 1 && cb_Category27.SelectedIndex != 3) { cb_Item27.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53]; }
+            if (cb_Category27.SelectedIndex != 1 && cb_Category27.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item27.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 53, 1)[0]; }
+                else { cb_Item27.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53]; }
+            }
         }
 
         private void Cb_Category28_SelectedIndexChanged(object sender, EventArgs e)
@@ -5594,33 +6915,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item28.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 54, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 1; }
                     break;
                 case 1:
                     cb_Item28.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 54, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 3; }
                     break;
                 case 2:
                     cb_Item28.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 54, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 7; }
                     break;
                 case 3:
                     cb_Item28.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 54, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 9; }
                     break;
                 case 4:
                     cb_Item28.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 54, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 54] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = 0; }
-            if (cb_Category28.SelectedIndex == 1) { cb_Item28.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 55, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = 0; }
+            }
+            if (cb_Category28.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item28.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 55, 1)[0]).First().Key; }
+                else { cb_Item28.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55]).First().Key; }
+            }
             if (cb_Category28.SelectedIndex == 3)
             {
-                cb_Item28.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] - 1);
+                if (Main.isRTE) { cb_Item28.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 55, 1)[0] - 1; }
+                else { cb_Item28.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] - 1); }
                 if (cb_Item28.SelectedItem == null) { cb_Item28.SelectedIndex = 0; }
             }
-            if (cb_Category28.SelectedIndex != 1 && cb_Category28.SelectedIndex != 3) { cb_Item28.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55]; }
+            if (cb_Category28.SelectedIndex != 1 && cb_Category28.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item28.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 55, 1)[0]; }
+                else { cb_Item28.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55]; }
+            }
         }
 
         private void Cb_Category29_SelectedIndexChanged(object sender, EventArgs e)
@@ -5630,33 +6969,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item29.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 56, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 1; }
                     break;
                 case 1:
                     cb_Item29.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 56, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 3; }
                     break;
                 case 2:
                     cb_Item29.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 56, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 7; }
                     break;
                 case 3:
                     cb_Item29.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 56, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 9; }
                     break;
                 case 4:
                     cb_Item29.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 56, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 56] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = 0; }
-            if (cb_Category29.SelectedIndex == 1) { cb_Item29.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 57, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = 0; }
+            }
+            if (cb_Category29.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item29.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 57, 1)[0]).First().Key; }
+                else { cb_Item29.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57]).First().Key; }
+            }
             if (cb_Category29.SelectedIndex == 3)
             {
-                cb_Item29.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] - 1);
+                if (Main.isRTE) { cb_Item29.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 57, 1)[0] - 1; }
+                else { cb_Item29.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] - 1); }
                 if (cb_Item29.SelectedItem == null) { cb_Item29.SelectedIndex = 0; }
             }
-            if (cb_Category29.SelectedIndex != 1 && cb_Category29.SelectedIndex != 3) { cb_Item29.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57]; }
+            if (cb_Category29.SelectedIndex != 1 && cb_Category29.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item29.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 57, 1)[0]; }
+                else { cb_Item29.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57]; }
+            }
         }
 
         private void Cb_Category30_SelectedIndexChanged(object sender, EventArgs e)
@@ -5666,33 +7023,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item30.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 58, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 1; }
                     break;
                 case 1:
                     cb_Item30.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 58, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 3; }
                     break;
                 case 2:
                     cb_Item30.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 58, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 7; }
                     break;
                 case 3:
                     cb_Item30.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 58, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 9; }
                     break;
                 case 4:
                     cb_Item30.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 58, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 58] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = 0; }
-            if (cb_Category30.SelectedIndex == 1) { cb_Item30.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 59, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = 0; }
+            }
+            if (cb_Category30.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item30.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 59, 1)[0]).First().Key; }
+                else { cb_Item30.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59]).First().Key; }
+            }
             if (cb_Category30.SelectedIndex == 3)
             {
-                cb_Item30.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] - 1);
+                if (Main.isRTE) { cb_Item30.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 59, 1)[0] - 1; }
+                else { cb_Item30.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] - 1); }
                 if (cb_Item30.SelectedItem == null) { cb_Item30.SelectedIndex = 0; }
             }
-            if (cb_Category30.SelectedIndex != 1 && cb_Category30.SelectedIndex != 3) { cb_Item30.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59]; }
+            if (cb_Category30.SelectedIndex != 1 && cb_Category30.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item30.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 59, 1)[0]; }
+                else { cb_Item30.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59]; }
+            }
         }
 
         private void Cb_Category31_SelectedIndexChanged(object sender, EventArgs e)
@@ -5702,33 +7077,51 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item31.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 60, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 1; }
                     break;
                 case 1:
                     cb_Item31.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 60, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 3; }
                     break;
                 case 2:
                     cb_Item31.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 60, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 7; }
                     break;
                 case 3:
                     cb_Item31.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 60, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 9; }
                     break;
                 case 4:
                     cb_Item31.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 60, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 60] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = 0; }
-            if (cb_Category31.SelectedIndex == 1) { cb_Item31.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 61, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = 0; }
+            }
+            if (cb_Category31.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item31.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 61, 1)[0]).First().Key; }
+                else { cb_Item31.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61]).First().Key; }
+            }
             if (cb_Category31.SelectedIndex == 3)
             {
-                cb_Item31.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] - 1);
+                if (Main.isRTE) { cb_Item31.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 61, 1)[0] - 1; }
+                else { cb_Item31.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] - 1); }
                 if (cb_Item31.SelectedItem == null) { cb_Item31.SelectedIndex = 0; }
             }
-            if (cb_Category31.SelectedIndex != 1 && cb_Category31.SelectedIndex != 3) { cb_Item31.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61]; }
+            if (cb_Category31.SelectedIndex != 1 && cb_Category31.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item31.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 61, 1)[0]; }
+                else { cb_Item31.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61]; }
+            }
         }
 
         private void Cb_Category32_SelectedIndexChanged(object sender, EventArgs e)
@@ -5738,257 +7131,659 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item32.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 62, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 1; }
                     break;
                 case 1:
                     cb_Item32.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 62, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 3; }
                     break;
                 case 2:
                     cb_Item32.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 62, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 7; }
                     break;
                 case 3:
                     cb_Item32.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 62, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 9; }
                     break;
                 case 4:
                     cb_Item32.Items.AddRange(Themes.ToArray());
-                    Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 16;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 62, 16); }
+                    else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 62] = 16; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = 0; }
-            if (cb_Category32.SelectedIndex == 1) { cb_Item32.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 63, 0); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = 0; }
+            }
+            if (cb_Category32.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item32.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 63, 1)[0]).First().Key; }
+                else { cb_Item32.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63]).First().Key; }
+            }
             if (cb_Category32.SelectedIndex == 3)
             {
-                cb_Item32.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] - 1);
+                if (Main.isRTE) { cb_Item32.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 63, 1)[0] - 1; }
+                else { cb_Item32.SelectedIndex = (Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] - 1); }
                 if (cb_Item32.SelectedItem == null) { cb_Item32.SelectedIndex = 0; }
             }
-            if (cb_Category32.SelectedIndex != 1 && cb_Category32.SelectedIndex != 3) { cb_Item32.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63]; }
+            if (cb_Category32.SelectedIndex != 1 && cb_Category32.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item32.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.MarketItemsStartRTE + 63, 1)[0]; }
+                else { cb_Item32.SelectedIndex = Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63]; }
+            }
         }
 
         private void Cb_Item1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category1.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = (byte)Fruit.Where(x => x.Key == cb_Item1.SelectedItem.ToString()).First().Value; }
-            if (cb_Category1.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = (byte)(cb_Item1.SelectedIndex + 1); }
-            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = (byte)cb_Item1.SelectedIndex; }
+            if (cb_Category1.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 1, (byte)Fruit.Where(x => x.Key == cb_Item1.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = (byte)Fruit.Where(x => x.Key == cb_Item1.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category1.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 1, (byte)(cb_Item1.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = (byte)(cb_Item1.SelectedIndex + 1); }
+            }
+            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 1, (byte)cb_Item1.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 1] = (byte)cb_Item1.SelectedIndex; }
+            }
         }
 
         private void Cb_Item2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category2.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = (byte)Fruit.Where(x => x.Key == cb_Item2.SelectedItem.ToString()).First().Value; }
-            if (cb_Category2.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = (byte)(cb_Item2.SelectedIndex + 1); }
-            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = (byte)cb_Item2.SelectedIndex; }
+            if (cb_Category2.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 3, (byte)Fruit.Where(x => x.Key == cb_Item2.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = (byte)Fruit.Where(x => x.Key == cb_Item2.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category2.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 3, (byte)(cb_Item2.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = (byte)(cb_Item2.SelectedIndex + 1); }
+            }
+            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 3, (byte)cb_Item2.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 3] = (byte)cb_Item2.SelectedIndex; }
+            }
         }
 
         private void Cb_Item3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category3.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = (byte)Fruit.Where(x => x.Key == cb_Item3.SelectedItem.ToString()).First().Value; }
-            if (cb_Category3.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = (byte)(cb_Item3.SelectedIndex + 1); }
-            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = (byte)cb_Item3.SelectedIndex; }
+            if (cb_Category3.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 5, (byte)Fruit.Where(x => x.Key == cb_Item3.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = (byte)Fruit.Where(x => x.Key == cb_Item3.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category3.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 5, (byte)(cb_Item3.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = (byte)(cb_Item3.SelectedIndex + 1); }
+            }
+            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 5, (byte)cb_Item3.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 5] = (byte)cb_Item3.SelectedIndex; }
+            }
         }
 
         private void Cb_Item4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category4.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = (byte)Fruit.Where(x => x.Key == cb_Item4.SelectedItem.ToString()).First().Value; }
-            if (cb_Category4.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = (byte)(cb_Item4.SelectedIndex + 1); }
-            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = (byte)cb_Item4.SelectedIndex; }
+            if (cb_Category4.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 7, (byte)Fruit.Where(x => x.Key == cb_Item4.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = (byte)Fruit.Where(x => x.Key == cb_Item4.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category4.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 7, (byte)(cb_Item4.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = (byte)(cb_Item4.SelectedIndex + 1); }
+            }
+            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 7, (byte)cb_Item4.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 7] = (byte)cb_Item4.SelectedIndex; }
+            }
         }
 
         private void Cb_Item5_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category5.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = (byte)Fruit.Where(x => x.Key == cb_Item5.SelectedItem.ToString()).First().Value; }
-            if (cb_Category5.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = (byte)(cb_Item5.SelectedIndex + 1); }
-            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = (byte)cb_Item5.SelectedIndex; }
+            if (cb_Category5.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 9, (byte)Fruit.Where(x => x.Key == cb_Item5.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = (byte)Fruit.Where(x => x.Key == cb_Item5.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category5.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 9, (byte)(cb_Item5.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = (byte)(cb_Item5.SelectedIndex + 1); }
+            }
+            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 9, (byte)cb_Item5.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 9] = (byte)cb_Item5.SelectedIndex; }
+            }
         }
 
         private void Cb_Item6_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category6.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = (byte)Fruit.Where(x => x.Key == cb_Item6.SelectedItem.ToString()).First().Value; }
-            if (cb_Category6.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = (byte)(cb_Item6.SelectedIndex + 1); }
-            if (cb_Category6.SelectedIndex != 1 && cb_Category6.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = (byte)cb_Item6.SelectedIndex; }
+            if (cb_Category6.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 11, (byte)Fruit.Where(x => x.Key == cb_Item6.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = (byte)Fruit.Where(x => x.Key == cb_Item6.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category6.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 11, (byte)(cb_Item6.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = (byte)(cb_Item6.SelectedIndex + 1); }
+            }
+            if (cb_Category6.SelectedIndex != 1 && cb_Category6.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 11, (byte)cb_Item6.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 11] = (byte)cb_Item6.SelectedIndex; }
+            }
         }
 
         private void Cb_Item7_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category7.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = (byte)Fruit.Where(x => x.Key == cb_Item7.SelectedItem.ToString()).First().Value; }
-            if (cb_Category7.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = (byte)(cb_Item7.SelectedIndex + 1); }
-            if (cb_Category7.SelectedIndex != 1 && cb_Category7.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = (byte)cb_Item7.SelectedIndex; }
+            if (cb_Category7.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 13, (byte)Fruit.Where(x => x.Key == cb_Item7.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = (byte)Fruit.Where(x => x.Key == cb_Item7.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category7.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 13, (byte)(cb_Item7.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = (byte)(cb_Item7.SelectedIndex + 1); }
+            }
+            if (cb_Category7.SelectedIndex != 1 && cb_Category7.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 13, (byte)cb_Item7.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 13] = (byte)cb_Item7.SelectedIndex; }
+            }
         }
 
         private void Cb_Item8_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category8.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = (byte)Fruit.Where(x => x.Key == cb_Item8.SelectedItem.ToString()).First().Value; }
-            if (cb_Category8.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = (byte)(cb_Item8.SelectedIndex + 1); }
-            if (cb_Category8.SelectedIndex != 1 && cb_Category8.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = (byte)cb_Item8.SelectedIndex; }
+            if (cb_Category8.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 15, (byte)Fruit.Where(x => x.Key == cb_Item8.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = (byte)Fruit.Where(x => x.Key == cb_Item8.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category8.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 15, (byte)(cb_Item8.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = (byte)(cb_Item8.SelectedIndex + 1); }
+            }
+            if (cb_Category8.SelectedIndex != 1 && cb_Category8.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 15, (byte)cb_Item8.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 15] = (byte)cb_Item8.SelectedIndex; }
+            }
         }
 
         private void Cb_Item9_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category9.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = (byte)Fruit.Where(x => x.Key == cb_Item9.SelectedItem.ToString()).First().Value; }
-            if (cb_Category9.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = (byte)(cb_Item9.SelectedIndex + 1); }
-            if (cb_Category9.SelectedIndex != 1 && cb_Category9.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = (byte)cb_Item9.SelectedIndex; }
+            if (cb_Category9.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 17, (byte)Fruit.Where(x => x.Key == cb_Item9.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = (byte)Fruit.Where(x => x.Key == cb_Item9.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category9.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 17, (byte)(cb_Item9.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = (byte)(cb_Item9.SelectedIndex + 1); }
+            }
+            if (cb_Category9.SelectedIndex != 1 && cb_Category9.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 17, (byte)cb_Item9.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 17] = (byte)cb_Item9.SelectedIndex; }
+            }
         }
 
         private void Cb_Item10_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category10.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = (byte)Fruit.Where(x => x.Key == cb_Item10.SelectedItem.ToString()).First().Value; }
-            if (cb_Category10.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = (byte)(cb_Item10.SelectedIndex + 1); }
-            if (cb_Category10.SelectedIndex != 1 && cb_Category10.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = (byte)cb_Item10.SelectedIndex; }
+            if (cb_Category10.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 19, (byte)Fruit.Where(x => x.Key == cb_Item10.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = (byte)Fruit.Where(x => x.Key == cb_Item10.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category10.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 19, (byte)(cb_Item10.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = (byte)(cb_Item10.SelectedIndex + 1); }
+            }
+            if (cb_Category10.SelectedIndex != 1 && cb_Category10.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 19, (byte)cb_Item10.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 19] = (byte)cb_Item10.SelectedIndex; }
+            }
         }
 
         private void Cb_Item11_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category11.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = (byte)Fruit.Where(x => x.Key == cb_Item11.SelectedItem.ToString()).First().Value; }
-            if (cb_Category11.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = (byte)(cb_Item11.SelectedIndex + 1); }
-            if (cb_Category11.SelectedIndex != 1 && cb_Category11.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = (byte)cb_Item11.SelectedIndex; }
+            if (cb_Category11.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 21, (byte)Fruit.Where(x => x.Key == cb_Item11.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = (byte)Fruit.Where(x => x.Key == cb_Item11.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category11.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 21, (byte)(cb_Item11.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = (byte)(cb_Item11.SelectedIndex + 1); }
+            }
+            if (cb_Category11.SelectedIndex != 1 && cb_Category11.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 21, (byte)cb_Item11.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 21] = (byte)cb_Item11.SelectedIndex; }
+            }
         }
 
         private void Cb_Item12_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category12.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = (byte)Fruit.Where(x => x.Key == cb_Item12.SelectedItem.ToString()).First().Value; }
-            if (cb_Category12.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = (byte)(cb_Item12.SelectedIndex + 1); }
-            if (cb_Category12.SelectedIndex != 1 && cb_Category12.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = (byte)cb_Item12.SelectedIndex; }
+            if (cb_Category12.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 23, (byte)Fruit.Where(x => x.Key == cb_Item12.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = (byte)Fruit.Where(x => x.Key == cb_Item12.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category12.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 23, (byte)(cb_Item12.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = (byte)(cb_Item12.SelectedIndex + 1); }
+            }
+            if (cb_Category12.SelectedIndex != 1 && cb_Category12.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 23, (byte)cb_Item12.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 23] = (byte)cb_Item12.SelectedIndex; }
+            }
         }
 
         private void Cb_Item13_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category13.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = (byte)Fruit.Where(x => x.Key == cb_Item13.SelectedItem.ToString()).First().Value; }
-            if (cb_Category13.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = (byte)(cb_Item13.SelectedIndex + 1); }
-            if (cb_Category13.SelectedIndex != 1 && cb_Category13.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = (byte)cb_Item13.SelectedIndex; }
+            if (cb_Category13.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 25, (byte)Fruit.Where(x => x.Key == cb_Item13.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = (byte)Fruit.Where(x => x.Key == cb_Item13.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category13.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 25, (byte)(cb_Item13.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = (byte)(cb_Item13.SelectedIndex + 1); }
+            }
+            if (cb_Category13.SelectedIndex != 1 && cb_Category13.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 25, (byte)cb_Item13.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 25] = (byte)cb_Item13.SelectedIndex; }
+            }
         }
 
         private void Cb_Item14_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category14.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = (byte)Fruit.Where(x => x.Key == cb_Item14.SelectedItem.ToString()).First().Value; }
-            if (cb_Category14.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = (byte)(cb_Item14.SelectedIndex + 1); }
-            if (cb_Category14.SelectedIndex != 1 && cb_Category14.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = (byte)cb_Item14.SelectedIndex; }
+            if (cb_Category14.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 27, (byte)Fruit.Where(x => x.Key == cb_Item14.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = (byte)Fruit.Where(x => x.Key == cb_Item14.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category14.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 27, (byte)(cb_Item14.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = (byte)(cb_Item14.SelectedIndex + 1); }
+            }
+            if (cb_Category14.SelectedIndex != 1 && cb_Category14.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 27, (byte)cb_Item14.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 27] = (byte)cb_Item14.SelectedIndex; }
+            }
         }
 
         private void Cb_Item15_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category15.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = (byte)Fruit.Where(x => x.Key == cb_Item15.SelectedItem.ToString()).First().Value; }
-            if (cb_Category15.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = (byte)(cb_Item15.SelectedIndex + 1); }
-            if (cb_Category15.SelectedIndex != 1 && cb_Category15.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = (byte)cb_Item15.SelectedIndex; }
+            if (cb_Category15.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 29, (byte)Fruit.Where(x => x.Key == cb_Item15.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = (byte)Fruit.Where(x => x.Key == cb_Item15.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category15.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 29, (byte)(cb_Item15.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = (byte)(cb_Item15.SelectedIndex + 1); }
+            }
+            if (cb_Category15.SelectedIndex != 1 && cb_Category15.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 29, (byte)cb_Item15.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 29] = (byte)cb_Item15.SelectedIndex; }
+            }
         }
 
         private void Cb_Item16_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category16.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = (byte)Fruit.Where(x => x.Key == cb_Item16.SelectedItem.ToString()).First().Value; }
-            if (cb_Category16.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = (byte)(cb_Item16.SelectedIndex + 1); }
-            if (cb_Category16.SelectedIndex != 1 && cb_Category16.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = (byte)cb_Item16.SelectedIndex; }
+            if (cb_Category16.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 31, (byte)Fruit.Where(x => x.Key == cb_Item16.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = (byte)Fruit.Where(x => x.Key == cb_Item16.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category16.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 31, (byte)(cb_Item16.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = (byte)(cb_Item16.SelectedIndex + 1); }
+            }
+            if (cb_Category16.SelectedIndex != 1 && cb_Category16.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 31, (byte)cb_Item16.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 31] = (byte)cb_Item16.SelectedIndex; }
+            }
         }
 
         private void Cb_Item17_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category17.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = (byte)Fruit.Where(x => x.Key == cb_Item17.SelectedItem.ToString()).First().Value; }
-            if (cb_Category17.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = (byte)(cb_Item17.SelectedIndex + 1); }
-            if (cb_Category17.SelectedIndex != 1 && cb_Category17.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = (byte)cb_Item17.SelectedIndex; }
+            if (cb_Category17.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 33, (byte)Fruit.Where(x => x.Key == cb_Item17.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = (byte)Fruit.Where(x => x.Key == cb_Item17.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category17.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 33, (byte)(cb_Item17.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = (byte)(cb_Item17.SelectedIndex + 1); }
+            }
+            if (cb_Category17.SelectedIndex != 1 && cb_Category17.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 33, (byte)cb_Item17.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 33] = (byte)cb_Item17.SelectedIndex; }
+            }
         }
 
         private void Cb_Item18_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category18.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = (byte)Fruit.Where(x => x.Key == cb_Item18.SelectedItem.ToString()).First().Value; }
-            if (cb_Category18.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = (byte)(cb_Item18.SelectedIndex + 1); }
-            if (cb_Category18.SelectedIndex != 1 && cb_Category18.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = (byte)cb_Item18.SelectedIndex; }
+            if (cb_Category18.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 35, (byte)Fruit.Where(x => x.Key == cb_Item18.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = (byte)Fruit.Where(x => x.Key == cb_Item18.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category18.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 35, (byte)(cb_Item18.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = (byte)(cb_Item18.SelectedIndex + 1); }
+            }
+            if (cb_Category18.SelectedIndex != 1 && cb_Category18.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 35, (byte)cb_Item18.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 35] = (byte)cb_Item18.SelectedIndex; }
+            }
         }
 
         private void Cb_Item19_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category19.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = (byte)Fruit.Where(x => x.Key == cb_Item19.SelectedItem.ToString()).First().Value; }
-            if (cb_Category19.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = (byte)(cb_Item19.SelectedIndex + 1); }
-            if (cb_Category19.SelectedIndex != 1 && cb_Category19.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = (byte)cb_Item19.SelectedIndex; }
+            if (cb_Category19.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 37, (byte)Fruit.Where(x => x.Key == cb_Item19.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = (byte)Fruit.Where(x => x.Key == cb_Item19.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category19.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 37, (byte)(cb_Item19.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = (byte)(cb_Item19.SelectedIndex + 1); }
+            }
+            if (cb_Category19.SelectedIndex != 1 && cb_Category19.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 37, (byte)cb_Item19.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 37] = (byte)cb_Item19.SelectedIndex; }
+            }
         }
 
         private void Cb_Item20_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category20.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = (byte)Fruit.Where(x => x.Key == cb_Item20.SelectedItem.ToString()).First().Value; }
-            if (cb_Category20.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = (byte)(cb_Item20.SelectedIndex + 1); }
-            if (cb_Category20.SelectedIndex != 1 && cb_Category20.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = (byte)cb_Item20.SelectedIndex; }
+            if (cb_Category20.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 39, (byte)Fruit.Where(x => x.Key == cb_Item20.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = (byte)Fruit.Where(x => x.Key == cb_Item20.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category20.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 39, (byte)(cb_Item20.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = (byte)(cb_Item20.SelectedIndex + 1); }
+            }
+            if (cb_Category20.SelectedIndex != 1 && cb_Category20.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 39, (byte)cb_Item20.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 39] = (byte)cb_Item20.SelectedIndex; }
+            }
         }
 
         private void Cb_Item21_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category21.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = (byte)Fruit.Where(x => x.Key == cb_Item21.SelectedItem.ToString()).First().Value; }
-            if (cb_Category21.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = (byte)(cb_Item21.SelectedIndex + 1); }
-            if (cb_Category21.SelectedIndex != 1 && cb_Category21.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = (byte)cb_Item21.SelectedIndex; }
+            if (cb_Category21.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 41, (byte)Fruit.Where(x => x.Key == cb_Item21.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = (byte)Fruit.Where(x => x.Key == cb_Item21.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category21.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 41, (byte)(cb_Item21.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = (byte)(cb_Item21.SelectedIndex + 1); }
+            }
+            if (cb_Category21.SelectedIndex != 1 && cb_Category21.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 41, (byte)cb_Item21.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 41] = (byte)cb_Item21.SelectedIndex; }
+            }
         }
 
         private void Cb_Item22_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category22.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = (byte)Fruit.Where(x => x.Key == cb_Item22.SelectedItem.ToString()).First().Value; }
-            if (cb_Category22.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = (byte)(cb_Item22.SelectedIndex + 1); }
-            if (cb_Category22.SelectedIndex != 1 && cb_Category22.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = (byte)cb_Item22.SelectedIndex; }
+            if (cb_Category22.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 43, (byte)Fruit.Where(x => x.Key == cb_Item22.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = (byte)Fruit.Where(x => x.Key == cb_Item22.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category22.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 43, (byte)(cb_Item22.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = (byte)(cb_Item22.SelectedIndex + 1); }
+            }
+            if (cb_Category22.SelectedIndex != 1 && cb_Category22.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 43, (byte)cb_Item22.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 43] = (byte)cb_Item22.SelectedIndex; }
+            }
         }
 
         private void Cb_Item23_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category23.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = (byte)Fruit.Where(x => x.Key == cb_Item23.SelectedItem.ToString()).First().Value; }
-            if (cb_Category23.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = (byte)(cb_Item23.SelectedIndex + 1); }
-            if (cb_Category23.SelectedIndex != 1 && cb_Category23.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = (byte)cb_Item23.SelectedIndex; }
+            if (cb_Category23.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 45, (byte)Fruit.Where(x => x.Key == cb_Item23.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = (byte)Fruit.Where(x => x.Key == cb_Item23.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category23.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 45, (byte)(cb_Item23.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = (byte)(cb_Item23.SelectedIndex + 1); }
+            }
+            if (cb_Category23.SelectedIndex != 1 && cb_Category23.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 45, (byte)cb_Item23.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 45] = (byte)cb_Item23.SelectedIndex; }
+            }
         }
 
         private void Cb_Item24_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category24.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = (byte)Fruit.Where(x => x.Key == cb_Item24.SelectedItem.ToString()).First().Value; }
-            if (cb_Category24.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = (byte)(cb_Item24.SelectedIndex + 1); }
-            if (cb_Category24.SelectedIndex != 1 && cb_Category24.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = (byte)cb_Item24.SelectedIndex; }
+            if (cb_Category24.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 47, (byte)Fruit.Where(x => x.Key == cb_Item24.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = (byte)Fruit.Where(x => x.Key == cb_Item24.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category24.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 47, (byte)(cb_Item24.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = (byte)(cb_Item24.SelectedIndex + 1); }
+            }
+            if (cb_Category24.SelectedIndex != 1 && cb_Category24.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 47, (byte)cb_Item24.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 47] = (byte)cb_Item24.SelectedIndex; }
+            }
         }
 
         private void Cb_Item25_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category25.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = (byte)Fruit.Where(x => x.Key == cb_Item25.SelectedItem.ToString()).First().Value; }
-            if (cb_Category25.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = (byte)(cb_Item25.SelectedIndex + 1); }
-            if (cb_Category25.SelectedIndex != 1 && cb_Category25.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = (byte)cb_Item25.SelectedIndex; }
+            if (cb_Category25.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 49, (byte)Fruit.Where(x => x.Key == cb_Item25.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = (byte)Fruit.Where(x => x.Key == cb_Item25.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category25.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 49, (byte)(cb_Item25.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = (byte)(cb_Item25.SelectedIndex + 1); }
+            }
+            if (cb_Category25.SelectedIndex != 1 && cb_Category25.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 49, (byte)cb_Item25.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 49] = (byte)cb_Item25.SelectedIndex; }
+            }
         }
 
         private void Cb_Item26_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category26.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = (byte)Fruit.Where(x => x.Key == cb_Item26.SelectedItem.ToString()).First().Value; }
-            if (cb_Category26.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = (byte)(cb_Item26.SelectedIndex + 1); }
-            if (cb_Category26.SelectedIndex != 1 && cb_Category26.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = (byte)cb_Item26.SelectedIndex; }
+            if (cb_Category26.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 51, (byte)Fruit.Where(x => x.Key == cb_Item26.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = (byte)Fruit.Where(x => x.Key == cb_Item26.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category26.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 51, (byte)(cb_Item26.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = (byte)(cb_Item26.SelectedIndex + 1); }
+            }
+            if (cb_Category26.SelectedIndex != 1 && cb_Category26.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 51, (byte)cb_Item26.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 51] = (byte)cb_Item26.SelectedIndex; }
+            }
         }
 
         private void Cb_Item27_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category27.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = (byte)Fruit.Where(x => x.Key == cb_Item27.SelectedItem.ToString()).First().Value; }
-            if (cb_Category27.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = (byte)(cb_Item27.SelectedIndex + 1); }
-            if (cb_Category27.SelectedIndex != 1 && cb_Category27.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = (byte)cb_Item27.SelectedIndex; }
+            if (cb_Category27.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 53, (byte)Fruit.Where(x => x.Key == cb_Item27.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = (byte)Fruit.Where(x => x.Key == cb_Item27.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category27.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 53, (byte)(cb_Item27.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = (byte)(cb_Item27.SelectedIndex + 1); }
+            }
+            if (cb_Category27.SelectedIndex != 1 && cb_Category27.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 53, (byte)cb_Item27.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 53] = (byte)cb_Item27.SelectedIndex; }
+            }
         }
 
         private void Cb_Item28_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category28.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = (byte)Fruit.Where(x => x.Key == cb_Item28.SelectedItem.ToString()).First().Value; }
-            if (cb_Category28.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = (byte)(cb_Item28.SelectedIndex + 1); }
-            if (cb_Category28.SelectedIndex != 1 && cb_Category28.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = (byte)cb_Item28.SelectedIndex; }
+            if (cb_Category28.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 55, (byte)Fruit.Where(x => x.Key == cb_Item28.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = (byte)Fruit.Where(x => x.Key == cb_Item28.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category28.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 55, (byte)(cb_Item28.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = (byte)(cb_Item28.SelectedIndex + 1); }
+            }
+            if (cb_Category28.SelectedIndex != 1 && cb_Category28.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 55, (byte)cb_Item28.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 55] = (byte)cb_Item28.SelectedIndex; }
+            }
         }
 
         private void Cb_Item29_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category29.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = (byte)Fruit.Where(x => x.Key == cb_Item29.SelectedItem.ToString()).First().Value; }
-            if (cb_Category29.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = (byte)(cb_Item29.SelectedIndex + 1); }
-            if (cb_Category29.SelectedIndex != 1 && cb_Category29.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = (byte)cb_Item29.SelectedIndex; }
+            if (cb_Category29.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 57, (byte)Fruit.Where(x => x.Key == cb_Item29.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = (byte)Fruit.Where(x => x.Key == cb_Item29.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category29.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 57, (byte)(cb_Item29.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = (byte)(cb_Item29.SelectedIndex + 1); }
+            }
+            if (cb_Category29.SelectedIndex != 1 && cb_Category29.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 57, (byte)cb_Item29.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 57] = (byte)cb_Item29.SelectedIndex; }
+            }
         }
 
         private void Cb_Item30_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category30.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = (byte)Fruit.Where(x => x.Key == cb_Item30.SelectedItem.ToString()).First().Value; }
-            if (cb_Category30.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = (byte)(cb_Item30.SelectedIndex + 1); }
-            if (cb_Category30.SelectedIndex != 1 && cb_Category30.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = (byte)cb_Item30.SelectedIndex; }
+            if (cb_Category30.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 59, (byte)Fruit.Where(x => x.Key == cb_Item30.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = (byte)Fruit.Where(x => x.Key == cb_Item30.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category30.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 59, (byte)(cb_Item30.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = (byte)(cb_Item30.SelectedIndex + 1); }
+            }
+            if (cb_Category30.SelectedIndex != 1 && cb_Category30.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 59, (byte)cb_Item30.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 59] = (byte)cb_Item30.SelectedIndex; }
+            }
         }
 
         private void Cb_Item31_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category31.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = (byte)Fruit.Where(x => x.Key == cb_Item31.SelectedItem.ToString()).First().Value; }
-            if (cb_Category31.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = (byte)(cb_Item31.SelectedIndex + 1); }
-            if (cb_Category31.SelectedIndex != 1 && cb_Category31.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = (byte)cb_Item31.SelectedIndex; }
+            if (cb_Category31.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 61, (byte)Fruit.Where(x => x.Key == cb_Item31.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = (byte)Fruit.Where(x => x.Key == cb_Item31.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category31.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 61, (byte)(cb_Item31.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = (byte)(cb_Item31.SelectedIndex + 1); }
+            }
+            if (cb_Category31.SelectedIndex != 1 && cb_Category31.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 61, (byte)cb_Item31.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 61] = (byte)cb_Item31.SelectedIndex; }
+            }
         }
 
         private void Cb_Item32_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category32.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = (byte)Fruit.Where(x => x.Key == cb_Item32.SelectedItem.ToString()).First().Value; }
-            if (cb_Category32.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = (byte)(cb_Item32.SelectedIndex + 1); }
-            if (cb_Category32.SelectedIndex != 1 && cb_Category32.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = (byte)cb_Item32.SelectedIndex; }
+            if (cb_Category32.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 63, (byte)Fruit.Where(x => x.Key == cb_Item32.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = (byte)Fruit.Where(x => x.Key == cb_Item32.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category32.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 63, (byte)(cb_Item32.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = (byte)(cb_Item32.SelectedIndex + 1); }
+            }
+            if (cb_Category32.SelectedIndex != 1 && cb_Category32.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.MarketItemsStartRTE + 63, (byte)cb_Item32.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.MarketItemsStart + 63] = (byte)cb_Item32.SelectedIndex; }
+            }
         }
     }
 }

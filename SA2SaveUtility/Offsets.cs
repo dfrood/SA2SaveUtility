@@ -16,10 +16,15 @@ namespace SA2SaveUtility
 
     class ChaoWorld
     {
+        public uint GardensRTE = 0x19F646C;
         public uint Gardens = 0x304C;
+        public uint MarketCountRTE = 0x1DBED90;
         public uint MarketCount = 0x3A50;
+        public uint HeldCountRTE = 0x1DBEDAC;
         public uint HeldCount = 0x3A54;
+        public uint MarketItemsStartRTE = 0x1DBEDC0;
         public uint MarketItemsStart = 0x3A58;
+        public uint HeldItemsStartRTE = 0x1DBEDA0;
         public uint HeldItemsStart = 0x3A98;
     }
 

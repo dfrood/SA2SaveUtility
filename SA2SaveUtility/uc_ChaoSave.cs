@@ -12,6 +12,16 @@ namespace SA2SaveUtility
         public uc_ChaoSave()
         {
             InitializeComponent();
+            if (Main.isRTE)
+            {
+                btn_HeldItems.Visible = false;
+                btn_MarketItems.Visible = false;
+            }
+            else
+            {
+                btn_HeldItems.Visible = true;
+                btn_MarketItems.Visible = true;
+            }
         }
 
         private void SetGardens()
@@ -25,7 +35,8 @@ namespace SA2SaveUtility
             if (!Main.isPC) { Array.Reverse(portalBytes); }
             for (int i = 0; i < portalBytes.Length; i++)
             {
-                Main.loadedSave[(int)(offsets.chaoSave.Gardens + i)] = portalBytes[i];
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.GardensRTE + i, portalBytes[i]); }
+                else { Main.loadedSave[(int)(offsets.chaoSave.Gardens + i)] = portalBytes[i]; }
             }
         }
 

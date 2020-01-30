@@ -389,29 +389,48 @@ namespace SA2SaveUtility
 
         public static void UpdateChaoWorld()
         {
-            Portals portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens].ToString());
-            if (!Main.isPC) { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens + 3].ToString()); }
+            TabPage currentTab = Main.tc_Main.TabPages[0];
+            bool focused = true;
+            currentTab.InvokeCheck(() => focused = (Main.tc_Main.SelectedTab == currentTab));
 
-            Control.ControlCollection controls = Main.tc_Main.TabPages[0].Controls;
-            foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
+            if (!Main.isRTE || focused)
             {
-                if (gb.Name == "gb_GardensUnlocked")
+                Portals portals;
+                if (Main.isRTE) { portals = (Portals)Enum.Parse(typeof(Portals), Memory.ReadBytes((int)offsets.chaoSave.GardensRTE, 1)[0].ToString()); }
+                else { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens].ToString()); }
+                if (!Main.isPC) { portals = (Portals)Enum.Parse(typeof(Portals), Main.loadedSave[(int)offsets.chaoSave.Gardens + 3].ToString()); }
+
+                Control.ControlCollection controls = Main.tc_Main.TabPages[0].Controls;
+                foreach (GroupBox gb in controls[0].Controls.OfType<GroupBox>())
                 {
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_DarkGarden").First().Checked = (portals & Portals.Dark) == Portals.Dark;
-                    gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_HeroGarden").First().Checked = (portals & Portals.Hero) == Portals.Hero;
+                    if (gb.Name == "gb_GardensUnlocked")
+                    {
+                        CheckBox checkb_DarkGarden = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_DarkGarden").First();
+                        CheckBox checkb_HeroGarden = gb.Controls.OfType<CheckBox>().Where(x => x.Name == "checkb_HeroGarden").First();
+
+                        checkb_DarkGarden.InvokeCheck(() => checkb_DarkGarden.Checked = (portals & Portals.Dark) == Portals.Dark);
+                        checkb_HeroGarden.InvokeCheck(() => checkb_HeroGarden.Checked = (portals & Portals.Hero) == Portals.Hero);
+                    }
                 }
             }
-
         }
+
 
         public static void UpdateChaoRTE(TabControl tc, byte[] chaoData)
         {
+            uc_ChaoSave ucChaoSave = new uc_ChaoSave();
+            TabPage tpChaoSave = new TabPage();
+            tpChaoSave.Controls.Add(ucChaoSave);
+            tpChaoSave.Text = "Chao World";
+            if (Main.tc_Main.TabPages[0].Text != "Chao World") { Main.tc_Main.InvokeCheck(() => Main.tc_Main.TabPages.Insert(0, tpChaoSave)); }
+
             int index = 0;
             foreach (byte[] chao in Main.SplitByteArray(chaoData, 0x800))
             {
                 UpdateChao(tc, activeChao.Where(x => x.Key == index).First(), chao);
                 index++;
             }
+            UpdateChaoWorld();
         }
 
         public static void UpdateChao(TabControl tc, KeyValuePair<uint, TabPage> currentChao, byte[] chao)
@@ -424,7 +443,7 @@ namespace SA2SaveUtility
             byte[] nameBytes = chao.Skip(Convert.ToInt32(offsets.chao.Name)).Take(7).ToArray();
             string name = GetName(nameBytes);
             TextBox tb_Name = controls[0].Controls.OfType<TextBox>().Where(x => x.Name == "tb_Name").First();
-            tb_Name.InvokeCheck(() => tb_Name.Text = name);
+            tb_Name.InvokeCheck(() => tb_Name.Text(name));
 
             if ((int)chao[offsets.chao.ChaoType] == 0)
             {
@@ -445,7 +464,7 @@ namespace SA2SaveUtility
                 }
             }
 
-            if (focused || !Main.isRTE)
+            if (focused || !Main.rteUpdates)
             {
                 int garden = (int)(chao[offsets.chao.Garden]);
                 int happiness = 0;
@@ -1162,7 +1181,7 @@ namespace SA2SaveUtility
 
         public static void EmptyChaoSelected(int index)
         {
-            DialogResult result = MessageBox.Show("Would you like to create a chao in slot #" + (index + 1) + "?", "Chao Slot #" + (index + 1), MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Would you like to create a chao in slot #" + (index) + "?", "Chao Slot #" + (index), MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 PopulateChaoMsgBox populateChaoMsgBox = new PopulateChaoMsgBox();

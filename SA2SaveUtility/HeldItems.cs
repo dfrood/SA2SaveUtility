@@ -108,7 +108,12 @@ namespace SA2SaveUtility
             { "Red Fruit", 19 },
             { "Smart Fruit", 12 },
             { "Mint Candy", 22 },
-            { "Grapes", 23 }
+            { "Grapes", 23 },
+            { "Hyper Swim Fruit [CWE]", 29 },
+            { "Hyper Fly Fruit [CWE]", 30 },
+            { "Hyper Run Fruit [CWE]", 31 },
+            { "Hyper Power Fruit [CWE]", 32 },
+            { "Shiny Fruit [CWE]", 33 }
         };
 
         public List<string> Seed = new List<string>(new string[]{
@@ -205,128 +210,263 @@ namespace SA2SaveUtility
             "Pearl Egg Shell",
             "Metal 1 Egg Shell",
             "Metal 2 Egg Shell",
-            "Glass Egg Shell"
+            "Glass Egg Shell",
+            "Default Lens [CWE]",
+            "Neutral Lens [CWE]",
+            "Hero Lens [CWE]",
+            "Dark Lens [CWE]",
+            "Green Lens [CWE]",
+            "Magenta Lens [CWE]",
+            "Purple Lens [CWE]",
+            "Red Lens [CWE]",
+            "Yellow Lens [CWE]",
+            "Spartoi Lens [CWE]",
+            "Snake Lens [CWE]",
+            "Robot Lens [CWE]"
         });
 
         public HeldItems()
         {
             InitializeComponent();
-            if (Main.isPC) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount]; }
-            else { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount + 3]; }
-            switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart])
+            if (Main.isPC && !Main.isRTE) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount]; }
+            if (Main.isPC && Main.isRTE) { itemCount = Memory.ReadBytes((int)offsets.chaoSave.HeldCountRTE, 1)[0]; }
+            if (!Main.isPC) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount + 3]; }
+
+            if (!Main.isRTE)
             {
-                case 255:
-                    cb_Category1.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = 0;
-                    break;
-                case 0:
-                    cb_Category1.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category1.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category1.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category1.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category1.SelectedIndex = 3;
-                    break;
+                switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart])
+                {
+                    case 255:
+                        cb_Category1.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = 0;
+                        break;
+                    case 0:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category1.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category1.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category1.SelectedIndex = 3;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2])
+                {
+                    case 255:
+                        cb_Category2.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = 0;
+                        break;
+                    case 0:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category2.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category2.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category2.SelectedIndex = 3;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4])
+                {
+                    case 255:
+                        cb_Category3.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = 0;
+                        break;
+                    case 0:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category3.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category3.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category3.SelectedIndex = 3;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6])
+                {
+                    case 255:
+                        cb_Category4.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = 0;
+                        break;
+                    case 0:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category4.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category4.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category4.SelectedIndex = 3;
+                        break;
+                }
+                switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8])
+                {
+                    case 255:
+                        cb_Category5.SelectedIndex = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 0;
+                        Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = 0;
+                        break;
+                    case 0:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category5.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category5.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category5.SelectedIndex = 3;
+                        break;
+                }
             }
-            switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2])
+            else
             {
-                case 255:
-                    cb_Category2.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = 0;
-                    break;
-                case 0:
-                    cb_Category2.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category2.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category2.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category2.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category2.SelectedIndex = 3;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4])
-            {
-                case 255:
-                    cb_Category3.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = 0;
-                    break;
-                case 0:
-                    cb_Category3.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category3.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category3.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category3.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category3.SelectedIndex = 3;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6])
-            {
-                case 255:
-                    cb_Category4.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = 0;
-                    break;
-                case 0:
-                    cb_Category4.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category4.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category4.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category4.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category4.SelectedIndex = 3;
-                    break;
-            }
-            switch (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8])
-            {
-                case 255:
-                    cb_Category5.SelectedIndex = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 0;
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = 0;
-                    break;
-                case 0:
-                    cb_Category5.SelectedIndex = 0;
-                    break;
-                case 1:
-                    cb_Category5.SelectedIndex = 0;
-                    break;
-                case 3:
-                    cb_Category5.SelectedIndex = 1;
-                    break;
-                case 7:
-                    cb_Category5.SelectedIndex = 2;
-                    break;
-                case 9:
-                    cb_Category5.SelectedIndex = 3;
-                    break;
+                switch (Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE, 1)[0])
+                {
+                    case 255:
+                        cb_Category1.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE, 0);
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 1, 0);
+                        break;
+                    case 0:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category1.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category1.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category1.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category1.SelectedIndex = 3;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 2, 1)[0])
+                {
+                    case 255:
+                        cb_Category2.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 2, 0);
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 3, 0);
+                        break;
+                    case 0:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category2.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category2.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category2.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category2.SelectedIndex = 3;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 4, 1)[0])
+                {
+                    case 255:
+                        cb_Category3.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 4, 0);
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 5, 0);
+                        break;
+                    case 0:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category3.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category3.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category3.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category3.SelectedIndex = 3;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 6, 1)[0])
+                {
+                    case 255:
+                        cb_Category4.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 6, 0);
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 7, 0);
+                        break;
+                    case 0:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category4.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category4.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category4.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category4.SelectedIndex = 3;
+                        break;
+                }
+                switch (Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 8, 1)[0])
+                {
+                    case 255:
+                        cb_Category5.SelectedIndex = 0;
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 8, 0);
+                        Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 9, 0);
+                        break;
+                    case 0:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 1:
+                        cb_Category5.SelectedIndex = 0;
+                        break;
+                    case 3:
+                        cb_Category5.SelectedIndex = 1;
+                        break;
+                    case 7:
+                        cb_Category5.SelectedIndex = 2;
+                        break;
+                    case 9:
+                        cb_Category5.SelectedIndex = 3;
+                        break;
+                }
             }
             SetSize();
             loaded = true;
@@ -485,29 +625,46 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item1.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 1; }
                     break;
                 case 1:
                     cb_Item1.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 3; }
                     break;
                 case 2:
                     cb_Item1.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 7; }
                     break;
                 case 3:
                     cb_Item1.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart] = 9; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = 0; }
-            if (cb_Category1.SelectedIndex == 1) { cb_Item1.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 1, 0); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = 0; }
+            }
+            if (cb_Category1.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item1.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 1, 1)[0]).First().Key; }
+                else { cb_Item1.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1]).First().Key; }
+            }
             if (cb_Category1.SelectedIndex == 3)
             {
-                cb_Item1.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] - 1);
+                if (Main.isRTE) { cb_Item1.SelectedIndex = (Memory.ReadBytes(((int)offsets.chaoSave.HeldItemsStartRTE + 1), 1)[0]) - 1; }
+                else { cb_Item1.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] - 1); }
                 if (cb_Item1.SelectedItem == null) { cb_Item1.SelectedIndex = 0; }
             }
-            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3) { cb_Item1.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1]; }
+            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item1.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 1, 1)[0]; }
+                else { cb_Item1.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1]; }
+            }
         }
 
         private void Cb_Category2_SelectedIndexChanged(object sender, EventArgs e)
@@ -517,29 +674,46 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item2.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 2, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 1; }
                     break;
                 case 1:
                     cb_Item2.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 2, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 3; }
                     break;
                 case 2:
                     cb_Item2.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 2, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 7; }
                     break;
                 case 3:
                     cb_Item2.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 2, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 2] = 9; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = 0; }
-            if (cb_Category2.SelectedIndex == 1) { cb_Item2.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 3, 0); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = 0; }
+            }
+            if (cb_Category2.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item2.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 3, 1)[0]).First().Key; }
+                else { cb_Item2.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3]).First().Key; }
+            }
             if (cb_Category2.SelectedIndex == 3)
             {
-                cb_Item2.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] - 1);
+                if (Main.isRTE) { cb_Item2.SelectedIndex = (Memory.ReadBytes(((int)offsets.chaoSave.HeldItemsStartRTE + 3), 1)[0]) - 1; }
+                else { cb_Item2.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] - 1); }
                 if (cb_Item2.SelectedItem == null) { cb_Item2.SelectedIndex = 0; }
             }
-            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3) { cb_Item2.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3]; }
+            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item2.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 3, 1)[0]; }
+                else { cb_Item2.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3]; }
+            }
         }
 
         private void Cb_Category3_SelectedIndexChanged(object sender, EventArgs e)
@@ -549,29 +723,46 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item3.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 4, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 1; }
                     break;
                 case 1:
                     cb_Item3.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 4, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 3; }
                     break;
                 case 2:
                     cb_Item3.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 4, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 7; }
                     break;
                 case 3:
                     cb_Item3.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 4, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 4] = 9; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = 0; }
-            if (cb_Category3.SelectedIndex == 1) { cb_Item3.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 5, 0); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = 0; }
+            }
+            if (cb_Category3.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item3.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 5, 1)[0]).First().Key; }
+                else { cb_Item3.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5]).First().Key; }
+            }
             if (cb_Category3.SelectedIndex == 3)
             {
-                cb_Item3.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] - 1);
+                if (Main.isRTE) { cb_Item3.SelectedIndex = (Memory.ReadBytes(((int)offsets.chaoSave.HeldItemsStartRTE + 5), 1)[0]) - 1; }
+                else { cb_Item3.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] - 1); }
                 if (cb_Item3.SelectedItem == null) { cb_Item3.SelectedIndex = 0; }
             }
-            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3) { cb_Item3.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5]; }
+            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item3.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 5, 1)[0]; }
+                else { cb_Item3.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5]; }
+            }
         }
 
         private void Cb_Category4_SelectedIndexChanged(object sender, EventArgs e)
@@ -581,29 +772,46 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item4.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 6, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 1; }
                     break;
                 case 1:
                     cb_Item4.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 6, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 3; }
                     break;
                 case 2:
                     cb_Item4.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 6, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 7; }
                     break;
                 case 3:
                     cb_Item4.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 6, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 6] = 9; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = 0; }
-            if (cb_Category4.SelectedIndex == 1) { cb_Item4.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 7, 0); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = 0; }
+            }
+            if (cb_Category4.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item4.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 7, 1)[0]).First().Key; }
+                else { cb_Item4.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7]).First().Key; }
+            }
             if (cb_Category4.SelectedIndex == 3)
             {
-                cb_Item4.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] - 1);
+                if (Main.isRTE) { cb_Item4.SelectedIndex = (Memory.ReadBytes(((int)offsets.chaoSave.HeldItemsStartRTE + 7), 1)[0]) - 1; }
+                else { cb_Item4.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] - 1); }
                 if (cb_Item4.SelectedItem == null) { cb_Item4.SelectedIndex = 0; }
             }
-            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3) { cb_Item4.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7]; }
+            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item4.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 7, 1)[0]; }
+                else { cb_Item4.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7]; }
+            }
         }
 
         private void Cb_Category5_SelectedIndexChanged(object sender, EventArgs e)
@@ -613,29 +821,46 @@ namespace SA2SaveUtility
             {
                 case 0:
                     cb_Item5.Items.AddRange(Eggs.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 1;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 8, 1); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 1; }
                     break;
                 case 1:
                     cb_Item5.Items.AddRange(Fruit.Keys.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 3;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 8, 3); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 3; }
                     break;
                 case 2:
                     cb_Item5.Items.AddRange(Seed.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 7;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 8, 7); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 7; }
                     break;
                 case 3:
                     cb_Item5.Items.AddRange(Hat.ToArray());
-                    Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 9;
+                    if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 8, 9); }
+                    else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 8] = 9; }
                     break;
             }
-            if (loaded) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = 0; }
-            if (cb_Category5.SelectedIndex == 1) { cb_Item5.SelectedIndex = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9]).First().Value; }
+            if (loaded)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 9, 0); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = 0; }
+            }
+            if (cb_Category5.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { cb_Item5.SelectedItem = Fruit.Where(x => x.Value == Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 9, 1)[0]).First().Key; }
+                else { cb_Item5.SelectedItem = Fruit.Where(x => x.Value == Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9]).First().Key; }
+            }
             if (cb_Category5.SelectedIndex == 3)
             {
-                cb_Item5.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] - 1);
+                if (Main.isRTE) { cb_Item5.SelectedIndex = (Memory.ReadBytes(((int)offsets.chaoSave.HeldItemsStartRTE + 9), 1)[0]) - 1; }
+                else { cb_Item5.SelectedIndex = (Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] - 1); }
                 if (cb_Item5.SelectedItem == null) { cb_Item5.SelectedIndex = 0; }
             }
-            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3) { cb_Item5.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9]; }
+            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { cb_Item5.SelectedIndex = Memory.ReadBytes((int)offsets.chaoSave.HeldItemsStartRTE + 9, 1)[0]; }
+                else { cb_Item5.SelectedIndex = Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9]; }
+            }
         }
 
         private void Btn_AddItem_Click(object sender, EventArgs e)
@@ -644,7 +869,11 @@ namespace SA2SaveUtility
             if (itemCount == 5) { btn_AddItem.Enabled = false; }
             if (itemCount > 0) { btn_RemoveItem.Enabled = true; }
             SetSize();
-            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
+            if (Main.isPC)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldCountRTE, (byte)itemCount); }
+                else { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
+            }
             else { Main.loadedSave[offsets.chaoSave.HeldCount + 3] = (byte)itemCount; }
         }
 
@@ -654,43 +883,107 @@ namespace SA2SaveUtility
             if (itemCount == 0) { btn_RemoveItem.Enabled = false; }
             if (itemCount < 5) { btn_AddItem.Enabled = true; }
             SetSize();
-            if (Main.isPC) { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
+            if (Main.isPC)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldCountRTE, (byte)itemCount); }
+                else { Main.loadedSave[offsets.chaoSave.HeldCount] = (byte)itemCount; }
+            }
             else { Main.loadedSave[offsets.chaoSave.HeldCount + 3] = (byte)itemCount; }
         }
 
         private void Cb_Item1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category1.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = (byte)Fruit.Where(x => x.Key == cb_Item1.SelectedItem.ToString()).First().Value; }
-            if (cb_Category1.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = (byte)(cb_Item1.SelectedIndex + 1); }
-            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = (byte)cb_Item1.SelectedIndex; }
+            if (cb_Category1.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 1, (byte)Fruit.Where(x => x.Key == cb_Item1.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = (byte)Fruit.Where(x => x.Key == cb_Item1.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category1.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 1, (byte)(cb_Item1.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = (byte)(cb_Item1.SelectedIndex + 1); }
+            }
+            if (cb_Category1.SelectedIndex != 1 && cb_Category1.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 1, (byte)cb_Item1.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 1] = (byte)cb_Item1.SelectedIndex; }
+            }
         }
 
         private void Cb_Item2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category2.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = (byte)Fruit.Where(x => x.Key == cb_Item2.SelectedItem.ToString()).First().Value; }
-            if (cb_Category2.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = (byte)(cb_Item2.SelectedIndex + 1); }
-            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = (byte)cb_Item2.SelectedIndex; }
+            if (cb_Category2.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 3, (byte)Fruit.Where(x => x.Key == cb_Item2.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = (byte)Fruit.Where(x => x.Key == cb_Item2.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category2.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 3, (byte)(cb_Item2.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = (byte)(cb_Item2.SelectedIndex + 1); }
+            }
+            if (cb_Category2.SelectedIndex != 1 && cb_Category2.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 3, (byte)cb_Item2.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 3] = (byte)cb_Item2.SelectedIndex; }
+            }
         }
 
         private void Cb_Item3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category3.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = (byte)Fruit.Where(x => x.Key == cb_Item3.SelectedItem.ToString()).First().Value; }
-            if (cb_Category3.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = (byte)(cb_Item3.SelectedIndex + 1); }
-            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = (byte)cb_Item3.SelectedIndex; }
+            if (cb_Category3.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 5, (byte)Fruit.Where(x => x.Key == cb_Item3.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = (byte)Fruit.Where(x => x.Key == cb_Item3.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category3.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 5, (byte)(cb_Item3.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = (byte)(cb_Item3.SelectedIndex + 1); }
+            }
+            if (cb_Category3.SelectedIndex != 1 && cb_Category3.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 5, (byte)cb_Item3.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 5] = (byte)cb_Item3.SelectedIndex; }
+            }
         }
 
         private void Cb_Item4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category4.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = (byte)Fruit.Where(x => x.Key == cb_Item4.SelectedItem.ToString()).First().Value; }
-            if (cb_Category4.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = (byte)(cb_Item4.SelectedIndex + 1); }
-            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = (byte)cb_Item4.SelectedIndex; }
+            if (cb_Category4.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 7, (byte)Fruit.Where(x => x.Key == cb_Item4.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = (byte)Fruit.Where(x => x.Key == cb_Item4.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category4.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 7, (byte)(cb_Item4.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = (byte)(cb_Item4.SelectedIndex + 1); }
+            }
+            if (cb_Category4.SelectedIndex != 1 && cb_Category4.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 7, (byte)cb_Item4.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 7] = (byte)cb_Item4.SelectedIndex; }
+            }
         }
 
         private void Cb_Item5_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cb_Category5.SelectedIndex == 1) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = (byte)Fruit.Where(x => x.Key == cb_Item5.SelectedItem.ToString()).First().Value; }
-            if (cb_Category5.SelectedIndex == 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = (byte)(cb_Item5.SelectedIndex + 1); }
-            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3) { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = (byte)cb_Item5.SelectedIndex; }
+            if (cb_Category5.SelectedIndex == 1)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 9, (byte)Fruit.Where(x => x.Key == cb_Item5.SelectedItem.ToString()).First().Value); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = (byte)Fruit.Where(x => x.Key == cb_Item5.SelectedItem.ToString()).First().Value; }
+            }
+            if (cb_Category5.SelectedIndex == 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 9, (byte)(cb_Item5.SelectedIndex + 1)); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = (byte)(cb_Item5.SelectedIndex + 1); }
+            }
+            if (cb_Category5.SelectedIndex != 1 && cb_Category5.SelectedIndex != 3)
+            {
+                if (Main.isRTE) { Memory.WriteByteAtAddress((int)offsets.chaoSave.HeldItemsStartRTE + 9, (byte)cb_Item5.SelectedIndex); }
+                else { Main.loadedSave[offsets.chaoSave.HeldItemsStart + 9] = (byte)cb_Item5.SelectedIndex; }
+            }
         }
     }
 }
