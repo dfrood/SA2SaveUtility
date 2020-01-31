@@ -40,8 +40,8 @@ namespace SA2SaveUtility
         public uint PlayTime = 0x286C;
         public uint Rings = 0x2870;
         public uint RingsRTE = 0x174B05C;
-        public uint VoiceLanguage = 0x2877;
-        //public uint VoiceLanguage = 0x284A;
+        //public uint VoiceLanguage = 0x2877;
+        public uint VoiceLanguage = 0x284A;
         public uint VoiceLanguageRTE = 0x174AFD2;
         public uint GreenHill = 0x4034;
 
