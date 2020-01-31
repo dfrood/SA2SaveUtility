@@ -2,11 +2,18 @@
 A save utility for editing and converting Sonic Adventure 2 PC, Gamecube, Xbox 360 and PS3 save files.
 
 ## Supports:
+Editing chao and main data whilst the game is running using the Live Editor.
 Editing PC, Gamecube Xbox 360 & PS3 chao save files, also allows saving of files to either platform allowing for converting platform.
 Saving/loading/duplicating individual chao.
 Editing PC, Gamecube Xbox 360 & PS3 main save files, also allows saving of files to either platform allowing for converting platform.
 
-## How to use
+## How to use Live Editor
+1. Load up your game and select your save, from here you can choose File > Live Editor > SA2 > Main.
+2. Enter the chao garden, from here you can choose File > Live Editor > SA2 > Chao.
+3. Edit whatever you'd like and it should update in real time.
+LIVE EDITOR IS STILL UNDER DEVELOPMENT, PLEASE BACKUP SAVE FILES.
+
+## How to use Save Editor
 1. Load your choice of save file (this file will be saved in the /backups folder, the name will be prefixed with the date and time of loading the file). For Xbox 360/PS3 saves you will need to extract the savedata.bin from the save file retreived from your console. The application should determine what type of save you're using and populate the UI accordingly.
 2. Make any changes you'd like.
 3. If using a chao save, you can click "Chao". this offers saving and duplicating the currently selected chao or allows you to load a .chao file into the selected chao slot.
