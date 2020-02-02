@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SA2SaveUtility
@@ -392,6 +393,20 @@ namespace SA2SaveUtility
             TabPage currentTab = Main.tc_Main.TabPages[0];
             bool focused = true;
             currentTab.InvokeCheck(() => focused = (Main.tc_Main.SelectedTab == currentTab));
+            uc_ChaoSave ucChaoSave = currentTab.Controls.OfType<uc_ChaoSave>().First();
+            bool marketItemsFocused = false;
+            ucChaoSave.InvokeCheck(() => marketItemsFocused = ucChaoSave.marketItems.ContainsFocus);
+            bool heldItemsFocused = false;
+            ucChaoSave.InvokeCheck(() => heldItemsFocused = ucChaoSave.heldItems.ContainsFocus);
+
+            if (marketItemsFocused)
+            {
+                ucChaoSave.InvokeCheck(() => ucChaoSave.marketItems.GetItems());
+            }
+            if (heldItemsFocused)
+            {
+                ucChaoSave.InvokeCheck(() => ucChaoSave.heldItems.GetItems());
+            }
 
             if (!Main.isRTE || focused)
             {
@@ -413,16 +428,21 @@ namespace SA2SaveUtility
                     }
                 }
             }
+
+            
         }
 
 
         public static void UpdateChaoRTE(TabControl tc, byte[] chaoData)
         {
-            uc_ChaoSave ucChaoSave = new uc_ChaoSave();
-            TabPage tpChaoSave = new TabPage();
-            tpChaoSave.Controls.Add(ucChaoSave);
-            tpChaoSave.Text = "Chao World";
-            if (Main.tc_Main.TabPages[0].Text != "Chao World") { Main.tc_Main.InvokeCheck(() => Main.tc_Main.TabPages.Insert(0, tpChaoSave)); }
+            if (Main.tc_Main.TabPages[0].Text != "Chao World")
+            {
+                uc_ChaoSave ucChaoSave = new uc_ChaoSave();
+                TabPage tpChaoSave = new TabPage();
+                tpChaoSave.Controls.Add(ucChaoSave);
+                tpChaoSave.Text = "Chao World";
+                Main.tc_Main.InvokeCheck(() => Main.tc_Main.TabPages.Insert(0, tpChaoSave));
+            }
 
             int index = 0;
             foreach (byte[] chao in Main.SplitByteArray(chaoData, 0x800))
@@ -464,7 +484,7 @@ namespace SA2SaveUtility
                 }
             }
 
-            if (focused || !Main.rteUpdates)
+            if (focused || !Main.rteUpdates || !Main.isRTE)
             {
                 int garden = (int)(chao[offsets.chao.Garden]);
                 int happiness = 0;
@@ -959,17 +979,34 @@ namespace SA2SaveUtility
                 TrackBar trackb_TransformationMagnitude = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_TransformationMagnitude").First();
                 TrackBar trackb_Lifespan1 = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan1").First();
                 TrackBar trackb_Lifespan2 = controls[3].Controls.OfType<TrackBar>().Where(x => x.Name == "trackb_Lifespan2").First();
+                Label lb_currentAlignment = controls[3].Controls.OfType<Label>().Where(x => x.Name == "lb_currentAlignment").First();
+                Label lb_currentMagnitude = controls[3].Controls.OfType<Label>().Where(x => x.Name == "lb_currentMagnitude").First();
+                Label lb_currentRun2Power = controls[3].Controls.OfType<Label>().Where(x => x.Name == "lb_currentRun2Power").First();
+                Label lb_currentSwim2Fly = controls[3].Controls.OfType<Label>().Where(x => x.Name == "lb_currentSwim2Fly").First();
+                Label lb_currentLifespan1 = controls[3].Controls.OfType<Label>().Where(x => x.Name == "lb_currentLifespan1").First();
+                Label lb_currentLifespan2 = controls[3].Controls.OfType<Label>().Where(x => x.Name == "lb_currentLifespan2").First();
 
                 cb_ChaoType.InvokeCheck(() => cb_ChaoType.SelectedIndex(chaoType));
-                if (alignment <= 1 && alignment >= -1 && run2Power <= 1 && run2Power >= -1 && swim2Fly <= 1 && swim2Fly >= -1) { checkb_RealisticValues.InvokeCheck(() => checkb_RealisticValues.Checked(true)); }
-                else { checkb_RealisticValues.InvokeCheck(() => checkb_RealisticValues.Checked(false)); }
-                uc.CheckRealistic();
+                bool firstCheck = false;
+                uc.InvokeCheck(() => firstCheck = uc.firstLoad);
+                if (firstCheck)
+                {
+                    if (alignment > 1 || alignment < -1 || run2Power > 1 || run2Power < -1 || swim2Fly > 1 || swim2Fly < -1 || transformationMagnitude > 1.2) { checkb_RealisticValues.InvokeCheck(() => checkb_RealisticValues.Checked(false)); }
+                    else { checkb_RealisticValues.InvokeCheck(() => checkb_RealisticValues.Checked(true)); }
+                    uc.CheckRealistic();
+                }
                 trackb_Alignment.InvokeCheck(() => trackb_Alignment.Value((int)(alignment * 10000000)));
+                lb_currentAlignment.InvokeCheck(() => lb_currentAlignment.Text = alignment.ToString());
                 trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Value((int)(run2Power * 10000000)));
+                lb_currentRun2Power.InvokeCheck(() => lb_currentRun2Power.Text = run2Power.ToString());
                 trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Value((int)(swim2Fly * 10000000)));
+                lb_currentSwim2Fly.InvokeCheck(() => lb_currentSwim2Fly.Text = swim2Fly.ToString());
                 trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.Value((int)(transformationMagnitude * 10000000)));
+                lb_currentMagnitude.InvokeCheck(() => lb_currentMagnitude.Text = transformationMagnitude.ToString());
                 trackb_Lifespan1.InvokeCheck(() => trackb_Lifespan1.Value(lifespan1));
+                lb_currentLifespan1.InvokeCheck(() => lb_currentLifespan1.Text = lifespan1.ToString());
                 trackb_Lifespan2.InvokeCheck(() => trackb_Lifespan2.Value(lifespan2));
+                lb_currentLifespan2.InvokeCheck(() => lb_currentLifespan2.Text = lifespan2.ToString());
                 if (lifespan1 > lifespan2) { trackb_Lifespan2.InvokeCheck(() => trackb_Lifespan2.Value(lifespan1)); }
 
                 //Emotions
@@ -1165,6 +1202,7 @@ namespace SA2SaveUtility
                 checkb_Shiny2.InvokeCheck(() => checkb_Shiny2.Checked(Convert.ToBoolean(shiny2)));
                 checkb_MonoTone1.InvokeCheck(() => checkb_MonoTone1.Checked(Convert.ToBoolean(monoTone1)));
                 checkb_MonoTone2.InvokeCheck(() => checkb_MonoTone2.Checked(Convert.ToBoolean(monoTone2)));
+                uc.InvokeCheck(() => uc.firstLoad = false);
             }
         }
 

@@ -228,6 +228,12 @@ namespace SA2SaveUtility
         public HeldItems()
         {
             InitializeComponent();
+            GetItems();
+            loaded = true;
+        }
+
+        public void GetItems()
+        {
             if (Main.isPC && !Main.isRTE) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount]; }
             if (Main.isPC && Main.isRTE) { itemCount = Memory.ReadBytes((int)offsets.chaoSave.HeldCountRTE, 1)[0]; }
             if (!Main.isPC) { itemCount = Main.loadedSave[offsets.chaoSave.HeldCount + 3]; }
@@ -469,9 +475,7 @@ namespace SA2SaveUtility
                 }
             }
             SetSize();
-            loaded = true;
         }
-
 
         private void SetSize()
         {

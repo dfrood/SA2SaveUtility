@@ -212,6 +212,12 @@
             this.cb_Colour = new System.Windows.Forms.ComboBox();
             this.lb_Colour = new System.Windows.Forms.Label();
             this.tp_Evolution = new System.Windows.Forms.TabPage();
+            this.lb_currentLifespan2 = new System.Windows.Forms.Label();
+            this.lb_currentLifespan1 = new System.Windows.Forms.Label();
+            this.lb_currentAlignment = new System.Windows.Forms.Label();
+            this.lb_currentRun2Power = new System.Windows.Forms.Label();
+            this.lb_currentSwim2Fly = new System.Windows.Forms.Label();
+            this.lb_currentMagnitude = new System.Windows.Forms.Label();
             this.checkb_RealisticValues = new System.Windows.Forms.CheckBox();
             this.lb_Lifespan2 = new System.Windows.Forms.Label();
             this.trackb_Lifespan2 = new System.Windows.Forms.TrackBar();
@@ -3299,6 +3305,12 @@
             // tp_Evolution
             // 
             this.tp_Evolution.BackColor = System.Drawing.SystemColors.Control;
+            this.tp_Evolution.Controls.Add(this.lb_currentLifespan2);
+            this.tp_Evolution.Controls.Add(this.lb_currentLifespan1);
+            this.tp_Evolution.Controls.Add(this.lb_currentAlignment);
+            this.tp_Evolution.Controls.Add(this.lb_currentRun2Power);
+            this.tp_Evolution.Controls.Add(this.lb_currentSwim2Fly);
+            this.tp_Evolution.Controls.Add(this.lb_currentMagnitude);
             this.tp_Evolution.Controls.Add(this.checkb_RealisticValues);
             this.tp_Evolution.Controls.Add(this.lb_Lifespan2);
             this.tp_Evolution.Controls.Add(this.trackb_Lifespan2);
@@ -3329,6 +3341,60 @@
             this.tp_Evolution.TabIndex = 3;
             this.tp_Evolution.Text = "Evolution";
             // 
+            // lb_currentLifespan2
+            // 
+            this.lb_currentLifespan2.Location = new System.Drawing.Point(158, 153);
+            this.lb_currentLifespan2.Name = "lb_currentLifespan2";
+            this.lb_currentLifespan2.Size = new System.Drawing.Size(100, 23);
+            this.lb_currentLifespan2.TabIndex = 28;
+            this.lb_currentLifespan2.Text = "0";
+            this.lb_currentLifespan2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lb_currentLifespan1
+            // 
+            this.lb_currentLifespan1.Location = new System.Drawing.Point(19, 153);
+            this.lb_currentLifespan1.Name = "lb_currentLifespan1";
+            this.lb_currentLifespan1.Size = new System.Drawing.Size(100, 23);
+            this.lb_currentLifespan1.TabIndex = 27;
+            this.lb_currentLifespan1.Text = "0";
+            this.lb_currentLifespan1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lb_currentAlignment
+            // 
+            this.lb_currentAlignment.Location = new System.Drawing.Point(20, 82);
+            this.lb_currentAlignment.Name = "lb_currentAlignment";
+            this.lb_currentAlignment.Size = new System.Drawing.Size(100, 23);
+            this.lb_currentAlignment.TabIndex = 26;
+            this.lb_currentAlignment.Text = "0";
+            this.lb_currentAlignment.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lb_currentRun2Power
+            // 
+            this.lb_currentRun2Power.Location = new System.Drawing.Point(158, 82);
+            this.lb_currentRun2Power.Name = "lb_currentRun2Power";
+            this.lb_currentRun2Power.Size = new System.Drawing.Size(100, 23);
+            this.lb_currentRun2Power.TabIndex = 25;
+            this.lb_currentRun2Power.Text = "0";
+            this.lb_currentRun2Power.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lb_currentSwim2Fly
+            // 
+            this.lb_currentSwim2Fly.Location = new System.Drawing.Point(294, 82);
+            this.lb_currentSwim2Fly.Name = "lb_currentSwim2Fly";
+            this.lb_currentSwim2Fly.Size = new System.Drawing.Size(100, 23);
+            this.lb_currentSwim2Fly.TabIndex = 24;
+            this.lb_currentSwim2Fly.Text = "0";
+            this.lb_currentSwim2Fly.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lb_currentMagnitude
+            // 
+            this.lb_currentMagnitude.Location = new System.Drawing.Point(431, 82);
+            this.lb_currentMagnitude.Name = "lb_currentMagnitude";
+            this.lb_currentMagnitude.Size = new System.Drawing.Size(100, 23);
+            this.lb_currentMagnitude.TabIndex = 23;
+            this.lb_currentMagnitude.Text = "0";
+            this.lb_currentMagnitude.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // checkb_RealisticValues
             // 
             this.checkb_RealisticValues.AutoSize = true;
@@ -3343,7 +3409,7 @@
             // lb_Lifespan2
             // 
             this.lb_Lifespan2.AutoSize = true;
-            this.lb_Lifespan2.Location = new System.Drawing.Point(151, 92);
+            this.lb_Lifespan2.Location = new System.Drawing.Point(151, 116);
             this.lb_Lifespan2.Name = "lb_Lifespan2";
             this.lb_Lifespan2.Size = new System.Drawing.Size(109, 13);
             this.lb_Lifespan2.TabIndex = 21;
@@ -3352,7 +3418,7 @@
             // trackb_Lifespan2
             // 
             this.trackb_Lifespan2.LargeChange = 50;
-            this.trackb_Lifespan2.Location = new System.Drawing.Point(154, 108);
+            this.trackb_Lifespan2.Location = new System.Drawing.Point(154, 132);
             this.trackb_Lifespan2.Maximum = 10000;
             this.trackb_Lifespan2.Name = "trackb_Lifespan2";
             this.trackb_Lifespan2.Size = new System.Drawing.Size(104, 45);
@@ -3365,7 +3431,7 @@
             // lb_Lifespan1
             // 
             this.lb_Lifespan1.AutoSize = true;
-            this.lb_Lifespan1.Location = new System.Drawing.Point(13, 92);
+            this.lb_Lifespan1.Location = new System.Drawing.Point(13, 116);
             this.lb_Lifespan1.Name = "lb_Lifespan1";
             this.lb_Lifespan1.Size = new System.Drawing.Size(109, 13);
             this.lb_Lifespan1.TabIndex = 19;
@@ -3374,7 +3440,7 @@
             // trackb_Lifespan1
             // 
             this.trackb_Lifespan1.LargeChange = 50;
-            this.trackb_Lifespan1.Location = new System.Drawing.Point(16, 108);
+            this.trackb_Lifespan1.Location = new System.Drawing.Point(16, 132);
             this.trackb_Lifespan1.Maximum = 10000;
             this.trackb_Lifespan1.Name = "trackb_Lifespan1";
             this.trackb_Lifespan1.Size = new System.Drawing.Size(104, 45);
@@ -3391,7 +3457,7 @@
             this.lb_TransformationMagnitudeUpper.Name = "lb_TransformationMagnitudeUpper";
             this.lb_TransformationMagnitudeUpper.Size = new System.Drawing.Size(22, 13);
             this.lb_TransformationMagnitudeUpper.TabIndex = 17;
-            this.lb_TransformationMagnitudeUpper.Text = "1.2";
+            this.lb_TransformationMagnitudeUpper.Text = "1.8";
             // 
             // lb_TranformationMagnitudeLower
             // 
@@ -3415,12 +3481,13 @@
             // 
             this.trackb_TransformationMagnitude.LargeChange = 10000;
             this.trackb_TransformationMagnitude.Location = new System.Drawing.Point(428, 61);
-            this.trackb_TransformationMagnitude.Maximum = 12000000;
+            this.trackb_TransformationMagnitude.Maximum = 18000000;
             this.trackb_TransformationMagnitude.Name = "trackb_TransformationMagnitude";
             this.trackb_TransformationMagnitude.Size = new System.Drawing.Size(104, 45);
             this.trackb_TransformationMagnitude.SmallChange = 1000;
             this.trackb_TransformationMagnitude.TabIndex = 14;
             this.trackb_TransformationMagnitude.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackb_TransformationMagnitude.Value = 9000000;
             this.trackb_TransformationMagnitude.Scroll += new System.EventHandler(this.Trackb_TransformationMagnitude_Scroll);
             // 
             // lb_Fly
@@ -3430,7 +3497,7 @@
             this.lb_Fly.Name = "lb_Fly";
             this.lb_Fly.Size = new System.Drawing.Size(13, 13);
             this.lb_Fly.TabIndex = 13;
-            this.lb_Fly.Text = "1";
+            this.lb_Fly.Text = "3";
             // 
             // lb_Swim
             // 
@@ -3439,7 +3506,7 @@
             this.lb_Swim.Name = "lb_Swim";
             this.lb_Swim.Size = new System.Drawing.Size(16, 13);
             this.lb_Swim.TabIndex = 12;
-            this.lb_Swim.Text = "-1";
+            this.lb_Swim.Text = "-3";
             // 
             // lb_Swim2Fly
             // 
@@ -3452,13 +3519,13 @@
             // 
             // trackb_Swim2Fly
             // 
-            this.trackb_Swim2Fly.LargeChange = 1000;
+            this.trackb_Swim2Fly.LargeChange = 10000;
             this.trackb_Swim2Fly.Location = new System.Drawing.Point(291, 61);
-            this.trackb_Swim2Fly.Maximum = 1000000;
-            this.trackb_Swim2Fly.Minimum = -1000000;
+            this.trackb_Swim2Fly.Maximum = 30000000;
+            this.trackb_Swim2Fly.Minimum = -30000000;
             this.trackb_Swim2Fly.Name = "trackb_Swim2Fly";
             this.trackb_Swim2Fly.Size = new System.Drawing.Size(104, 45);
-            this.trackb_Swim2Fly.SmallChange = 100;
+            this.trackb_Swim2Fly.SmallChange = 1000;
             this.trackb_Swim2Fly.TabIndex = 10;
             this.trackb_Swim2Fly.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_Swim2Fly.Scroll += new System.EventHandler(this.Trackb_Swim2Fly_Scroll);
@@ -3470,7 +3537,7 @@
             this.lb_Power.Name = "lb_Power";
             this.lb_Power.Size = new System.Drawing.Size(13, 13);
             this.lb_Power.TabIndex = 9;
-            this.lb_Power.Text = "1";
+            this.lb_Power.Text = "3";
             // 
             // lb_Run
             // 
@@ -3479,7 +3546,7 @@
             this.lb_Run.Name = "lb_Run";
             this.lb_Run.Size = new System.Drawing.Size(16, 13);
             this.lb_Run.TabIndex = 8;
-            this.lb_Run.Text = "-1";
+            this.lb_Run.Text = "-3";
             // 
             // lb_Run2Power
             // 
@@ -3492,13 +3559,13 @@
             // 
             // trackb_Run2Power
             // 
-            this.trackb_Run2Power.LargeChange = 1000;
+            this.trackb_Run2Power.LargeChange = 30000;
             this.trackb_Run2Power.Location = new System.Drawing.Point(155, 61);
-            this.trackb_Run2Power.Maximum = 1000000;
-            this.trackb_Run2Power.Minimum = -1000000;
+            this.trackb_Run2Power.Maximum = 30000000;
+            this.trackb_Run2Power.Minimum = -30000000;
             this.trackb_Run2Power.Name = "trackb_Run2Power";
             this.trackb_Run2Power.Size = new System.Drawing.Size(104, 45);
-            this.trackb_Run2Power.SmallChange = 100;
+            this.trackb_Run2Power.SmallChange = 3000;
             this.trackb_Run2Power.TabIndex = 6;
             this.trackb_Run2Power.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_Run2Power.Scroll += new System.EventHandler(this.Trackb_Run2Power_Scroll);
@@ -3510,7 +3577,7 @@
             this.lb_AlignmentHero.Name = "lb_AlignmentHero";
             this.lb_AlignmentHero.Size = new System.Drawing.Size(13, 13);
             this.lb_AlignmentHero.TabIndex = 5;
-            this.lb_AlignmentHero.Text = "1";
+            this.lb_AlignmentHero.Text = "3";
             // 
             // lb_AlignmentDark
             // 
@@ -3519,7 +3586,7 @@
             this.lb_AlignmentDark.Name = "lb_AlignmentDark";
             this.lb_AlignmentDark.Size = new System.Drawing.Size(16, 13);
             this.lb_AlignmentDark.TabIndex = 4;
-            this.lb_AlignmentDark.Text = "-1";
+            this.lb_AlignmentDark.Text = "-3";
             // 
             // lb_Alignment
             // 
@@ -3532,13 +3599,13 @@
             // 
             // trackb_Alignment
             // 
-            this.trackb_Alignment.LargeChange = 1000;
+            this.trackb_Alignment.LargeChange = 10000;
             this.trackb_Alignment.Location = new System.Drawing.Point(17, 61);
-            this.trackb_Alignment.Maximum = 1000000;
-            this.trackb_Alignment.Minimum = -1000000;
+            this.trackb_Alignment.Maximum = 30000000;
+            this.trackb_Alignment.Minimum = -30000000;
             this.trackb_Alignment.Name = "trackb_Alignment";
             this.trackb_Alignment.Size = new System.Drawing.Size(104, 45);
-            this.trackb_Alignment.SmallChange = 100;
+            this.trackb_Alignment.SmallChange = 1000;
             this.trackb_Alignment.TabIndex = 2;
             this.trackb_Alignment.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackb_Alignment.Scroll += new System.EventHandler(this.Trackb_Alignment_Scroll);
@@ -6244,5 +6311,11 @@
         private System.Windows.Forms.CheckBox checkb_SAPenguin;
         private System.Windows.Forms.CheckBox checkb_SASeal;
         private System.Windows.Forms.CheckBox checkb_InitChao;
+        private System.Windows.Forms.Label lb_currentMagnitude;
+        private System.Windows.Forms.Label lb_currentLifespan2;
+        private System.Windows.Forms.Label lb_currentLifespan1;
+        private System.Windows.Forms.Label lb_currentAlignment;
+        private System.Windows.Forms.Label lb_currentRun2Power;
+        private System.Windows.Forms.Label lb_currentSwim2Fly;
     }
 }

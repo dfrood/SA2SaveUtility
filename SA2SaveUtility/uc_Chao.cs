@@ -10,6 +10,8 @@ namespace SA2SaveUtility
         public uint chaoNumber { get; set; }
         public uint chaoBeginning { get; set; }
 
+        public bool firstLoad { get; set; }
+
         Offsets offsets = new Offsets();
 
         public uc_Chao()
@@ -17,6 +19,7 @@ namespace SA2SaveUtility
             if (!Main.isSA && Main.isRTE) { chaoBeginning = 0; }
             if (Main.isSA && !Main.isRTE) { chaoBeginning = 0x818; }
             if (!Main.isSA && !Main.isRTE) { chaoBeginning = 0x3AA4; }
+            firstLoad = true;
             InitializeComponent();
         }
 
@@ -282,9 +285,10 @@ namespace SA2SaveUtility
         }
 
         private void Trackb_Alignment_Scroll(object sender, EventArgs e)
-        {
+        {   
             float alignment = (float)(trackb_Alignment.Value * 0.0000001);
             byte[] alignmentBytes = BitConverter.GetBytes(alignment);
+            lb_currentAlignment.Text = alignment.ToString();
             if (!Main.isPC) { Array.Reverse(alignmentBytes); }
             for (int i = 0; i < alignmentBytes.Length; i++)
             {
@@ -297,6 +301,7 @@ namespace SA2SaveUtility
         {
             float run2Power = (float)(trackb_Run2Power.Value * 0.0000001);
             byte[] run2PowerBytes = BitConverter.GetBytes(run2Power);
+            lb_currentRun2Power.Text = run2Power.ToString();
             if (!Main.isPC) { Array.Reverse(run2PowerBytes); }
             for (int i = 0; i < run2PowerBytes.Length; i++)
             {
@@ -309,6 +314,7 @@ namespace SA2SaveUtility
         {
             float swim2Fly = (float)(trackb_Swim2Fly.Value * 0.0000001);
             byte[] swim2FlyBytes = BitConverter.GetBytes(swim2Fly);
+            lb_currentSwim2Fly.Text = swim2Fly.ToString();
             if (!Main.isPC) { Array.Reverse(swim2FlyBytes); }
             for (int i = 0; i < swim2FlyBytes.Length; i++)
             {
@@ -321,6 +327,7 @@ namespace SA2SaveUtility
         {
             float transformationMagnitude = (float)(trackb_TransformationMagnitude.Value * 0.0000001);
             byte[] transformationMagnitudeBytes = BitConverter.GetBytes(transformationMagnitude);
+            lb_currentMagnitude.Text = transformationMagnitude.ToString();
             if (!Main.isPC) { Array.Reverse(transformationMagnitudeBytes); }
             for (int i = 0; i < transformationMagnitudeBytes.Length; i++)
             {
@@ -626,6 +633,7 @@ namespace SA2SaveUtility
         private void Trackb_Lifespan1_Scroll(object sender, EventArgs e)
         {
             byte[] lifespan = BitConverter.GetBytes((Int16)trackb_Lifespan1.Value);
+            lb_currentLifespan1.Text = trackb_Lifespan1.Value.ToString();
             if (!Main.isPC) { Array.Reverse(lifespan); }
             for (int i = 0; i < lifespan.Length; i++)
             {
@@ -646,6 +654,7 @@ namespace SA2SaveUtility
         private void Trackb_Lifespan2_Scroll(object sender, EventArgs e)
         {
             byte[] lifespan = BitConverter.GetBytes((Int16)trackb_Lifespan2.Value);
+            lb_currentLifespan2.Text = trackb_Lifespan2.Value.ToString();
             if (!Main.isPC) { Array.Reverse(lifespan); }
             for (int i = 0; i < lifespan.Length; i++)
             {
@@ -1333,12 +1342,14 @@ namespace SA2SaveUtility
             int alignment = 0;
             int run2power = 0;
             int swim2fly = 0;
+            int magnitude = 0;
 
             Invoke(new MethodInvoker(delegate () 
             {
                 alignment = trackb_Alignment.Value;
                 run2power = trackb_Run2Power.Value;
                 swim2fly = trackb_Swim2Fly.Value;
+                magnitude = trackb_TransformationMagnitude.Value;
             }));
 
             if (checkb_RealisticValues.Checked)
@@ -1349,6 +1360,7 @@ namespace SA2SaveUtility
                 if (run2power < -10000000) { trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Value = -10000000); }
                 if (swim2fly > 10000000) { trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Value = 10000000); }
                 if (swim2fly < -10000000) { trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Value = -10000000); }
+                if (magnitude > 12000000) { trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.Value = 12000000); }
                 lb_Run.InvokeCheck(() => lb_Run.Text = "-1");
                 lb_Power.InvokeCheck(() => lb_Power.Text = "1");
                 trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Maximum = 10000000);
@@ -1367,33 +1379,25 @@ namespace SA2SaveUtility
                 trackb_Alignment.InvokeCheck(() => trackb_Alignment.Minimum = -10000000);
                 trackb_Alignment.InvokeCheck(() => trackb_Alignment.SmallChange = 1000);
                 trackb_Alignment.InvokeCheck(() => trackb_Alignment.LargeChange = 10000);
+                lb_TransformationMagnitudeUpper.InvokeCheck(() => lb_TransformationMagnitudeUpper.Text = "1.2");
                 trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.Maximum = 12000000);
-                trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.SmallChange = 1000);
-                trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.LargeChange = 10000);
             }
             else
             {
-                lb_Run.InvokeCheck(() => lb_Run.Text = "-30");
-                lb_Power.InvokeCheck(() => lb_Power.Text = "30");
-                trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Maximum = 300000000);
-                trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Minimum = -300000000);
-                trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.SmallChange = 30000);
-                trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.LargeChange = 300000);
-                lb_Swim.InvokeCheck(() => lb_Swim.Text = "-30");
-                lb_Fly.InvokeCheck(() => lb_Fly.Text = "-30");
-                trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Maximum = 300000000);
-                trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Minimum = -300000000);
-                trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.SmallChange = 30000);
-                trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.LargeChange = 300000);
-                lb_AlignmentDark.InvokeCheck(() => lb_AlignmentDark.Text = "-30");
-                lb_AlignmentHero.InvokeCheck(() => lb_AlignmentHero.Text = "30");
-                trackb_Alignment.InvokeCheck(() => trackb_Alignment.Maximum = 300000000);
-                trackb_Alignment.InvokeCheck(() => trackb_Alignment.Minimum = -300000000);
-                trackb_Alignment.InvokeCheck(() => trackb_Alignment.SmallChange = 30000);
-                trackb_Alignment.InvokeCheck(() => trackb_Alignment.LargeChange = 300000);
-                trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.Maximum = 12000000);
-                trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.SmallChange = 1000);
-                trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.LargeChange = 10000);
+                lb_Run.InvokeCheck(() => lb_Run.Text = "-3");
+                lb_Power.InvokeCheck(() => lb_Power.Text = "3");
+                trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Maximum = 30000000);
+                trackb_Run2Power.InvokeCheck(() => trackb_Run2Power.Minimum = -30000000);
+                lb_Swim.InvokeCheck(() => lb_Swim.Text = "-3");
+                lb_Fly.InvokeCheck(() => lb_Fly.Text = "-3");
+                trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Maximum = 30000000);
+                trackb_Swim2Fly.InvokeCheck(() => trackb_Swim2Fly.Minimum = -30000000);
+                lb_AlignmentDark.InvokeCheck(() => lb_AlignmentDark.Text = "-3");
+                lb_AlignmentHero.InvokeCheck(() => lb_AlignmentHero.Text = "3");
+                trackb_Alignment.InvokeCheck(() => trackb_Alignment.Maximum = 30000000);
+                trackb_Alignment.InvokeCheck(() => trackb_Alignment.Minimum = -30000000);
+                lb_TransformationMagnitudeUpper.InvokeCheck(() => lb_TransformationMagnitudeUpper.Text = "1.8");
+                trackb_TransformationMagnitude.InvokeCheck(() => trackb_TransformationMagnitude.Maximum = 18000000);
             }
         }
 

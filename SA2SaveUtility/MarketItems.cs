@@ -234,6 +234,12 @@ namespace SA2SaveUtility
         public MarketItems()
         {
             InitializeComponent();
+            GetItems();
+            loaded = true;
+        }
+
+        public void GetItems()
+        {
             if (Main.isPC)
             {
                 if (Main.isRTE) { itemCount = Memory.ReadBytes((int)offsets.chaoSave.MarketCountRTE, 1)[0]; }
@@ -1847,7 +1853,6 @@ namespace SA2SaveUtility
                 }
             }
             SetSize();
-            loaded = true;
         }
 
         private void SetSize()

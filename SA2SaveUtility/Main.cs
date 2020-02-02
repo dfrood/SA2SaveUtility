@@ -16,6 +16,8 @@ namespace SA2SaveUtility
     {
         public static System.Timers.Timer rteTimer = new System.Timers.Timer();
 
+        public static Thread rteThread;
+
         public static bool isRTE;
         public static bool isSA;
         public static bool isPC;
@@ -115,35 +117,32 @@ namespace SA2SaveUtility
             rteTimer.Interval = rteInterval;
             rteTimer.Start();
         }
+
         private void tc_Main_Selected(Object sender, TabControlEventArgs e)
         {
-            if (tc_Main.SelectedTab.Text == "Empty Slot" && !isMain) { ChaoSave.EmptyChaoSelected(e.TabPageIndex); }
+            if (tc_Main.TabCount != 0)
+            {
+                if (tc_Main.SelectedTab.Text == "Empty Slot" && !isMain) { ChaoSave.EmptyChaoSelected(e.TabPageIndex); }
+            }
         }
 
 
         public static void RTEUpdates(object source, System.Timers.ElapsedEventArgs e)
         {
-            if (rteUpdates)
+            if (rteUpdates && isRTE)
             {
-                if (firstRTECheck)
-                {
-                    rteTimer.Stop();
-                    firstRTECheck = false;
-                    Thread.Sleep(10000);
-                    rteTimer.Start();
-                }
-                if (isRTE)
+                if (rteThread == null || !rteThread.IsAlive)
                 {
                     if (isMain && MainSave.activeMain.Count != 0)
                     {
-                        Thread updateCheckThread = new Thread(() => MainSave.UpdateSave(tc_Main, MainSave.activeMain.First(), Memory.ReadBytes(offsets.mainMemoryStart, 0x6000)));
-                        updateCheckThread.Start();
+                        rteThread = new Thread(() => MainSave.UpdateSave(tc_Main, MainSave.activeMain.First(), Memory.ReadBytes(offsets.mainMemoryStart, 0x6000)));
+                        rteThread.Start();
                     }
 
                     if (!isMain && ChaoSave.activeChao.Count != 0)
                     {
-                        Thread updateCheckThread = new Thread(() => ChaoSave.UpdateChaoRTE(tc_Main, Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000)));
-                        updateCheckThread.Start();
+                        rteThread = new Thread(() => ChaoSave.UpdateChaoRTE(tc_Main, Memory.ReadBytes(offsets.chaoMemoryStart, 0xC000)));
+                        rteThread.Start();
                     }
                 }
             }
@@ -240,6 +239,7 @@ namespace SA2SaveUtility
                     DialogResult result = MessageBox.Show("Is the save you're loading an SA PC Chao Save?", "PC or 360/PS3 SA Chao Save?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
+                        isRTE = false;
                         isSA = true;
                         isPC = true;
                         isGC = false;
@@ -247,6 +247,7 @@ namespace SA2SaveUtility
                     }
                     if (result == DialogResult.No)
                     {
+                        isRTE = false;
                         isSA = true;
                         isPC = false;
                         isGC = false;
@@ -259,6 +260,7 @@ namespace SA2SaveUtility
                 if (loadedSave.Length == 0x6000)
                 {
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PC Main Save]";
+                    isRTE = false;
                     isSA = false;
                     isPC = true;
                     isGC = false;
@@ -270,6 +272,7 @@ namespace SA2SaveUtility
                     DialogResult result = MessageBox.Show("Is the save you're loading a PC Chao Save?", "PC or 360/PS3 Chao Save?", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
+                        isRTE = false;
                         isSA = false;
                         isPC = true;
                         isGC = false;
@@ -277,6 +280,7 @@ namespace SA2SaveUtility
                     }
                     if (result == DialogResult.No)
                     {
+                        isRTE = false;
                         isSA = false;
                         isPC = false;
                         isGC = false;
@@ -288,6 +292,7 @@ namespace SA2SaveUtility
                 if (loadedSave.Length == 0x3C028)
                 {
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing 360 Main Save]";
+                    isRTE = false;
                     isSA = false;
                     isPC = false;
                     isPS3 = false;
@@ -298,6 +303,7 @@ namespace SA2SaveUtility
                 if (loadedSave.Length == 0x3C050)
                 {
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing PS3 Main Save]";
+                    isRTE = false;
                     isSA = false;
                     isPC = false;
                     isPS3 = true;
@@ -308,6 +314,7 @@ namespace SA2SaveUtility
                 if (loadedSave.Length == 0x6040)
                 {
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Main Save]";
+                    isRTE = false;
                     isSA = false;
                     isPC = false;
                     isGC = true;
@@ -320,6 +327,7 @@ namespace SA2SaveUtility
                 if (loadedSave.Length == 0x10040)
                 {
                     ActiveForm.Text = "Sonic Adventure 2 - Save Utility [Editing Gamecube Chao Save]";
+                    isRTE = false;
                     isSA = false;
                     isPC = false;
                     isGC = true;
@@ -346,11 +354,12 @@ namespace SA2SaveUtility
 
         private void IsChao()
         {
+            rteTimer.Stop();
+            if (rteThread != null && rteThread.IsAlive) { rteThread.Abort(); }
             isMain = false;
             tc_Main.TabPages.Clear();
             MainSave.activeMain.Clear();
             ChaoSave.activeChao.Clear();
-            isMain = false;
             if (!isSA && !isRTE)
             {
                 ChaoSave.GetChaoWorld();
@@ -373,14 +382,16 @@ namespace SA2SaveUtility
             tsmi_saveAs360Append.Visible = false;
             tsmi_saveAsPS3New.Visible = false;
             tsmi_saveAsPS3Append.Visible = false;
+            if (rteUpdates && isRTE) { rteTimer.Start(); }
         }
         private void IsMain()
         {
+            rteTimer.Stop();
+            if (rteThread != null && rteThread.IsAlive) { rteThread.Abort(); }
             isMain = true;
             tc_Main.TabPages.Clear();
             MainSave.activeMain.Clear();
             ChaoSave.activeChao.Clear();
-            isMain = true;
             MainSave.GetMain();
             tsmi_SaveCurrentChao.Enabled = false;
             tsmi_Chao.Enabled = false;
@@ -398,6 +409,7 @@ namespace SA2SaveUtility
                 tsmi_saveAsPS3New.Visible = false;
                 tsmi_saveAsPS3Append.Visible = false;
             }
+            if (rteUpdates && isRTE) { rteTimer.Start(); }
         }
 
         private void Tsmi_LoadChao_Click(object sender, EventArgs e)
