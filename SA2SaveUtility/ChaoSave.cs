@@ -553,11 +553,15 @@ namespace SA2SaveUtility
                 else { intelligencePoints = BitConverter.ToUInt16(chao.Skip(Convert.ToUInt16(offsets.chao.IntelligencePoints)).Take(2).Reverse().ToArray(), 0); }
 
                 int swimGrade = (int)chao[offsets.chao.SwimGrade];
+                if (swimGrade > 5) { swimGrade = 6; }
                 int flyGrade = (int)chao[offsets.chao.FlyGrade];
+                if (flyGrade > 5) { flyGrade = 6; }
                 int runGrade = (int)chao[offsets.chao.RunGrade];
-                if (runGrade == 7) { runGrade = 6; }
+                if (runGrade > 5) { runGrade = 6; }
                 int powerGrade = (int)chao[offsets.chao.PowerGrade];
+                if (powerGrade > 5) { powerGrade = 6; }
                 int staminaGrade = (int)chao[offsets.chao.StaminaGrade];
+                if (staminaGrade > 5) { staminaGrade = 6; }
                 int luckGrade = (int)chao[offsets.chao.LuckGrade];
                 int intelligenceGrade = (int)chao[offsets.chao.IntelligenceGrade];
 
@@ -646,19 +650,27 @@ namespace SA2SaveUtility
 
 
                 int swimDNAGrade1 = (int)chao[offsets.chao.DNASwimGrade1];
+                if (swimDNAGrade1 > 5) { swimDNAGrade1 = 6; }
                 int flyDNAGrade1 = (int)chao[offsets.chao.DNAFlyGrade1];
+                if (flyDNAGrade1 > 5) { flyDNAGrade1 = 6; }
                 int runDNAGrade1 = (int)chao[offsets.chao.DNARunGrade1];
-                if (runDNAGrade1 == 7) { runDNAGrade1 = 6; }
+                if (runDNAGrade1 > 5) { runDNAGrade1 = 6; }
                 int powerDNAGrade1 = (int)chao[offsets.chao.DNAPowerGrade1];
+                if (powerDNAGrade1 > 5) { powerDNAGrade1 = 6; }
                 int staminaDNAGrade1 = (int)chao[offsets.chao.DNAStaminaGrade1];
+                if (staminaDNAGrade1 > 5) { staminaDNAGrade1 = 6; }
                 int luckDNAGrade1 = (int)chao[offsets.chao.DNALuckGrade1];
                 int intelligenceDNAGrade1 = (int)chao[offsets.chao.DNAIntelligenceGrade1];
                 int swimDNAGrade2 = (int)chao[offsets.chao.DNASwimGrade2];
+                if (swimDNAGrade2 > 5) { swimDNAGrade2 = 6; }
                 int flyDNAGrade2 = (int)chao[offsets.chao.DNAFlyGrade2];
+                if (flyDNAGrade2 > 5) { flyDNAGrade2 = 6; }
                 int runDNAGrade2 = (int)chao[offsets.chao.DNARunGrade2];
                 if (runDNAGrade2 == 7) { runDNAGrade2 = 6; }
                 int powerDNAGrade2 = (int)chao[offsets.chao.DNAPowerGrade2];
+                if (powerDNAGrade2 > 5) { powerDNAGrade2 = 6; }
                 int staminaDNAGrade2 = (int)chao[offsets.chao.DNAStaminaGrade2];
+                if (staminaDNAGrade2 > 5) { staminaDNAGrade2 = 6; }
                 int luckDNAGrade2 = (int)chao[offsets.chao.DNALuckGrade2];
                 int intelligenceDNAGrade2 = (int)chao[offsets.chao.DNAIntelligenceGrade2];
                 int fruit1 = (byte)chao[offsets.chao.DNAFavouriteFruit1];
