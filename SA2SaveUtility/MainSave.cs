@@ -130,7 +130,11 @@ namespace SA2SaveUtility
             else { textLang = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.TextLanguageRTE), 1).First(); }
 
             int voiceLang = 0;
-            if (!Main.isRTE) { voiceLang = (int)save[offsets.main.VoiceLanguage]; }
+            if (!Main.isRTE)
+            {
+                if (Main.isGC) { voiceLang = (int)save[offsets.main.VoiceLanguageGC]; }
+                else { voiceLang = (int)save[offsets.main.VoiceLanguage]; }
+            }
             else { voiceLang = (int)Memory.ReadBytes(Convert.ToInt32(offsets.main.VoiceLanguageRTE), 1).First(); }
 
             int sonicCW = (int)save[offsets.main.ChaoWorldSonic];

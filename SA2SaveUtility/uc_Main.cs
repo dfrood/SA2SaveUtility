@@ -476,7 +476,11 @@ namespace SA2SaveUtility
 
         private void Cb_Voice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!Main.isRTE) { Main.WriteByte((int)offsets.main.VoiceLanguage, cb_Voice.SelectedIndex, mainIndex); }
+            if (!Main.isRTE)
+            {
+                if (Main.isGC) { Main.WriteByte((int)offsets.main.VoiceLanguageGC, cb_Voice.SelectedIndex, mainIndex); }
+                else { Main.WriteByte((int)offsets.main.VoiceLanguage, cb_Voice.SelectedIndex, mainIndex); }
+            }
             else { Memory.WriteByteAtAddress((int)offsets.main.VoiceLanguageRTE, (byte)cb_Voice.SelectedIndex); }
         }
     }
