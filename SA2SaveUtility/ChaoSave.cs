@@ -103,6 +103,7 @@ namespace SA2SaveUtility
             {  "Dark Olive (Transparent)", 178 },
             {  "Dark Olive Green (Transparent)", 123 },
             {  "Dark Olive Green-Grey (Transparent)", 184 },
+            {  "Dark Sea Green (Transparent", 207 },
             {  "Medium Aquamarine (Transparent)", 223 },
             {  "Pale Turquoise (Transparent)", 143 },
             {  "Pale Aquamarine (Transparent)", 241 },
@@ -408,7 +409,7 @@ namespace SA2SaveUtility
                 ucChaoSave.InvokeCheck(() => ucChaoSave.heldItems.GetItems());
             }
 
-            if (!Main.isRTE || focused)
+            if (!Main.isRTE || focused && Memory.connected)
             {
                 Portals portals;
                 if (Main.isRTE) { portals = (Portals)Enum.Parse(typeof(Portals), Memory.ReadBytes((int)offsets.chaoSave.GardensRTE, 1)[0].ToString()); }
@@ -429,7 +430,7 @@ namespace SA2SaveUtility
                 }
             }
 
-            
+
         }
 
 
@@ -1285,7 +1286,7 @@ namespace SA2SaveUtility
             byteArray.Reverse((int)offsets.chao.Lifespan1, 2);
             byteArray.Reverse((int)offsets.chao.Lifespan2, 2);
             byteArray.Reverse((int)offsets.chao.Reincarnations, 2);
-            byteArray.Reverse((int)offsets.chao.SA2Toys, 4);
+            byteArray.Reverse((int)offsets.chao.SA2Toys, 2);
             byteArray.Reverse((int)offsets.chao.SA2AnimalBehaviours, 4);
             byteArray.Reverse((int)offsets.chao.SAAnimalBehaviours, 4);
             byteArray.Reverse((int)offsets.chao.Alignment, 4);
@@ -1298,6 +1299,54 @@ namespace SA2SaveUtility
             byteArray.Reverse((int)offsets.chao.Tiredness, 2);
             byteArray.Reverse((int)offsets.chao.Boredom, 2);
             byteArray.Reverse((int)offsets.chao.Energy, 2);
+            byteArray.Reverse((int)offsets.chao.SA2Medals, 2);
+
+            //Will fix undocumented values
+            byteArray.Reverse((int)offsets.chao.Unk1, 4);
+            byteArray.Reverse((int)offsets.chao.Unk2, 2);
+            //Do not reverse, breaks age
+            //byteArray.Reverse((int)offsets.chao.Unk3, 2);
+            byteArray.Reverse((int)offsets.chao.Unk4, 4);
+            byteArray.Reverse((int)offsets.chao.Unk5, 4);
+            byteArray.Reverse((int)offsets.chao.Unk6, 4);
+            byteArray.Reverse((int)offsets.chao.Unk7, 4);
+            byteArray.Reverse((int)offsets.chao.Unk8, 4);
+            byteArray.Reverse((int)offsets.chao.Unk9, 2);
+            byteArray.Reverse((int)offsets.chao.Unk10, 2);
+            byteArray.Reverse((int)offsets.chao.Unk11, 2);
+            byteArray.Reverse((int)offsets.chao.Unk12, 2);
+            byteArray.Reverse((int)offsets.chao.Unk13, 2);
+            byteArray.Reverse((int)offsets.chao.Unk14, 2);
+            byteArray.Reverse((int)offsets.chao.Unk15, 2);
+            byteArray.Reverse((int)offsets.chao.Unk16, 2);
+            byteArray.Reverse((int)offsets.chao.Unk17, 2);
+            byteArray.Reverse((int)offsets.chao.Unk18, 2);
+            byteArray.Reverse((int)offsets.chao.Unk19, 2);
+            byteArray.Reverse((int)offsets.chao.Unk20, 2);
+            byteArray.Reverse((int)offsets.chao.Unk21, 2);
+            byteArray.Reverse((int)offsets.chao.Unk22, 2);
+            byteArray.Reverse((int)offsets.chao.Unk23, 2);
+            byteArray.Reverse((int)offsets.chao.Unk24, 2);
+            byteArray.Reverse((int)offsets.chao.Unk25, 2);
+            byteArray.Reverse((int)offsets.chao.Unk26, 2);
+            byteArray.Reverse((int)offsets.chao.Unk27, 2);
+            byteArray.Reverse((int)offsets.chao.Unk28, 2);
+            byteArray.Reverse((int)offsets.chao.Unk29, 2);
+            byteArray.Reverse((int)offsets.chao.Unk30, 2);
+            byteArray.Reverse((int)offsets.chao.Unk31, 2);
+            byteArray.Reverse((int)offsets.chao.Unk32, 2);
+            byteArray.Reverse((int)offsets.chao.Unk33, 2);
+            byteArray.Reverse((int)offsets.chao.Unk34, 2);
+            byteArray.Reverse((int)offsets.chao.Unk35, 2);
+            byteArray.Reverse((int)offsets.chao.Unk36, 2);
+            byteArray.Reverse((int)offsets.chao.Unk37, 2);
+            byteArray.Reverse((int)offsets.chao.Unk38, 2);
+            byteArray.Reverse((int)offsets.chao.Unk39, 2);
+            byteArray.Reverse((int)offsets.chao.Unk40, 2);
+            byteArray.Reverse((int)offsets.chao.Unk41, 2);
+            byteArray.Reverse((int)offsets.chao.Unk42, 2);
+            byteArray.Reverse((int)offsets.chao.Unk43, 2);
+
             return byteArray.ToArray();
         }
 

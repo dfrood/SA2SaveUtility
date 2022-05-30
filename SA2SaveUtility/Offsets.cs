@@ -264,6 +264,8 @@ namespace SA2SaveUtility
 
     class Chao
     {
+        //Will fix undocumented values
+
         public uint Name = 0x12;
         public uint SwimBar = 0x20;
         public uint FlyBar = 0x21;
@@ -293,16 +295,32 @@ namespace SA2SaveUtility
         public uint StaminaPoints = 0x40;
         public uint LuckPoints = 0x42;
         public uint IntelligencePoints = 0x44;
+
+        public uint Unk1 = 0x78; //4
+
         public uint ChaoType = 0x80;
         public uint Garden = 0x81;
         public uint Happiness = 0x82;
         public uint InitChao = 0x84;
+
+        public uint Unk2 = 0x86; //2
+        public uint Unk3 = 0x88; //2
+
         public uint Lifespan1 = 0x8A;
         public uint Lifespan2 = 0x8C;
         public uint Reincarnations = 0x8E;
+
+        public uint Unk4 = 0x90; //4
+        public uint Unk5 = 0x98; //4
+        public uint Unk6 = 0xA0; //4
+        public uint Unk7 = 0xA4; //4
+
         public uint Run2PowerTranformation = 0xA8;
         public uint Swim2FlyTransformation = 0xAC;
         public uint Alignment = 0xB0;
+
+        public uint Unk8 = 0xBC; //4
+
         public uint TransformationMagnitude = 0xC0;
         public uint Eyes = 0xD1;
         public uint Mouth = 0xD2;
@@ -317,6 +335,11 @@ namespace SA2SaveUtility
         public uint EggColour = 0xDC;
         public uint BodyType = 0xDD;
         public uint BodyTypeAnimal = 0xDE;
+        public uint SA2Medals = 0x108;
+
+        public uint Unk9 = 0x10E; //2
+        public uint Unk10 = 0x110; //2
+
         public uint SA2AnimalBehaviours = 0x118;
         public uint SA2ArmsPart = 0x11C;
         public uint SA2EarsPart = 0x11D;
@@ -326,6 +349,11 @@ namespace SA2SaveUtility
         public uint SA2TailPart = 0x121;
         public uint SA2WingsPart = 0x122;
         public uint SA2FacePart = 0x123;
+
+        public uint Unk11 = 0x126; //2
+        public uint Unk12 = 0x128; //2
+        public uint Unk13 = 0x12A; //2
+
         public uint Joy = 0x12C;
         public uint UrgeToCry = 0x12E;
         public uint Fear = 0x12F;
@@ -335,6 +363,10 @@ namespace SA2SaveUtility
         public uint Hunger = 0x138;
         public uint DesireToMate = 0x13A;
         public uint Boredom = 0x13C;
+
+        public uint Unk14 = 0x13E; //2
+        public uint Unk15 = 0x140; //2
+
         public uint Energy = 0x148;
         public uint Normal2Curious = 0x14A;
         public uint CryBaby2Energetic = 0x14C;
@@ -351,11 +383,52 @@ namespace SA2SaveUtility
         public uint SA2ClassroomSkills = 0x160;
         public uint SA2Toys = 0x164;
         public uint SA2SonicBond = 0x16C;
+
+        public uint Unk16 = 0x16E; //2
+
         public uint SA2ShadowBond = 0x172;
+
+        public uint Unk17 = 0x174; //2
+
         public uint SA2TailsBond = 0x178;
+
+        public uint Unk18 = 0x17A; //2
+
         public uint SA2EggmanBond = 0x17E;
+
+        public uint Unk19 = 0x180; //2
+
+        public uint Unk20 = 0x182; //2
+
         public uint SA2KnucklesBond = 0x184;
+
+        public uint Unk21 = 0x186; //2
+        public uint Unk22 = 0x188; //2
+
         public uint SA2RougeBond = 0x18A;
+
+        public uint Unk23 = 0x18C; //2
+        public uint Unk24 = 0x1A6; //2
+        public uint Unk25 = 0x1C2; //2
+        public uint Unk26 = 0x1DE; //2
+        public uint Unk27 = 0x1FA; //2
+        public uint Unk28 = 0x216; //2
+        public uint Unk29 = 0x232; //2
+        public uint Unk30 = 0x24E; //2
+        public uint Unk31 = 0x26A; //2
+        public uint Unk32 = 0x286; //2
+        public uint Unk33 = 0x2A2; //2
+        public uint Unk34 = 0x2BE; //2
+        public uint Unk35 = 0x2DA; //2
+        public uint Unk36 = 0x2F6; //2
+        public uint Unk37 = 0x312; //2
+        public uint Unk38 = 0x32E; //2
+        public uint Unk39 = 0x34A; //2
+        public uint Unk40 = 0x366; //2
+        public uint Unk41 = 0x382; //2
+        public uint Unk42 = 0x39E; //2
+        public uint Unk43 = 0x3BA; //2
+
         public uint ResetTrigger = 0x438;
         public uint DNASwimGrade1 = 0x494;
         public uint DNASwimGrade2 = 0x495;
